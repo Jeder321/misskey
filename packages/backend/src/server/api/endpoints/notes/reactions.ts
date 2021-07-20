@@ -7,6 +7,7 @@ export const meta = {
 	tags: ['notes', 'reactions'],
 
 	requireCredential: false,
+	requireCredentialPrivateMode: true,
 
 	res: {
 		type: 'array',
