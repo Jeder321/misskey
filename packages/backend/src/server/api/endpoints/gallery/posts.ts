@@ -4,6 +4,7 @@ import { makePaginationQuery } from '../../common/make-pagination-query.js';
 
 export const meta = {
 	tags: ['gallery'],
+	requireCredentialPrivateMode: true,
 
 	res: {
 		type: 'array',

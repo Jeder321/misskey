@@ -15,6 +15,7 @@ import { generateMutedRenotesQuery } from '../../common/generated-muted-renote-q
 
 export const meta = {
 	tags: ['notes'],
+	requireCredentialPrivateMode: true,
 
 	res: {
 		type: 'array',

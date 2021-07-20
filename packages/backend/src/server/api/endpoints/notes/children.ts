@@ -9,6 +9,7 @@ export const meta = {
 	tags: ['notes'],
 
 	requireCredential: false,
+	requireCredentialPrivateMode: true,
 
 	description: 'Get a list of children of a notes. Children includes replies as well as quote renotes that quote the respective post. A post will not be duplicated if it is a reply and a quote of a note in this thread. For depths larger than 1 the threading has to be computed by the client.',
 
@@ -21,7 +22,7 @@ export const meta = {
 			ref: 'Note',
 		},
 	},
-} as const;
+};
 
 export const paramDef = {
 	type: 'object',

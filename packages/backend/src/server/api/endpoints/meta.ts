@@ -277,7 +277,7 @@ export const paramDef = {
 } as const;
 
 // eslint-disable-next-line import/no-default-export
-export default define(meta, paramDef, async (ps, me) => {
+export default define(meta, paramDef, async (ps, me): Promise<Record<string, any>> => {
 	const instance = await fetchMeta(true);
 
 	const emojis = await Emojis.find({
@@ -294,7 +294,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		},
 	});
 
-	return {
+	const response: Record<string, any> = {
 		maintainerName: instance.maintainerName,
 		maintainerEmail: instance.maintainerEmail,
 
@@ -305,6 +305,10 @@ export default define(meta, paramDef, async (ps, me) => {
 		description: instance.description,
 		langs: instance.langs,
 		tosUrl: instance.ToSUrl,
+
+		secureMode: instance.secureMode,
+		privateMode: instance.privateMode,
+
 		disableRegistration: instance.disableRegistration,
 		disableLocalTimeline: instance.disableLocalTimeline,
 		disableGlobalTimeline: instance.disableGlobalTimeline,
@@ -322,7 +326,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		backgroundImageUrl: instance.backgroundImageUrl,
 		logoImageUrl: instance.logoImageUrl,
 		maxNoteTextLength: MAX_NOTE_TEXT_LENGTH, // 後方互換性のため
-		emojis: await Emojis.packMany(emojis),
+		emojis: instance.privateMode && !me ? [] : await Emojis.packMany(emojis),
 		defaultLightTheme: instance.defaultLightTheme,
 		defaultDarkTheme: instance.defaultDarkTheme,
 		enableEmail: instance.enableEmail,
@@ -335,16 +339,22 @@ export default define(meta, paramDef, async (ps, me) => {
 
 		translatorAvailable: instance.deeplAuthKey != null,
 
-		pinnedPages: instance.pinnedPages,
-		pinnedClipId: instance.pinnedClipId,
-		cacheRemoteFiles: instance.cacheRemoteFiles,
-		requireSetup: (await Users.countBy({
-			host: IsNull(),
-		})) === 0,
+		...(ps.detail ? {
+			pinnedPages: instance.privateMode && !me ? [] : instance.pinnedPages,
+			pinnedClipId: instance.privateMode && !me ? [] : instance.pinnedClipId,
+			cacheRemoteFiles: instance.cacheRemoteFiles,
+			requireSetup: (await Users.countBy({
+				host: IsNull(),
+			})) === 0,
+		} : {}),
+	};
 
-		proxyAccountName: instance.proxyAccountId ? (await Users.pack(instance.proxyAccountId).catch(() => null))?.username : null,
-
-		features: {
+	if (ps.detail) {
+		if (!instance.privateMode || me) {
+			const proxyAccount = instance.proxyAccountId ? await Users.pack(instance.proxyAccountId).catch(() => null) : null;
+			response.proxyAccountName = proxyAccount ? proxyAccount.username : null;
+		}
+		response.features = {
 			registration: !instance.disableRegistration,
 			localTimeLine: !instance.disableLocalTimeline,
 			globalTimeLine: !instance.disableGlobalTimeline,
@@ -358,6 +368,8 @@ export default define(meta, paramDef, async (ps, me) => {
 			discord: instance.enableDiscordIntegration,
 			serviceWorker: instance.enableServiceWorker,
 			miauth: true,
-		},
-	};
+		};
+	}
+
+	return response;
 });
