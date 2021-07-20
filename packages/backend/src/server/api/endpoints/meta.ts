@@ -256,6 +256,16 @@ export const meta = {
 					},
 				},
 			},
+			secureMode: {
+				type: 'boolean',
+				optional: true, nullable: false,
+				default: false,
+			},
+			privateMode: {
+				type: 'boolean',
+				optional: true, nullable: false,
+				default: false,
+			},
 		},
 	},
 } as const;
