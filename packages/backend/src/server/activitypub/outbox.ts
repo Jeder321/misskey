@@ -14,8 +14,16 @@ import { Note } from '@/models/entities/note.js';
 import { isPureRenote } from '@/misc/renote.js';
 import { makePaginationQuery } from '../api/common/make-pagination-query.js';
 import { setResponseType } from '../activitypub.js';
+import checkFetch from '@/remote/activitypub/check-fetch.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {
+	const verify = await checkFetch(ctx.req);
+	if (verify != 200) {
+		ctx.status = verify;
+		return;
+	}
+
 	const userId = ctx.params.user;
 
 	const sinceId = ctx.request.query.since_id;
@@ -90,8 +98,14 @@ export default async (ctx: Router.RouterContext) => {
 			`${partOf}?page=true&since_id=000000000000000000000000`,
 		);
 		ctx.body = renderActivity(rendered);
-		ctx.set('Cache-Control', 'public, max-age=180');
+
 		setResponseType(ctx);
+	}
+	const meta = await fetchMeta();
+	if (meta.secureMode || meta.privateMode) {
+		ctx.set('Cache-Control', 'no-store');
+	} else {
+		ctx.set('Cache-Control', 'public, max-age=180');
 	}
 };
 

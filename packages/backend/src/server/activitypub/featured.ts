@@ -6,8 +6,17 @@ import renderOrderedCollection from '@/remote/activitypub/renderer/ordered-colle
 import renderNote from '@/remote/activitypub/renderer/note.js';
 import { Users, Notes, UserNotePinings } from '@/models/index.js';
 import { setResponseType } from '../activitypub.js';
+import { IsNull } from 'typeorm';
+import checkFetch from '@/remote/activitypub/check-fetch.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {
+	const verify = await checkFetch(ctx.req);
+	if (verify != 200) {
+		ctx.status = verify;
+		return;
+	}
+
 	const userId = ctx.params.user;
 
 	const user = await Users.findOneBy({
@@ -36,6 +45,12 @@ export default async (ctx: Router.RouterContext) => {
 	);
 
 	ctx.body = renderActivity(rendered);
-	ctx.set('Cache-Control', 'public, max-age=180');
+
+	const meta = await fetchMeta();
+	if (meta.secureMode || meta.privateMode) {
+		ctx.set('Cache-Control', 'no-store');
+	} else {
+		ctx.set('Cache-Control', 'public, max-age=180');
+	}
 	setResponseType(ctx);
 };

@@ -693,6 +693,12 @@ export interface IEndpointMeta {
 	readonly secure?: boolean;
 
 	/**
+	 * If in private mode, whether credentials are required when making a request to this endpoint.
+	 * If omitted, this is interpreted as false.
+	 */
+	readonly requireCredentialPrivateMode?: boolean;
+
+	/**
 	 * エンドポイントの種類
 	 * パーミッションの実現に利用されます。
 	 */
