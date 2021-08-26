@@ -19,7 +19,7 @@ import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -27,20 +27,20 @@ export default async (ctx: Router.RouterContext) => {
 	const userId = ctx.params.user;
 
 	const sinceId = ctx.request.query.since_id;
-	if (sinceId != null && typeof sinceId !== 'string') {
+	if (sinceId !== null && typeof sinceId !== 'string') {
 		ctx.status = 400;
 		return;
 	}
 
 	const untilId = ctx.request.query.until_id;
-	if (untilId != null && typeof untilId !== 'string') {
+	if (untilId !== null && typeof untilId !== 'string') {
 		ctx.status = 400;
 		return;
 	}
 
 	const page = ctx.request.query.page === 'true';
 
-	if (countIf(x => x != null, [sinceId, untilId]) > 1) {
+	if (countIf(x => x !== null, [sinceId, untilId]) > 1) {
 		ctx.status = 400;
 		return;
 	}

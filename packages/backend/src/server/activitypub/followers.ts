@@ -14,7 +14,7 @@ import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -22,7 +22,7 @@ export default async (ctx: Router.RouterContext) => {
 	const userId = ctx.params.user;
 
 	const cursor = ctx.request.query.cursor;
-	if (cursor != null && typeof cursor !== 'string') {
+	if (cursor !== null && typeof cursor !== 'string') {
 		ctx.status = 400;
 		return;
 	}

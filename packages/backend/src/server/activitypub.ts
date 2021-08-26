@@ -70,7 +70,7 @@ router.get('/notes/:note', async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -87,7 +87,7 @@ router.get('/notes/:note', async (ctx, next) => {
 	}
 
 	// リモートだったらリダイレクト
-	if (note.userHost != null) {
+	if (note.userHost !== null) {
 		if (note.uri == null || isSelfHost(note.userHost)) {
 			ctx.status = 500;
 			return;
@@ -110,7 +110,7 @@ router.get('/notes/:note', async (ctx, next) => {
 // note activity
 router.get('/notes/:note/activity', async ctx => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -160,7 +160,7 @@ router.get('/users/:user/publickey', async ctx => {
 	}
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -220,7 +220,7 @@ router.get('/users/:user', async (ctx, next) => {
 	}
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -246,7 +246,7 @@ router.get('/@:user', async (ctx, next) => {
 	}
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -291,7 +291,7 @@ router.get('/emojis/:emoji', async ctx => {
 // like
 router.get('/likes/:like', async ctx => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -326,7 +326,7 @@ router.get('/likes/:like', async ctx => {
 // follow
 router.get('/follows/:follower/:followee', async ctx => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}

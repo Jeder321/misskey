@@ -7,7 +7,6 @@ import { toPuny } from '@/misc/convert-host.js';
 import DbResolver from '@/remote/activitypub/db-resolver.js';
 import { getApId } from '@/remote/activitypub/type.js';
 
-
 export default async function checkFetch(req: IncomingMessage): Promise<number> {
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
