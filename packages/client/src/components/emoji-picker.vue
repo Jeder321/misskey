@@ -134,7 +134,7 @@ watch(q, () => {
 	const newQ = q.value.replace(/:/g, '');
 
 	const searchCustom = () => {
-		const max = 8;
+		const max = 30;
 		const emojis = customEmojis;
 		const matches = new Set<Misskey.entities.CustomEmoji>();
 
