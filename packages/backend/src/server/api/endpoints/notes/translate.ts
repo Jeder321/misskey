@@ -58,7 +58,8 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	let targetLang = ps.targetLang;
-	if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
+	if (targetLang.includes('en-')) {}
+	else if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
 
 	const params = new URLSearchParams();
 	params.append('auth_key', instance.deeplAuthKey);
