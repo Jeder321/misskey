@@ -62,7 +62,7 @@ export class DriveFile {
 	public size: number;
 
 	@Column('varchar', {
-		length: 512, nullable: true,
+		length: 8192, nullable: true,
 		comment: 'The comment of the DriveFile.',
 	})
 	public comment: string | null;
