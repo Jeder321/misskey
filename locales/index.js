@@ -20,7 +20,6 @@ const languages = [
 	'de-DE',
 	'en-US',
 	'en-GB',
-	'eo-UY',
 	'es-ES',
 	'fr-FR',
 	'id-ID',
