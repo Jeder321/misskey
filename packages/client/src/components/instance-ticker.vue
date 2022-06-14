@@ -40,7 +40,7 @@ const bg = {
 	position: relative;
 
 	height: $height;
-	border-radius: 4px 0 0 4px;
+	border-radius: 4px;
 	overflow: hidden;
 	color: #fff;
 	text-shadow: /* .866 ≈ sin(60deg) */
