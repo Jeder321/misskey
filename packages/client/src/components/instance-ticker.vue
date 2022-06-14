@@ -2,7 +2,7 @@
 <div class="hpaizdrt" :style="bg">
 	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
 	<span class="name">{{ instance.name }}</span>
-	<span v-if="instance.softwareName" class="software">({{ instance.softwareName }})</span>
+	<span v-if="instance.softwareName" class="software">{{ instance.softwareName }}</span>
 </div>
 </template>
 
@@ -30,7 +30,7 @@ const instance = props.instance ?? {
 const themeColor = instance.themeColor ?? '#777777';
 
 const bg = {
-	background: `linear-gradient(90deg, ${themeColor}, ${themeColor}00)`
+	background: themeColor
 };
 </script>
 
@@ -72,6 +72,7 @@ const bg = {
 	> .software {
 		position: absolute;
 		right: .3em;
+		text-transform: capitalize;
 	}
 }
 </style>
