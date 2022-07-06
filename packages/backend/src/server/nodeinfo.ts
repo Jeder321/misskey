@@ -55,6 +55,12 @@ const nodeinfo2 = async () => {
 			localComments: 0,
 		},
 		metadata: {
+			forks: [
+				{
+					name: 'deez fuckin nuts lmao gottem fuck off',
+					version: '69.420',
+				}
+			],
 			nodeName: meta.name,
 			nodeDescription: meta.description,
 			maintainer: {

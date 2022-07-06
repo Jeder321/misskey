@@ -30,7 +30,7 @@ const instance = props.instance ?? {
 const themeColor = instance.themeColor ?? '#777777';
 
 const bg = {
-	background: themeColor
+	background: `${themeColor}7F`
 };
 </script>
 
