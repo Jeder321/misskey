@@ -1,7 +1,6 @@
 import define from '../../define.js';
 import { Meta } from '@/models/entities/meta.js';
 import { insertModerationLog } from '@/services/insert-moderation-log.js';
-import { DB_MAX_NOTE_TEXT_LENGTH } from '@/misc/hard-limits.js';
 import { db } from '@/db/postgre.js';
 
 export const meta = {
@@ -28,9 +27,7 @@ export const paramDef = {
 			type: 'string',
 		} },
 		themeColor: { type: 'string', nullable: true, pattern: '^#[0-9a-fA-F]{6}$' },
-		mascotImageUrl: { type: 'string', nullable: true },
 		bannerUrl: { type: 'string', nullable: true },
-		errorImageUrl: { type: 'string', nullable: true },
 		iconUrl: { type: 'string', nullable: true },
 		backgroundImageUrl: { type: 'string', nullable: true },
 		logoImageUrl: { type: 'string', nullable: true },
@@ -134,10 +131,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.themeColor !== undefined) {
 		set.themeColor = ps.themeColor;
-	}
-
-	if (ps.mascotImageUrl !== undefined) {
-		set.mascotImageUrl = ps.mascotImageUrl;
 	}
 
 	if (ps.bannerUrl !== undefined) {
@@ -302,10 +295,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.smtpPass !== undefined) {
 		set.smtpPass = ps.smtpPass;
-	}
-
-	if (ps.errorImageUrl !== undefined) {
-		set.errorImageUrl = ps.errorImageUrl;
 	}
 
 	if (ps.enableServiceWorker !== undefined) {

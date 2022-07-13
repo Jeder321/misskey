@@ -1,10 +1,9 @@
+import { IsNull, MoreThan } from 'typeorm';
 import config from '@/config/index.js';
-import define from '../define.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import { Ads, Emojis, Users } from '@/models/index.js';
-import { DB_MAX_NOTE_TEXT_LENGTH } from '@/misc/hard-limits.js';
-import { IsNull, MoreThan } from 'typeorm';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
+import define from '../define.js';
 
 export const meta = {
 	tags: ['meta'],
@@ -120,19 +119,9 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
-			mascotImageUrl: {
-				type: 'string',
-				optional: false, nullable: false,
-				default: '/assets/ai.png',
-			},
 			bannerUrl: {
 				type: 'string',
 				optional: false, nullable: false,
-			},
-			errorImageUrl: {
-				type: 'string',
-				optional: false, nullable: false,
-				default: 'https://xn--931a.moe/aiart/yubitun.png',
 			},
 			iconUrl: {
 				type: 'string',
@@ -352,9 +341,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		recaptchaSiteKey: instance.recaptchaSiteKey,
 		swPublickey: instance.swPublicKey,
 		themeColor: instance.themeColor,
-		mascotImageUrl: instance.mascotImageUrl,
 		bannerUrl: instance.bannerUrl,
-		errorImageUrl: instance.errorImageUrl,
 		iconUrl: instance.iconUrl,
 		backgroundImageUrl: instance.backgroundImageUrl,
 		logoImageUrl: instance.logoImageUrl,

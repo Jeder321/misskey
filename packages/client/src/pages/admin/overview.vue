@@ -35,7 +35,7 @@
 		</MkContainer>
 	</div>
 
-		<!--<XMetrics/>-->
+	<!--<XMetrics/>-->
 
 	<MkFolder style="margin: var(--margin)">
 		<template #header><i class="fas fa-info-circle"></i> {{ i18n.ts.info }}</template>
@@ -67,6 +67,7 @@
 
 <script lang="ts" setup>
 import { markRaw, version as vueVersion, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import XMetrics from './metrics.vue';
 import MkInstanceStats from '@/components/instance-stats.vue';
 import MkNumberDiff from '@/components/number-diff.vue';
 import MkContainer from '@/components/ui/container.vue';
@@ -74,11 +75,10 @@ import MkFolder from '@/components/ui/folder.vue';
 import MkQueueChart from '@/components/queue-chart.vue';
 import { version, url } from '@/config';
 import number from '@/filters/number';
-import XMetrics from './metrics.vue';
 import * as os from '@/os';
 import { stream } from '@/stream';
-import * as symbols from '@/symbols';
 import { i18n } from '@/i18n';
+import { definePageMetadata } from '@/scripts/page-metadata';
 
 let stats: any = $ref(null);
 let serverInfo: any = $ref(null);
@@ -90,11 +90,11 @@ onMounted(async () => {
 	os.api('stats', {}).then(statsResponse => {
 		stats = statsResponse;
 
-		os.api('charts/users', { limit: 2, span: 'day' }).then(chart => {
+		os.apiGet('charts/users', { limit: 2, span: 'day' }).then(chart => {
 			usersComparedToThePrevDay = stats.originalUsersCount - chart.local.total[1];
 		});
 
-		os.api('charts/notes', { limit: 2, span: 'day' }).then(chart => {
+		os.apiGet('charts/notes', { limit: 2, span: 'day' }).then(chart => {
 			notesComparedToThePrevDay = stats.originalNotesCount - chart.local.total[1];
 		});
 	});
@@ -106,7 +106,7 @@ onMounted(async () => {
 	nextTick(() => {
 		queueStatsConnection.send('requestLog', {
 			id: Math.random().toString().substr(2, 8),
-			length: 200
+			length: 200,
 		});
 	});
 });
@@ -115,12 +115,14 @@ onBeforeUnmount(() => {
 	queueStatsConnection.dispose();
 });
 
-defineExpose({
-	[symbols.PAGE_INFO]: {
-		title: i18n.ts.dashboard,
-		icon: 'fas fa-tachometer-alt',
-		bg: 'var(--bg)',
-	}
+const headerActions = $computed(() => []);
+
+const headerTabs = $computed(() => []);
+
+definePageMetadata({
+	title: i18n.ts.dashboard,
+	icon: 'fas fa-tachometer-alt',
+	bg: 'var(--bg)',
 });
 </script>
 
