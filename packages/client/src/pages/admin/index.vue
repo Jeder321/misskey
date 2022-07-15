@@ -59,7 +59,7 @@ let view = $ref(null);
 let el = $ref(null);
 let pageProps = $ref({});
 let noMaintainerInformation = isEmpty(instance.maintainerName) || isEmpty(instance.maintainerEmail);
-let noBotProtection = !instance.enableHcaptcha && !instance.enableRecaptcha;
+let noBotProtection = !instance.disableRegistration && !instance.enableHcaptcha && !instance.enableRecaptcha;
 let noEmailServer = !instance.enableEmail;
 let thereIsUnresolvedAbuseReport = $ref(false);
 
@@ -109,7 +109,7 @@ const menuDef = $computed(() => [{
 	}, {
 		icon: 'fas fa-globe',
 		text: i18n.ts.federation,
-		to: '/about#federation',
+		to: '/admin/federation',
 		active: props.initialPage === 'federation',
 	}, {
 		icon: 'fas fa-clipboard-list',
@@ -126,11 +126,6 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.announcements,
 		to: '/admin/announcements',
 		active: props.initialPage === 'announcements',
-	}, {
-		icon: 'fas fa-audio-description',
-		text: i18n.ts.ads,
-		to: '/admin/ads',
-		active: props.initialPage === 'ads',
 	}, {
 		icon: 'fas fa-exclamation-circle',
 		text: i18n.ts.abuseReports,
@@ -179,11 +174,6 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.proxyAccount,
 		to: '/admin/proxy-account',
 		active: props.initialPage === 'proxy-account',
-	}, {
-		icon: 'fas fa-cogs',
-		text: i18n.ts.other,
-		to: '/admin/other-settings',
-		active: props.initialPage === 'other-settings',
 	}],
 }, {
 	title: i18n.ts.info,
@@ -205,7 +195,6 @@ const component = $computed(() => {
 		case 'queue': return defineAsyncComponent(() => import('./queue.vue'));
 		case 'files': return defineAsyncComponent(() => import('./files.vue'));
 		case 'announcements': return defineAsyncComponent(() => import('./announcements.vue'));
-		case 'ads': return defineAsyncComponent(() => import('./ads.vue'));
 		case 'database': return defineAsyncComponent(() => import('./database.vue'));
 		case 'abuses': return defineAsyncComponent(() => import('./abuses.vue'));
 		case 'settings': return defineAsyncComponent(() => import('./settings.vue'));
@@ -216,7 +205,6 @@ const component = $computed(() => {
 		case 'integrations': return defineAsyncComponent(() => import('./integrations.vue'));
 		case 'instance-block': return defineAsyncComponent(() => import('./instance-block.vue'));
 		case 'proxy-account': return defineAsyncComponent(() => import('./proxy-account.vue'));
-		case 'other-settings': return defineAsyncComponent(() => import('./other-settings.vue'));
 	}
 });
 
