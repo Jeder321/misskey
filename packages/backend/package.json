@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "tsc -p tsconfig.json || echo done. && tsc-alias -p tsconfig.json",
 		"watch": "node watch.mjs",
-		"lint": "eslint --quiet \"src/**/*.ts\"",
+		"lint": "eslint --quiet src --ext .ts",
 		"mocha": "cross-env NODE_ENV=test TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true TS_NODE_PROJECT=\"./test/tsconfig.json\" mocha",
 		"test": "npm run mocha"
 	},
@@ -69,7 +69,6 @@
 		"mime-types": "2.1.35",
 		"misskey-js": "0.0.14",
 		"mocha": "10.0.0",
-		"ms": "3.0.0-canary.1",
 		"multer": "1.4.4",
 		"nested-property": "4.0.0",
 		"node-fetch": "3.2.6",
@@ -92,6 +91,7 @@
 		"rename": "1.0.4",
 		"require-all": "3.0.0",
 		"rndstr": "1.0.0",
+		"rss-parser": "3.12.0",
 		"s-age": "1.1.2",
 		"sanitize-html": "2.7.0",
 		"semver": "7.3.7",
@@ -164,12 +164,12 @@
 		"@types/web-push": "3.3.2",
 		"@types/websocket": "1.0.5",
 		"@types/ws": "8.5.3",
-		"@typescript-eslint/eslint-plugin": "5.30.0",
-		"@typescript-eslint/parser": "5.30.0",
+		"@typescript-eslint/eslint-plugin": "^5.30.0",
+		"@typescript-eslint/parser": "^5.30.0",
 		"cross-env": "7.0.3",
-		"eslint": "8.18.0",
-		"eslint-plugin-import": "2.26.0",
+		"eslint": "^8.20.0",
+		"eslint-plugin-import": "^2.26.0",
 		"execa": "6.1.0",
-		"typescript": "4.7.4"
+		"typescript": "^4.7.4"
 	}
 }

@@ -43,7 +43,6 @@
 				</p>
 				<div v-show="appearNote.cw == null || showContent" class="content" :class="{ collapsed, isLong }">
 					<div class="text">
-						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 						<MkA v-if="appearNote.replyId" class="reply" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
 						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
 						<a v-if="appearNote.renote != null" class="rp">RN:</a>
@@ -165,7 +164,7 @@ const reactButton = ref<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as misskey.entities.Note : note);
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
-const isLong = ref(appearNote.cw == null && appearNote.text != null && (
+const isLong = (appearNote.cw == null && appearNote.text != null && (
 	(appearNote.text.split('\n').length > 9) ||
 	(appearNote.text.length > 500)
 ));

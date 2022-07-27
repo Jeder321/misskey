@@ -4,7 +4,7 @@
 		<template #empty>
 			<div class="_fullinfo">
 				<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
-				<div>{{ $ts.noFollowRequests }}</div>
+				<div>{{ i18n.ts.noFollowRequests }}</div>
 			</div>
 		</template>
 		<template #default="{items}">
@@ -65,7 +65,6 @@ const headerTabs = $computed(() => []);
 definePageMetadata(computed(() => ({
 	title: i18n.ts.followRequests,
 	icon: 'fas fa-user-clock',
-	bg: 'var(--bg)',
 })));
 </script>
 

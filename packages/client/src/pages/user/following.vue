@@ -6,7 +6,7 @@
 			<div v-if="user">
 				<XFollowList :user="user" type="following"/>
 			</div>
-			<MkError v-else-if="error" @retry="fetch()"/>
+			<MkError v-else-if="error" @retry="fetchUser()"/>
 			<MkLoading v-else/>
 		</transition>
 	</MkSpacer>
@@ -54,7 +54,6 @@ definePageMetadata(computed(() => user ? {
 	subtitle: i18n.ts.following,
 	userName: user,
 	avatar: user,
-	bg: 'var(--bg)',
 } : null));
 </script>
 

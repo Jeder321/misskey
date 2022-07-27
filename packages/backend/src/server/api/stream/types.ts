@@ -173,6 +173,7 @@ export interface AdminStreamTypes {
 		targetUserId: User['id'],
 		reporterId: User['id'],
 		comment: string;
+		urls: string[];
 	};
 }
 //#endregion
@@ -242,7 +243,7 @@ export type StreamMessages = {
 	};
 	notes: {
 		name: 'notesStream';
-		payload: Packed<'Note'>;
+		payload: Note;
 	};
 };
 

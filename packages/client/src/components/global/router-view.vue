@@ -1,6 +1,12 @@
 <template>
 <KeepAlive :max="defaultStore.state.numberOfPageCache">
-	<component :is="currentPageComponent" :key="key" v-bind="Object.fromEntries(currentPageProps)"/>
+	<Suspense>
+		<component :is="currentPageComponent" :key="key" v-bind="Object.fromEntries(currentPageProps)"/>
+
+		<template #fallback>
+			Loading...
+		</template>
+	</Suspense>
 </KeepAlive>
 </template>
 
@@ -11,9 +17,6 @@ import { defaultStore } from '@/store';
 
 const props = defineProps<{
 	router?: Router;
-}>();
-
-const emit = defineEmits<{
 }>();
 
 const router = props.router ?? inject('router');

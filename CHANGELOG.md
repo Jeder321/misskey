@@ -11,6 +11,11 @@ You should also include the user name that made the change.
 
 ## 12.x.x (unreleased)
 
+### Changes
+- ハイライトがみつけるに統合されました
+- カスタム絵文字ページはインスタンス情報ページに統合されました
+- 連合ページはインスタンス情報ページに統合されました
+
 ### Improvements
 - Client: Fix URL-encoded routing
 - Server: Allow GET method for some endpoints @syuilo
@@ -18,8 +23,9 @@ You should also include the user name that made the change.
 - Client: Improve control panel @syuilo
 - Client: Show warning in control panel when there is an unresolved abuse report @syuilo
 - Client: For notes with specified visibility, show recipients when hovering over visibility symbol. @Johann150
-- Client: Add rss-marquee widget @syuilo
+- Client: Add rss-ticker widget @syuilo
 - Client: Removing entries from a clip @futchitwo
+- Client: Poll highlights in explore page @syuilo
 - Make possible to delete an account by admin @syuilo
 - Improve player detection in URL preview @mei23
 - Add Badge Image to Push Notification #8012 @tamaina
@@ -31,6 +37,8 @@ You should also include the user name that made the change.
 - Server: Fix GenerateVideoThumbnail failed @mei23
 - Server: Ensure temp directory cleanup @Johann150
 - favicons of federated instances not showing @syuilo
+- Client: fix switch to receive email notifications @syuilo
+- Client: Page freezes when trying to open configuration page of existing webhooks @syuilo
 
 ## 12.111.1 (2022/06/13)
 

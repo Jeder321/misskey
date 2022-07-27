@@ -6,7 +6,7 @@
 			<div class="body">
 				<div v-if="!narrow || initialPage == null" class="nav">
 					<div class="baaadecd">
-						<MkInfo v-if="emailNotConfigured" warn class="info">{{ $ts.emailNotConfiguredWarning }} <MkA to="/settings/email" class="_link">{{ $ts.configure }}</MkA></MkInfo>
+						<MkInfo v-if="emailNotConfigured" warn class="info">{{ i18n.ts.emailNotConfiguredWarning }} <MkA to="/settings/email" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 						<MkSuperMenu :def="menuDef" :grid="initialPage == null"></MkSuperMenu>
 					</div>
 				</div>
@@ -41,7 +41,6 @@ const props = withDefaults(defineProps<{
 const indexInfo = {
 	title: i18n.ts.settings,
 	icon: 'fas fa-cog',
-	bg: 'var(--bg)',
 	hideHeader: true,
 };
 const INFO = ref(indexInfo);

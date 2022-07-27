@@ -53,16 +53,6 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
-			repositoryUrl: {
-				type: 'string',
-				optional: false, nullable: false,
-				default: 'https://github.com/misskey-dev/misskey',
-			},
-			feedbackUrl: {
-				type: 'string',
-				optional: false, nullable: false,
-				default: 'https://github.com/misskey-dev/misskey/issues/new',
-			},
 			defaultDarkTheme: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -307,12 +297,8 @@ export default define(meta, paramDef, async (ps, me) => {
 		description: instance.description,
 		langs: instance.langs,
 		tosUrl: instance.ToSUrl,
-		repositoryUrl: instance.repositoryUrl,
-		feedbackUrl: instance.feedbackUrl,
-
 		secureMode: instance.secureMode,
 		privateMode: instance.privateMode,
-
 		disableRegistration: instance.disableRegistration,
 		disableLocalTimeline: instance.disableLocalTimeline,
 		disableGlobalTimeline: instance.disableGlobalTimeline,
