@@ -1,8 +1,8 @@
 import { publishDriveStream } from '@/services/stream.js';
-import define from '../../../define.js';
-import { ApiError } from '../../../error.js';
 import { DriveFolders } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
+import define from '../../../define.js';
+import { ApiError } from '../../../error.js';
 
 export const meta = {
 	tags: ['drive'],
@@ -29,7 +29,7 @@ export const meta = {
 export const paramDef = {
 	type: 'object',
 	properties: {
-		name: { type: 'string', default: "Untitled", maxLength: 200 },
+		name: { type: 'string', default: 'Untitled', maxLength: 200 },
 		parentId: { type: 'string', format: 'misskey:id', nullable: true },
 	},
 	required: [],

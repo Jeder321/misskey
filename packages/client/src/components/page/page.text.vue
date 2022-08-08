@@ -39,9 +39,6 @@ watch(props.hpml.vars, () => {
 
 <style lang="scss" scoped>
 .mrdgzndn {
-	padding-left: 1em;
-	padding-right: 1em;
-
 	&:not(:first-child) {
 		margin-top: 0.5em;
 	}

@@ -1,6 +1,6 @@
+import { Brackets, SelectQueryBuilder } from 'typeorm';
 import { User } from '@/models/entities/user.js';
 import { NoteThreadMutings } from '@/models/index.js';
-import { Brackets, SelectQueryBuilder } from 'typeorm';
 
 export function generateMutedNoteThreadQuery(q: SelectQueryBuilder<any>, me: { id: User['id'] }) {
 	const mutedQuery = NoteThreadMutings.createQueryBuilder('threadMuted')
@@ -9,7 +9,7 @@ export function generateMutedNoteThreadQuery(q: SelectQueryBuilder<any>, me: { i
 
 	q.andWhere(`note.id NOT IN (${ mutedQuery.getQuery() })`);
 	q.andWhere(new Brackets(qb => { qb
-		.where(`note.threadId IS NULL`)
+		.where('note.threadId IS NULL')
 		.orWhere(`note.threadId NOT IN (${ mutedQuery.getQuery() })`);
 	}));
 

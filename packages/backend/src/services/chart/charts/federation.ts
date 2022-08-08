@@ -1,7 +1,7 @@
-import Chart, { KVs } from '../core.js';
 import { Followings, Instances } from '@/models/index.js';
-import { name, schema } from './entities/federation.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
+import Chart, { KVs } from '../core.js';
+import { name, schema } from './entities/federation.js';
 
 /**
  * フェデレーションに関するチャート
@@ -40,21 +40,21 @@ export default class FederationChart extends Chart<typeof schema> {
 			Followings.createQueryBuilder('following')
 				.select('COUNT(DISTINCT following.followeeHost)')
 				.where('following.followeeHost IS NOT NULL')
-				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : `following.followeeHost NOT IN (:...blocked)`, { blocked: meta.blockedHosts })
+				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : 'following.followeeHost NOT IN (:...blocked)', { blocked: meta.blockedHosts })
 				.andWhere(`following.followeeHost NOT IN (${ suspendedInstancesQuery.getQuery() })`)
 				.getRawOne()
 				.then(x => parseInt(x.count, 10)),
 			Followings.createQueryBuilder('following')
 				.select('COUNT(DISTINCT following.followerHost)')
 				.where('following.followerHost IS NOT NULL')
-				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : `following.followerHost NOT IN (:...blocked)`, { blocked: meta.blockedHosts })
+				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : 'following.followerHost NOT IN (:...blocked)', { blocked: meta.blockedHosts })
 				.andWhere(`following.followerHost NOT IN (${ suspendedInstancesQuery.getQuery() })`)
 				.getRawOne()
 				.then(x => parseInt(x.count, 10)),
 			Followings.createQueryBuilder('following')
 				.select('COUNT(DISTINCT following.followeeHost)')
 				.where('following.followeeHost IS NOT NULL')
-				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : `following.followeeHost NOT IN (:...blocked)`, { blocked: meta.blockedHosts })
+				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : 'following.followeeHost NOT IN (:...blocked)', { blocked: meta.blockedHosts })
 				.andWhere(`following.followeeHost NOT IN (${ suspendedInstancesQuery.getQuery() })`)
 				.andWhere(`following.followeeHost IN (${ pubsubSubQuery.getQuery() })`)
 				.setParameters(pubsubSubQuery.getParameters())
@@ -63,27 +63,27 @@ export default class FederationChart extends Chart<typeof schema> {
 			Instances.createQueryBuilder('instance')
 				.select('COUNT(instance.id)')
 				.where(`instance.host IN (${ subInstancesQuery.getQuery() })`)
-				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : `instance.host NOT IN (:...blocked)`, { blocked: meta.blockedHosts })
-				.andWhere(`instance.isSuspended = false`)
-				.andWhere(`instance.lastCommunicatedAt > :gt`, { gt: new Date(Date.now() - (1000 * 60 * 60 * 24 * 30)) })
+				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : 'instance.host NOT IN (:...blocked)', { blocked: meta.blockedHosts })
+				.andWhere('instance.isSuspended = false')
+				.andWhere('instance.lastCommunicatedAt > :gt', { gt: new Date(Date.now() - (1000 * 60 * 60 * 24 * 30)) })
 				.getRawOne()
 				.then(x => parseInt(x.count, 10)),
 			Instances.createQueryBuilder('instance')
 				.select('COUNT(instance.id)')
 				.where(`instance.host IN (${ pubInstancesQuery.getQuery() })`)
-				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : `instance.host NOT IN (:...blocked)`, { blocked: meta.blockedHosts })
-				.andWhere(`instance.isSuspended = false`)
-				.andWhere(`instance.lastCommunicatedAt > :gt`, { gt: new Date(Date.now() - (1000 * 60 * 60 * 24 * 30)) })
+				.andWhere(meta.blockedHosts.length === 0 ? '1=1' : 'instance.host NOT IN (:...blocked)', { blocked: meta.blockedHosts })
+				.andWhere('instance.isSuspended = false')
+				.andWhere('instance.lastCommunicatedAt > :gt', { gt: new Date(Date.now() - (1000 * 60 * 60 * 24 * 30)) })
 				.getRawOne()
 				.then(x => parseInt(x.count, 10)),
 		]);
 
 		return {
-			'sub': sub,
-			'pub': pub,
-			'pubsub': pubsub,
-			'subActive': subActive,
-			'pubActive': pubActive,
+			sub,
+			pub,
+			pubsub,
+			subActive,
+			pubActive,
 		};
 	}
 

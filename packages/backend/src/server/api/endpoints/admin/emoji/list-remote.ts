@@ -1,6 +1,6 @@
-import define from '../../../define.js';
 import { Emojis } from '@/models/index.js';
 import { toPuny } from '@/misc/convert-host.js';
+import define from '../../../define.js';
 import { makePaginationQuery } from '../../../common/make-pagination-query.js';
 
 export const meta = {
@@ -73,9 +73,9 @@ export default define(meta, paramDef, async (ps) => {
 	const q = makePaginationQuery(Emojis.createQueryBuilder('emoji'), ps.sinceId, ps.untilId);
 
 	if (ps.host == null) {
-		q.andWhere(`emoji.host IS NOT NULL`);
+		q.andWhere('emoji.host IS NOT NULL');
 	} else {
-		q.andWhere(`emoji.host = :host`, { host: toPuny(ps.host) });
+		q.andWhere('emoji.host = :host', { host: toPuny(ps.host) });
 	}
 
 	if (ps.query) {

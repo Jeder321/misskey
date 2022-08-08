@@ -7,27 +7,27 @@
 	</div>
 	<div v-if="state == 'denied'" class="denied _section">
 		<div class="_content">
-			<p>{{ $ts._auth.denied }}</p>
+			<p>{{ i18n.ts._auth.denied }}</p>
 		</div>
 	</div>
 	<div v-else-if="state == 'accepted'" class="accepted _section">
 		<div class="_content">
-			<p v-if="callback">{{ $ts._auth.callback }}<MkEllipsis/></p>
-			<p v-else>{{ $ts._auth.pleaseGoBack }}</p>
+			<p v-if="callback">{{ i18n.ts._auth.callback }}<MkEllipsis/></p>
+			<p v-else>{{ i18n.ts._auth.pleaseGoBack }}</p>
 		</div>
 	</div>
 	<div v-else class="_section">
-		<div v-if="name" class="_title">{{ $t('_auth.shareAccess', { name: name }) }}</div>
-		<div v-else class="_title">{{ $ts._auth.shareAccessAsk }}</div>
+		<div v-if="name" class="_title">{{ i18n.t('_auth.shareAccess', { name: name }) }}</div>
+		<div v-else class="_title">{{ i18n.ts._auth.shareAccessAsk }}</div>
 		<div class="_content">
-			<p>{{ $ts._auth.permissionAsk }}</p>
+			<p>{{ i18n.ts._auth.permissionAsk }}</p>
 			<ul>
-				<li v-for="p in permission" :key="p">{{ $t(`_permissions.${p}`) }}</li>
+				<li v-for="p in permission" :key="p">{{ i18n.t(`_permissions.${p}`) }}</li>
 			</ul>
 		</div>
 		<div class="_footer">
-			<MkButton inline @click="deny">{{ $ts.cancel }}</MkButton>
-			<MkButton inline primary @click="accept">{{ $ts.accept }}</MkButton>
+			<MkButton inline @click="deny">{{ i18n.ts.cancel }}</MkButton>
+			<MkButton inline primary @click="accept">{{ i18n.ts.accept }}</MkButton>
 		</div>
 	</div>
 </div>
@@ -36,52 +36,47 @@
 </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { } from 'vue';
 import MkSignin from '@/components/signin.vue';
 import MkButton from '@/components/ui/button.vue';
 import * as os from '@/os';
 import { login } from '@/account';
 import { appendQuery, query } from '@/scripts/url';
+import { i18n } from '@/i18n';
 
-export default defineComponent({
-	components: {
-		MkSignin,
-		MkButton,
-	},
-	props: ['session', 'callback', 'name', 'icon', 'permission'],
-	data() {
-		return {
-			state: null,
-		};
-	},
-	methods: {
-		async accept() {
-			this.state = 'waiting';
-			await os.api('miauth/gen-token', {
-				session: this.session,
-				name: this.name,
-				iconUrl: this.icon,
-				permission: this.permission,
-			});
+const props = defineProps<{
+	session: string;
+	callback: string;
+	name: string;
+	icon: string;
+	permission: string;
+}>();
 
-			this.state = 'accepted';
-			if (this.callback) {
-				location.href = appendQuery(this.callback, query({
-					session: this.session,
-				}));
-			}
-		},
-		deny() {
-			this.state = 'denied';
-		},
-		onLogin(res) {
-			login(res.i);
-		},
-	},
-});
+let state: 'waiting' | 'denied' | 'accepted' | 'initial' = $ref('initial');
+
+async function accept() {
+	state = 'waiting';
+	await os.api('miauth/gen-token', {
+		session: props.session,
+		name: props.name,
+		iconUrl: props.icon,
+		permission: props.permission,
+	});
+
+	state = 'accepted';
+	if (props.callback) {
+		location.href = appendQuery(props.callback, query({
+			session: props.session,
+		}));
+	}
+}
+
+function deny() {
+	state = 'denied';
+}
+
+function onLogin(res) {
+	login(res.i);
+}
 </script>
-
-<style lang="scss" scoped>
-
-</style>

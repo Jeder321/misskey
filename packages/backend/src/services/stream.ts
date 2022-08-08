@@ -1,4 +1,4 @@
-import { redisClient } from '../db/redis.js';
+import { redisClient } from '@/db/redis.js';
 import { User } from '@/models/entities/user.js';
 import { Note } from '@/models/entities/note.js';
 import { UserList } from '@/models/entities/user-list.js';
@@ -26,12 +26,12 @@ import {
 class Publisher {
 	private publish = (channel: StreamChannels, type: string | null, value?: any): void => {
 		const message = type == null ? value : value == null ?
-			{ type: type, body: null } :
-			{ type: type, body: value };
+			{ type, body: null } :
+			{ type, body: value };
 
 		redisClient.publish(config.host, JSON.stringify({
-			channel: channel,
-			message: message,
+			channel,
+			message,
 		}));
 	};
 

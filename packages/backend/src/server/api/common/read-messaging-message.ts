@@ -1,11 +1,9 @@
-import { publishMainStream, publishGroupMessagingStream } from '@/services/stream.js';
-import { publishMessagingStream } from '@/services/stream.js';
-import { publishMessagingIndexStream } from '@/services/stream.js';
+import { In } from 'typeorm';
+import { publishMainStream, publishMessagingStream, publishMessagingIndexStream, publishGroupMessagingStream } from '@/services/stream.js';
 import { pushNotification } from '@/services/push-notification.js';
 import { User, IRemoteUser } from '@/models/entities/user.js';
 import { MessagingMessage } from '@/models/entities/messaging-message.js';
 import { MessagingMessages, UserGroupJoinings, Users } from '@/models/index.js';
-import { In } from 'typeorm';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import { UserGroup } from '@/models/entities/user-group.js';
 import { toArray } from '@/prelude/array.js';
@@ -81,7 +79,7 @@ export async function readGroupMessagingMessage(
 
 	// check joined
 	const joining = await UserGroupJoinings.findOneBy({
-		userId: userId,
+		userId,
 		userGroupId: groupId,
 	});
 
@@ -113,7 +111,7 @@ export async function readGroupMessagingMessage(
 	// Publish event
 	publishGroupMessagingStream(groupId, 'read', {
 		ids: reads,
-		userId: userId,
+		userId,
 	});
 	publishMessagingIndexStream(userId, 'read', reads);
 
@@ -124,9 +122,9 @@ export async function readGroupMessagingMessage(
 	} else {
 		// そのグループにおいて未読がなければイベント発行
 		const unreadExist = await MessagingMessages.createQueryBuilder('message')
-			.where(`message.groupId = :groupId`, { groupId: groupId })
-			.andWhere('message.userId != :userId', { userId: userId })
-			.andWhere('NOT (:userId = ANY(message.reads))', { userId: userId })
+			.where('message.groupId = :groupId', { groupId })
+			.andWhere('message.userId != :userId', { userId })
+			.andWhere('NOT (:userId = ANY(message.reads))', { userId })
 			.andWhere('message.createdAt > :joinedAt', { joinedAt: joining.createdAt }) // 自分が加入する前の会話については、未読扱いしない
 			.getOne().then(x => x != null);
 

@@ -112,9 +112,7 @@ export default async function renderNote(note: Note, dive = true, isTalk = false
 
 	const asPoll = poll ? {
 		type: 'Question',
-		content: toHtml(Object.assign({}, note, {
-			text: text,
-		})),
+		content: toHtml(Object.assign({}, note, { text })),
 		[poll.expiresAt && poll.expiresAt < new Date() ? 'closed' : 'endTime']: poll.expiresAt,
 		[poll.multiple ? 'anyOf' : 'oneOf']: poll.choices.map((text, i) => ({
 			type: 'Note',
@@ -139,7 +137,7 @@ export default async function renderNote(note: Note, dive = true, isTalk = false
 		_misskey_content: text,
 		source: {
 			content: text,
-			mediaType: "text/x.misskeymarkdown",
+			mediaType: 'text/x.misskeymarkdown',
 		},
 		_misskey_quote: quote,
 		quoteUrl: quote,

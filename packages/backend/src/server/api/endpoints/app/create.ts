@@ -1,8 +1,8 @@
-import define from '../../define.js';
 import { Apps } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { unique } from '@/prelude/array.js';
 import { secureRndstr } from '@/misc/secure-rndstr.js';
+import define from '../../define.js';
 
 export const meta = {
 	tags: ['app'],
@@ -44,7 +44,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		description: ps.description,
 		permission: ps.permission,
 		callbackUrl: ps.callbackUrl,
-		secret: secret,
+		secret,
 	}).then(x => Apps.findOneByOrFail(x.identifiers[0]));
 
 	return await Apps.pack(app, null, {

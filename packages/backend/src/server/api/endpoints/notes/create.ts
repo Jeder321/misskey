@@ -5,11 +5,11 @@ import { Users, DriveFiles, Notes, Channels, Blockings } from '@/models/index.js
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { Note } from '@/models/entities/note.js';
 import { Channel } from '@/models/entities/channel.js';
-import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
+import { MAX_NOTE_TEXT_LENGTH, HOUR } from '@/const.js';
+import { isPureRenote } from '@/misc/renote.js';
 import { noteVisibilities } from '../../../../types.js';
 import { ApiError } from '../../error.js';
 import define from '../../define.js';
-import { HOUR } from '@/const.js';
 import { getNote } from '../../common/getters.js';
 
 export const meta = {
@@ -78,13 +78,24 @@ export const meta = {
 			code: 'YOU_HAVE_BEEN_BLOCKED',
 			id: 'b390d7e1-8a5e-46ed-b625-06271cafd3d3',
 		},
+
+		lessRestrictiveVisibility: {
+			message: 'The visibility cannot be less restrictive than the parent note.',
+			code: 'LESS_RESTRICTIVE_VISIBILITY',
+			id: 'c8ab7a7a-8852-41e2-8b24-079bbaceb585',
+		},
 	},
 } as const;
 
 export const paramDef = {
 	type: 'object',
 	properties: {
-		visibility: { type: 'string', enum: noteVisibilities, default: 'public' },
+		visibility: {
+			description: 'The visibility of the new note. Must be the same or more restrictive than a replied to or quoted note.',
+			type: 'string',
+			enum: noteVisibilities,
+			default: 'public',
+		},
 		visibleUserIds: { type: 'array', uniqueItems: true, items: {
 			type: 'string', format: 'misskey:id',
 		} },
@@ -191,8 +202,13 @@ export default define(meta, paramDef, async (ps, user) => {
 			throw e;
 		});
 
-		if (renote.renoteId && !renote.text && !renote.fileIds && !renote.hasPoll) {
+		if (isPureRenote(renote)) {
 			throw new ApiError(meta.errors.cannotReRenote);
+		}
+
+		// check that the visibility is not less restrictive
+		if (noteVisibilities.indexOf(renote.visibility) > noteVisibilities.indexOf(ps.visibility)) {
+			throw new ApiError(meta.errors.lessRestrictiveVisibility);
 		}
 
 		// Check blocking
@@ -215,8 +231,13 @@ export default define(meta, paramDef, async (ps, user) => {
 			throw e;
 		});
 
-		if (reply.renoteId && !reply.text && !reply.fileIds && !reply.hasPoll) {
+		if (isPureRenote(reply)) {
 			throw new ApiError(meta.errors.cannotReplyToPureRenote);
+		}
+
+		// check that the visibility is not less restrictive
+		if (noteVisibilities.indexOf(reply.visibility) > noteVisibilities.indexOf(ps.visibility)) {
+			throw new ApiError(meta.errors.lessRestrictiveVisibility);
 		}
 
 		// Check blocking
@@ -253,7 +274,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	// 投稿を作成
 	const note = await create(user, {
 		createdAt: new Date(),
-		files: files,
+		files,
 		poll: ps.poll ? {
 			choices: ps.poll.choices,
 			multiple: ps.poll.multiple || false,

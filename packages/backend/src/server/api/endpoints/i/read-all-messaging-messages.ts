@@ -1,6 +1,6 @@
 import { publishMainStream } from '@/services/stream.js';
-import define from '../../define.js';
 import { MessagingMessages, UserGroupJoinings } from '@/models/index.js';
+import define from '../../define.js';
 
 export const meta = {
 	tags: ['account', 'messaging'],
@@ -32,7 +32,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		.set({
 			reads: (() => `array_append("reads", '${user.id}')`) as any,
 		})
-		.where(`groupId = :groupId`, { groupId: j.userGroupId })
+		.where('groupId = :groupId', { groupId: j.userGroupId })
 		.andWhere('userId != :userId', { userId: user.id })
 		.andWhere('NOT (:userId = ANY(reads))', { userId: user.id })
 		.execute()));

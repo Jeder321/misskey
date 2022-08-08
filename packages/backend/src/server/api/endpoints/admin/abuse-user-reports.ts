@@ -1,6 +1,6 @@
-import define from '../../define.js';
 import { AbuseUserReports } from '@/models/index.js';
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
+import define from '../../define.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -82,8 +82,8 @@ export const paramDef = {
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
 		state: { type: 'string', nullable: true, default: null },
-		reporterOrigin: { type: 'string', enum: ['combined', 'local', 'remote'], default: "combined" },
-		targetUserOrigin: { type: 'string', enum: ['combined', 'local', 'remote'], default: "combined" },
+		reporterOrigin: { type: 'string', enum: ['combined', 'local', 'remote'], default: 'combined' },
+		targetUserOrigin: { type: 'string', enum: ['combined', 'local', 'remote'], default: 'combined' },
 	},
 	required: [],
 } as const;

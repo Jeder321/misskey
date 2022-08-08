@@ -1,10 +1,10 @@
 import Bull from 'bull';
-import { queueLogger } from '../../logger.js';
-import { DriveFiles, Notes, UserProfiles, Users } from '@/models/index.js';
-import { DbUserDeleteJobData } from '@/queue/types.js';
-import { Note } from '@/models/entities/note.js';
-import { DriveFile } from '@/models/entities/drive-file.js';
 import { MoreThan } from 'typeorm';
+import { DriveFiles, Notes, UserProfiles, Users } from '@/models/index.js';
+import { DriveFile } from '@/models/entities/drive-file.js';
+import { Note } from '@/models/entities/note.js';
+import { queueLogger } from '@/queue/logger.js';
+import { DbUserDeleteJobData } from '@/queue/types.js';
 import { deleteFileSync } from '@/services/drive/delete-file.js';
 import { sendEmail } from '@/services/send-email.js';
 
@@ -42,7 +42,7 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 			await Notes.delete(notes.map(note => note.id));
 		}
 
-		logger.succ(`All of notes deleted`);
+		logger.succ('All of notes deleted');
 	}
 
 	{ // Delete files
@@ -71,15 +71,15 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 			}
 		}
 
-		logger.succ(`All of files deleted`);
+		logger.succ('All of files deleted');
 	}
 
 	{ // Send email notification
 		const profile = await UserProfiles.findOneByOrFail({ userId: user.id });
 		if (profile.email && profile.emailVerified) {
 			sendEmail(profile.email, 'Account deleted',
-				`Your account has been deleted.`,
-				`Your account has been deleted.`);
+				'Your account has been deleted.',
+				'Your account has been deleted.');
 		}
 	}
 

@@ -1,7 +1,7 @@
 import * as nodemailer from 'nodemailer';
 import { fetchMeta } from '@/misc/fetch-meta.js';
-import Logger from './logger.js';
 import config from '@/config/index.js';
+import Logger from './logger.js';
 
 export const logger = new Logger('email');
 
@@ -29,9 +29,9 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 		// TODO: htmlサニタイズ
 		const info = await transporter.sendMail({
 			from: meta.email!,
-			to: to,
-			subject: subject,
-			text: text,
+			to,
+			subject,
+			text,
 			html: `<!doctype html>
 <html>
 	<head>

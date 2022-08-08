@@ -12,6 +12,7 @@ import { Notes, Users, Instances } from '@/models/index.js';
 import { notesChart, perUserNotesChart, instanceChart } from '@/services/chart/index.js';
 import { deliverToFollowers, deliverToUser } from '@/remote/activitypub/deliver-manager.js';
 import { countSameRenotes } from '@/misc/count-same-renotes.js';
+import { isPureRenote } from '@/misc/renote.js';
 import { registerOrFetchInstanceDoc } from '../register-or-fetch-instance-doc.js';
 import { deliverToRelays } from '../relay.js';
 
@@ -34,16 +35,14 @@ export default async function(user: { id: User['id']; uri: User['uri']; host: Us
 	}
 
 	if (!quiet) {
-		publishNoteStream(note.id, 'deleted', {
-			deletedAt: deletedAt,
-		});
+		publishNoteStream(note.id, 'deleted', { deletedAt });
 
 		//#region ローカルの投稿なら削除アクティビティを配送
 		if (Users.isLocalUser(user) && !note.localOnly) {
 			let renote: Note | null = null;
 
 			// if deletd note is renote
-			if (note.renoteId && note.text == null && !note.hasPoll && (note.fileIds == null || note.fileIds.length === 0)) {
+			if (isPureRenote(note)) {
 				renote = await Notes.findOneBy({
 					id: note.renoteId,
 				});

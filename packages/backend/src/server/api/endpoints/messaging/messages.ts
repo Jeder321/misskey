@@ -1,9 +1,9 @@
+import { Brackets } from 'typeorm';
+import { MessagingMessages, UserGroups, UserGroupJoinings, Users } from '@/models/index.js';
 import define from '../../define.js';
 import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
-import { MessagingMessages, UserGroups, UserGroupJoinings, Users } from '@/models/index.js';
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
-import { Brackets } from 'typeorm';
 import { readUserMessagingMessage, readGroupMessagingMessage, deliverReadActivity } from '../../common/read-messaging-message.js';
 
 export const meta = {
@@ -125,7 +125,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 
 		const query = makePaginationQuery(MessagingMessages.createQueryBuilder('message'), ps.sinceId, ps.untilId)
-			.andWhere(`message.groupId = :groupId`, { groupId: recipientGroup.id });
+			.andWhere('message.groupId = :groupId', { groupId: recipientGroup.id });
 
 		const messages = await query.take(ps.limit).getMany();
 

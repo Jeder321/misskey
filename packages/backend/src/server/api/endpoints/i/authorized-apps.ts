@@ -1,5 +1,5 @@
-import define from '../../define.js';
 import { AccessTokens, Apps } from '@/models/index.js';
+import define from '../../define.js';
 
 export const meta = {
 	requireCredential: true,
@@ -12,7 +12,7 @@ export const paramDef = {
 	properties: {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
-		sort: { type: 'string', enum: ['desc', 'asc'], default: "desc" },
+		sort: { type: 'string', enum: ['desc', 'asc'], default: 'desc' },
 	},
 	required: [],
 } as const;

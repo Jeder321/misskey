@@ -1,26 +1,23 @@
 <template>
-<div class="mk-google">
+<div class="mk-search">
 	<input v-model="query" type="search" :placeholder="q">
-	<button @click="search"><i class="fas fa-search"></i> {{ $ts.search }}</button>
+	<button><i class="fas fa-search"></i> {{ i18n.ts.search }}</button>
 </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { i18n } from '@/i18n';
 
 const props = defineProps<{
 	q: string;
 }>();
 
 const query = ref(props.q);
-
-const search = () => {
-	window.open(`https://www.google.com/search?q=${query.value}`, '_blank');
-};
 </script>
 
 <style lang="scss" scoped>
-.mk-google {
+.mk-search {
 	display: flex;
 	margin: 8px 0;
 

@@ -1,7 +1,7 @@
 import { PrimaryColumn, Entity, Index, JoinColumn, Column, ManyToOne } from 'typeorm';
+import { id } from '../id.js';
 import { User } from './user.js';
 import { DriveFolder } from './drive-folder.js';
-import { id } from '../id.js';
 
 @Entity()
 @Index(['userId', 'folderId', 'id'])
@@ -24,7 +24,7 @@ export class DriveFile {
 	public userId: User['id'] | null;
 
 	@ManyToOne(type => User, {
-		onDelete: 'SET NULL',
+		onDelete: 'RESTRICT',
 	})
 	@JoinColumn()
 	public user: User | null;

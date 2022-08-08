@@ -10,9 +10,9 @@ import semver from 'semver';
 import Logger from '@/services/logger.js';
 import loadConfig from '@/config/load.js';
 import { Config } from '@/config/types.js';
-import { envOption } from '../env.js';
 import { showMachineInfo } from '@/misc/show-machine-info.js';
-import { db, initDb } from '../db/postgre.js';
+import { envOption } from '@/env.js';
+import { db, initDb } from '@/db/postgre.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -24,7 +24,7 @@ const bootLogger = logger.createSubLogger('boot', 'magenta', false);
 
 const themeColor = chalk.hex('#86b300');
 
-function greet() {
+function greet(): void {
 	if (!envOption.quiet) {
 		//#region Misskey logo
 		const v = `v${meta.version}`;
@@ -49,7 +49,7 @@ function greet() {
 /**
  * Init master process
  */
-export async function masterMain() {
+export async function masterMain(): void {
 	let config!: Config;
 
 	// initialize app
@@ -110,12 +110,11 @@ function loadConfigBoot(): Config {
 	try {
 		config = loadConfig();
 	} catch (exception) {
-		if (typeof exception === 'string') {
-			configLogger.error(exception);
-			process.exit(1);
-		}
 		if (exception.code === 'ENOENT') {
 			configLogger.error('Configuration file not found', null, true);
+			process.exit(1);
+		} else if (e instanceof Error) {
+			configLogger.error(e.message);
 			process.exit(1);
 		}
 		throw exception;
@@ -142,7 +141,7 @@ async function connectDb(): Promise<void> {
 	}
 }
 
-async function spawnWorkers(limit: number = 1) {
+async function spawnWorkers(limit = 1): void {
 	const workers = Math.min(limit, os.cpus().length);
 	bootLogger.info(`Starting ${workers} worker${workers === 1 ? '' : 's'}...`);
 	await Promise.all([...Array(workers)].map(spawnWorker));
@@ -154,7 +153,7 @@ function spawnWorker(): Promise<void> {
 		const worker = cluster.fork();
 		worker.on('message', message => {
 			if (message === 'listenFailed') {
-				bootLogger.error(`The server Listen failed due to the previous error.`);
+				bootLogger.error('The server Listen failed due to the previous error.');
 				process.exit(1);
 			}
 			if (message !== 'ready') return;

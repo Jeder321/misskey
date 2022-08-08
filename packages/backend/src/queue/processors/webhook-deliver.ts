@@ -1,9 +1,9 @@
 import Bull from 'bull';
-import Logger from '@/services/logger.js';
-import { WebhookDeliverJobData } from '../types.js';
+import config from '@/config/index.js';
 import { getResponse, StatusError } from '@/misc/fetch.js';
 import { Webhooks } from '@/models/index.js';
-import config from '@/config/index.js';
+import Logger from '@/services/logger.js';
+import { WebhookDeliverJobData } from '../types.js';
 
 const logger = new Logger('webhook');
 
@@ -49,7 +49,7 @@ export default async (job: Bull.Job<WebhookDeliverJobData>) => {
 			}
 
 			// 5xx etc.
-			throw `${res.statusCode} ${res.statusMessage}`;
+			throw new Error(`${res.statusCode} ${res.statusMessage}`);
 		} else {
 			// DNS error, socket error, timeout ...
 			throw res;

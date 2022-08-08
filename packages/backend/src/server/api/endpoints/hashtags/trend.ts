@@ -1,10 +1,10 @@
 import { Brackets } from 'typeorm';
-import define from '../../define.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import { Notes } from '@/models/index.js';
 import { Note } from '@/models/entities/note.js';
 import { safeForSql } from '@/misc/safe-for-sql.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import define from '../../define.js';
 
 /*
 トレンドに載るためには「『直近a分間のユニーク投稿数が今からa分前～今からb分前の間のユニーク投稿数のn倍以上』のハッシュタグの上位5位以内に入る」ことが必要
@@ -69,12 +69,12 @@ export default define(meta, paramDef, async () => {
 	now.setMinutes(Math.round(now.getMinutes() / 5) * 5, 0, 0);
 
 	const tagNotes = await Notes.createQueryBuilder('note')
-		.where(`note.createdAt > :date`, { date: new Date(now.getTime() - rangeA) })
+		.where('note.createdAt > :date', { date: new Date(now.getTime() - rangeA) })
 		.andWhere(new Brackets(qb => { qb
-			.where(`note.visibility = 'public'`)
-			.orWhere(`note.visibility = 'home'`);
+			.where("note.visibility = 'public'")
+			.orWhere("note.visibility = 'home'");
 		}))
-		.andWhere(`note.tags != '{}'`)
+		.andWhere("note.tags != '{}'")
 		.select(['note.tags', 'note.userId'])
 		.cache(60000) // 1 min
 		.getMany();

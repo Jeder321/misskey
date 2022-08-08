@@ -1,13 +1,13 @@
 import Router from '@koa/router';
+import { IsNull } from 'typeorm';
 import config from '@/config/index.js';
 import { renderActivity } from '@/remote/activitypub/renderer/index.js';
 import renderOrderedCollection from '@/remote/activitypub/renderer/ordered-collection.js';
-import { setResponseType } from '../activitypub.js';
 import renderNote from '@/remote/activitypub/renderer/note.js';
 import { Users, Notes, UserNotePinings } from '@/models/index.js';
-import { IsNull } from 'typeorm';
 import checkFetch from '@/remote/activitypub/check-fetch.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
+import { setResponseType } from '../activitypub.js';
 
 export default async (ctx: Router.RouterContext) => {
 	const verify = await checkFetch(ctx.req);

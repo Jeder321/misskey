@@ -1,21 +1,21 @@
-import Bull from 'bull';
 import * as fs from 'node:fs';
+import Bull from 'bull';
 import unzipper from 'unzipper';
 
-import { queueLogger } from '../../logger.js';
+import { db } from '@/db/postgre.js';
 import { createTempDir } from '@/misc/create-temp.js';
 import { downloadUrl } from '@/misc/download-url.js';
+import { genId } from '@/misc/gen-id.js';
 import { DriveFiles, Emojis } from '@/models/index.js';
 import { DbUserImportJobData } from '@/queue/types.js';
 import { addFile } from '@/services/drive/add-file.js';
-import { genId } from '@/misc/gen-id.js';
-import { db } from '@/db/postgre.js';
+import { queueLogger } from '../../logger.js';
 
 const logger = queueLogger.createSubLogger('import-custom-emojis');
 
 // TODO: 名前衝突時の動作を選べるようにする
 export async function importCustomEmojis(job: Bull.Job<DbUserImportJobData>, done: any): Promise<void> {
-	logger.info(`Importing custom emojis ...`);
+	logger.info('Importing custom emojis ...');
 
 	const file = await DriveFiles.findOneBy({
 		id: job.data.fileId,

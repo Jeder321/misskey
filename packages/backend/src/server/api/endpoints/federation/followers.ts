@@ -1,5 +1,5 @@
-import define from '../../define.js';
 import { Followings } from '@/models/index.js';
+import define from '../../define.js';
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
 
 export const meta = {
@@ -33,7 +33,7 @@ export const paramDef = {
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, me) => {
 	const query = makePaginationQuery(Followings.createQueryBuilder('following'), ps.sinceId, ps.untilId)
-		.andWhere(`following.followeeHost = :host`, { host: ps.host });
+		.andWhere('following.followeeHost = :host', { host: ps.host });
 
 	const followings = await query
 		.take(ps.limit)

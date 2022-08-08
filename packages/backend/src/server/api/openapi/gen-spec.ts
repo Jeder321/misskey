@@ -1,5 +1,5 @@
-import endpoints from '../endpoints.js';
 import config from '@/config/index.js';
+import endpoints from '../endpoints.js';
 import { errors as basicErrors } from './errors.js';
 import { schemas, convertSchemaToOpenApiSchema } from './schemas.js';
 
@@ -25,7 +25,7 @@ export function genOpenapiSpec() {
 		paths: {} as any,
 
 		components: {
-			schemas: schemas,
+			schemas,
 
 			securitySchemes: {
 				ApiKeyAuth: {

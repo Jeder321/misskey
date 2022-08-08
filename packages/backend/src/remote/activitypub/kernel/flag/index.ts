@@ -1,9 +1,9 @@
-import { CacheableRemoteUser } from '@/models/entities/user.js';
-import config from '@/config/index.js';
-import { IFlag, getApIds } from '../../type.js';
-import { AbuseUserReports, Users } from '@/models/index.js';
 import { In } from 'typeorm';
+import config from '@/config/index.js';
 import { genId } from '@/misc/gen-id.js';
+import { CacheableRemoteUser } from '@/models/entities/user.js';
+import { AbuseUserReports, Users } from '@/models/index.js';
+import { IFlag, getApIds } from '../../type.js';
 
 export default async (actor: CacheableRemoteUser, activity: IFlag): Promise<string> => {
 	// objectは `(User|Note) | (User|Note)[]` だけど、全パターンDBスキーマと対応させられないので
@@ -14,7 +14,7 @@ export default async (actor: CacheableRemoteUser, activity: IFlag): Promise<stri
 	const users = await Users.findBy({
 		id: In(userIds),
 	});
-	if (users.length < 1) return `skip`;
+	if (users.length < 1) return 'skip';
 
 	await AbuseUserReports.insert({
 		id: genId(),
@@ -27,5 +27,5 @@ export default async (actor: CacheableRemoteUser, activity: IFlag): Promise<stri
 		urls: uris.filter(uri => !uri.startsWith(config.url + '/users/')),
 	});
 
-	return `ok`;
+	return 'ok';
 };

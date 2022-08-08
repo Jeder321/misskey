@@ -1,8 +1,8 @@
 import * as crypto from 'node:crypto';
 import jsonld from 'jsonld';
-import { CONTEXTS } from './contexts.js';
 import fetch from 'node-fetch';
 import { httpAgent, httpsAgent } from '@/misc/fetch.js';
+import { CONTEXTS } from './contexts.js';
 
 // RsaSignature2017 based from https://github.com/transmute-industries/RsaSignature2017
 
@@ -85,7 +85,7 @@ export class LdSignature {
 
 	private getLoader() {
 		return async (url: string): Promise<any> => {
-			if (!url.match('^https?\:\/\/')) throw `Invalid URL ${url}`;
+			if (!url.match('^https?\:\/\/')) throw new Error(`Invalid URL ${url}`);
 
 			if (this.preLoad) {
 				if (url in CONTEXTS) {
@@ -102,7 +102,7 @@ export class LdSignature {
 			const document = await this.fetchDocument(url);
 			return {
 				contextUrl: null,
-				document: document,
+				document,
 				documentUrl: url,
 			};
 		};
@@ -118,7 +118,7 @@ export class LdSignature {
 			agent: u => u.protocol === 'http:' ? httpAgent : httpsAgent,
 		}).then(res => {
 			if (!res.ok) {
-				throw `${res.status} ${res.statusText}`;
+				throw new Error(`${res.status} ${res.statusText}`);
 			} else {
 				return res.json();
 			}

@@ -1,7 +1,7 @@
 import { db } from '@/db/postgre.js';
+import { Packed } from '@/misc/schema.js';
 import { App } from '@/models/entities/app.js';
 import { AccessTokens } from '../index.js';
-import { Packed } from '@/misc/schema.js';
 import { User } from '../entities/user.js';
 
 export const AppRepository = db.getRepository(App).extend({
@@ -25,6 +25,7 @@ export const AppRepository = db.getRepository(App).extend({
 		return {
 			id: app.id,
 			name: app.name,
+			description: app.description,
 			callbackUrl: app.callbackUrl,
 			permission: app.permission,
 			...(opts.includeSecret ? { secret: app.secret } : {}),

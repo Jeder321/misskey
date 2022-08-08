@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import config from '@/config/index.js';
-import define from '../../../define.js';
-import { ApiError } from '../../../error.js';
 import { Apps, AuthSessions } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
+import define from '../../../define.js';
+import { ApiError } from '../../../error.js';
 
 export const meta = {
 	tags: ['auth'],
@@ -62,7 +62,7 @@ export default define(meta, paramDef, async (ps) => {
 		id: genId(),
 		createdAt: new Date(),
 		appId: app.id,
-		token: token,
+		token,
 	}).then(x => AuthSessions.findOneByOrFail(x.identifiers[0]));
 
 	return {

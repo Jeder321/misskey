@@ -1,15 +1,15 @@
 import unfollow from '@/services/following/delete.js';
-import { IAccept } from '../../type.js';
 import { CacheableRemoteUser } from '@/models/entities/user.js';
 import { Followings } from '@/models/index.js';
 import DbResolver from '../../db-resolver.js';
+import { IAccept } from '../../type.js';
 
 export default async (actor: CacheableRemoteUser, activity: IAccept): Promise<string> => {
 	const dbResolver = new DbResolver();
 
 	const follower = await dbResolver.getUserFromApId(activity.object);
 	if (follower == null) {
-		return `skip: follower not found`;
+		return 'skip: follower not found';
 	}
 
 	const following = await Followings.findOneBy({
@@ -19,8 +19,8 @@ export default async (actor: CacheableRemoteUser, activity: IAccept): Promise<st
 
 	if (following) {
 		await unfollow(follower, actor);
-		return `ok: unfollowed`;
+		return 'ok: unfollowed';
 	}
 
-	return `skip: フォローされていない`;
+	return 'skip: フォローされていない';
 };

@@ -10,8 +10,8 @@ import { fetchMeta } from '@/misc/fetch-meta.js';
 import { toPuny } from '@/misc/convert-host.js';
 import { Cache } from '@/misc/cache.js';
 import { Instance } from '@/models/entities/instance.js';
-import { DeliverJobData } from '../types.js';
 import { StatusError } from '@/misc/fetch.js';
+import { DeliverJobData } from '../types.js';
 
 const logger = new Logger('deliver');
 
@@ -93,7 +93,7 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 			}
 
 			// 5xx etc.
-			throw `${res.statusCode} ${res.statusMessage}`;
+			throw new Error(`${res.statusCode} ${res.statusMessage}`);
 		} else {
 			// DNS error, socket error, timeout ...
 			throw res;

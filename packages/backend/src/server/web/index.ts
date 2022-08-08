@@ -22,11 +22,11 @@ import { Users, Notes, UserProfiles, Pages, Channels, Clips, GalleryPosts } from
 import * as Acct from '@/misc/acct.js';
 import { getNoteSummary } from '@/misc/get-note-summary.js';
 import { queues } from '@/queue/queues.js';
+import { MINUTE, DAY } from '@/const.js';
 import { genOpenapiSpec } from '../api/openapi/gen-spec.js';
 import { urlPreviewHandler } from './url-preview.js';
 import { manifestHandler } from './manifest.js';
 import packFeed from './feed.js';
-import { MINUTE, DAY } from '@/const.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -185,8 +185,8 @@ router.get('/twemoji-badge/(.*)', async ctx => {
 });
 
 // ServiceWorker
-router.get(`/sw.js`, async ctx => {
-	await send(ctx as any, `/sw.js`, {
+router.get('/sw.js', async ctx => {
+	await send(ctx as any, '/sw.js', {
 		root: swAssets,
 		maxage: 10 * MINUTE,
 	});
@@ -492,7 +492,7 @@ router.get('/_info_card_', async ctx => {
 	await ctx.render('info-card', {
 		version: config.version,
 		host: config.host,
-		meta: meta,
+		meta,
 		originalUsersCount: await Users.countBy({ host: IsNull() }),
 		originalNotesCount: await Notes.countBy({ userHost: IsNull() }),
 	});

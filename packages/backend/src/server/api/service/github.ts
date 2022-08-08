@@ -9,7 +9,7 @@ import { publishMainStream } from '@/services/stream.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import { Users, UserProfiles } from '@/models/index.js';
 import { ILocalUser } from '@/models/entities/user.js';
-import { redisClient } from '../../../db/redis.js';
+import { redisClient } from '@/db/redis.js';
 import signin from '../common/signin.js';
 
 function getUserToken(ctx: Koa.BaseContext): string | null {
@@ -176,7 +176,7 @@ router.get('/gh/cb', async ctx => {
 		}
 
 		const link = await UserProfiles.createQueryBuilder()
-			.where('"integrations"->\'github\'->>\'id\' = :id', { id: id })
+			.where('"integrations"->\'github\'->>\'id\' = :id', { id })
 			.andWhere('"userHost" IS NULL')
 			.getOne();
 
@@ -239,9 +239,9 @@ router.get('/gh/cb', async ctx => {
 			integrations: {
 				...profile.integrations,
 				github: {
-					accessToken: accessToken,
-					id: id,
-					login: login,
+					accessToken,
+					id,
+					login,
 				},
 			},
 		});

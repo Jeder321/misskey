@@ -1,12 +1,12 @@
 import { URL } from 'node:url';
-import { addFile } from './add-file.js';
 import { User } from '@/models/entities/user.js';
-import { driveLogger } from './logger.js';
 import { createTemp } from '@/misc/create-temp.js';
 import { downloadUrl } from '@/misc/download-url.js';
 import { DriveFolder } from '@/models/entities/drive-folder.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { DriveFiles } from '@/models/index.js';
+import { addFile } from './add-file.js';
+import { driveLogger } from './logger.js';
 
 const logger = driveLogger.createSubLogger('downloader');
 
@@ -54,8 +54,8 @@ export async function uploadFromUrl({
 		return driveFile!;
 	} catch (e) {
 		logger.error(`Failed to create drive file: ${e}`, {
-			url: url,
-			e: e,
+			url,
+			e,
 		});
 		throw e;
 	} finally {

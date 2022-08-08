@@ -1,6 +1,6 @@
 import { CacheableRemoteUser } from '@/models/entities/user.js';
-import { ILike, getApId } from '../../type.js';
 import deleteReaction from '@/services/note/reaction/delete.js';
+import { ILike, getApId } from '../../type.js';
 import { fetchNote } from '../../models/note.js';
 
 /**
@@ -17,5 +17,5 @@ export default async (actor: CacheableRemoteUser, activity: ILike) => {
 		throw e;
 	});
 
-	return `ok`;
+	return 'ok';
 };
