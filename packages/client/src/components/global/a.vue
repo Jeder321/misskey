@@ -1,5 +1,5 @@
 <template>
-<a :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
+<a :href="to" :class="active ? activeClass : null" @click.prevent="nav">
 	<slot></slot>
 </a>
 </template>
@@ -32,37 +32,16 @@ const active = $computed(() => {
 	return resolved.route.name === router.currentRoute.value.name;
 });
 
-function onContextmenu(ev) {
-	const selection = window.getSelection();
-	if (selection && selection.toString() !== '') return;
-	os.contextMenu([{
-		type: 'label',
-		text: props.to,
-	}, {
-		icon: 'fas fa-window-maximize',
-		text: i18n.ts.openInWindow,
-		action: () => {
-			os.pageWindow(props.to);
-		},
-	}, {
-		icon: 'fas fa-expand-alt',
-		text: i18n.ts.showInPage,
-		action: () => {
-			router.push(props.to);
-		},
-	}, null, {
-		icon: 'fas fa-external-link-alt',
-		text: i18n.ts.openInNewTab,
-		action: () => {
-			window.open(props.to, '_blank');
-		},
-	}, {
-		icon: 'fas fa-link',
-		text: i18n.ts.copyLink,
-		action: () => {
-			copyToClipboard(`${url}${props.to}`);
-		},
-	}], ev);
+function openWindow() {
+	os.pageWindow(props.to);
+}
+
+function modalWindow() {
+	os.modalPageWindow(props.to);
+}
+
+function popout() {
+	popout_(props.to);
 }
 
 function nav() {

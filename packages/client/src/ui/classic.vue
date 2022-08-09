@@ -10,7 +10,7 @@
 			<XWidgets :place="'left'" @mounted="attachSticky(widgetsLeft)"/>
 		</div>
 
-		<main class="main" :style="{ background: pageMetadata?.value?.bg }" @contextmenu.stop="onContextmenu">
+		<main class="main" :style="{ background: pageMetadata?.value?.bg }">
 			<div class="content">
 				<RouterView/>
 			</div>
@@ -88,35 +88,6 @@ function attachSticky(el) {
 
 function top() {
 	window.scroll({ top: 0, behavior: 'smooth' });
-}
-
-function onContextmenu(ev: MouseEvent) {
-	const isLink = (el: HTMLElement) => {
-		if (el.tagName === 'A') return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-	};
-	if (isLink(ev.target)) return;
-	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
-	if (window.getSelection().toString() !== '') return;
-	const path = mainRouter.getCurrentPath();
-	os.contextMenu([{
-		type: 'label',
-		text: path,
-	}, {
-		icon: fullView ? 'fas fa-compress' : 'fas fa-expand',
-		text: fullView ? i18n.ts.quitFullView : i18n.ts.fullView,
-		action: () => {
-			fullView = !fullView;
-		},
-	}, {
-		icon: 'fas fa-window-maximize',
-		text: i18n.ts.openInWindow,
-		action: () => {
-			os.pageWindow(path);
-		},
-	}], ev);
 }
 
 function onAiClick(ev) {

@@ -12,7 +12,6 @@
 		:alt="video.comment"
 		preload="none"
 		controls
-		@contextmenu.stop
 	>
 		<source 
 			:src="video.url" 

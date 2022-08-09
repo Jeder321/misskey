@@ -725,7 +725,6 @@ receiveAnnouncementFromInstance: "インスタンスからのお知らせを受�
 emailNotification: "メール通知"
 publish: "公開"
 inChannelSearch: "チャンネル内検索"
-useReactionPickerForContextMenu: "右クリックでリアクションピッカーを開く"
 typingUsers: "{users}が入力中"
 jumpToSpecifiedDate: "特定の日付にジャンプ"
 showingPastTimeline: "過去のタイムラインを表示しています"

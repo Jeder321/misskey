@@ -4,7 +4,6 @@
 	class="rrevdjwt"
 	:class="{ center: align === 'center', asDrawer }"
 	:style="{ width: (width && !asDrawer) ? width + 'px' : '', maxHeight: maxHeight ? maxHeight + 'px' : '' }"
-	@contextmenu.self="e => e.preventDefault()"
 >
 	<template v-for="(item, i) in items2">
 		<div v-if="item === null" class="divider"></div>

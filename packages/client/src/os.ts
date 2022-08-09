@@ -527,24 +527,6 @@ export function popupMenu(items: MenuItem[] | Ref<MenuItem[]>, src?: HTMLElement
 	});
 }
 
-export function contextMenu(items: MenuItem[] | Ref<MenuItem[]>, ev: MouseEvent) {
-	ev.preventDefault();
-	return new Promise((resolve) => {
-		let dispose;
-		popup(defineAsyncComponent(() => import('@/components/ui/context-menu.vue')), {
-			items,
-			ev,
-		}, {
-			closed: () => {
-				resolve();
-				dispose();
-			},
-		}).then(res => {
-			dispose = res.dispose;
-		});
-	});
-}
-
 export function post(props: Record<string, any> = {}) {
 	return new Promise((resolve) => {
 		// NOTE: MkPostFormDialogをdynamic importするとiOSでテキストエリアに自動フォーカスできない

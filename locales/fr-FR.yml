@@ -717,7 +717,6 @@ receiveAnnouncementFromInstance: "Recevoir les messages d'information de l'insta
 emailNotification: "Notifications par mail"
 publish: "Public"
 inChannelSearch: "Chercher dans le canal"
-useReactionPickerForContextMenu: "Clic-droit pour ouvrir le panneau de réactions"
 typingUsers: "{users} est en train d'écrire"
 jumpToSpecifiedDate: "Se rendre à la date"
 showingPastTimeline: "Un fil ancien est affiché"

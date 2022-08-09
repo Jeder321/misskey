@@ -5,7 +5,6 @@
 	draggable="true"
 	:title="title"
 	@click="onClick"
-	@contextmenu.stop="onContextmenu"
 	@dragstart="onDragstart"
 	@dragend="onDragend"
 >
@@ -98,10 +97,6 @@ function onClick(ev: MouseEvent) {
 	} else {
 		os.popupMenu(getMenu(), (ev.currentTarget ?? ev.target ?? undefined) as HTMLElement | undefined);
 	}
-}
-
-function onContextmenu(ev: MouseEvent) {
-	os.contextMenu(getMenu(), ev);
 }
 
 function onDragstart(ev: DragEvent) {

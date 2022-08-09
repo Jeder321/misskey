@@ -1,7 +1,6 @@
 <template>
 <component
 	:is="self ? 'MkA' : 'a'" ref="el" class="ieqqeuvs _link" :[attr]="self ? url.substr(local.length) : url" :rel="rel" :target="target"
-	@contextmenu.stop="() => {}"
 >
 	<template v-if="!self">
 		<span class="schema">{{ schema }}//</span>

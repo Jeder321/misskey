@@ -1,7 +1,7 @@
 <template>
 <MkModal ref="modal" @click="$emit('click')" @closed="$emit('closed')">
 	<div ref="rootEl" class="hrmcaedk _narrow_" :style="{ width: `${width}px`, height: (height ? `min(${height}px, 100%)` : '100%') }">
-		<div class="header" @contextmenu="onContextmenu">
+		<div class="header">
 			<button v-if="history.length > 0" v-tooltip="$ts.goBack" class="_button" @click="back()"><i class="fas fa-arrow-left"></i></button>
 			<span v-else style="display: inline-block; width: 20px"></span>
 			<span v-if="pageMetadata?.value" class="title">
@@ -59,33 +59,6 @@ provide('shouldOmitHeaderTitle', true);
 provide('shouldHeaderThin', true);
 
 const pageUrl = $computed(() => url + path);
-const contextmenu = $computed(() => {
-	return [{
-		type: 'label',
-		text: path,
-	}, {
-		icon: 'fas fa-expand-alt',
-		text: i18n.ts.showInPage,
-		action: expand,
-	}, {
-		icon: 'fas fa-external-link-alt',
-		text: i18n.ts.popout,
-		action: popout,
-	}, null, {
-		icon: 'fas fa-external-link-alt',
-		text: i18n.ts.openInNewTab,
-		action: () => {
-			window.open(pageUrl, '_blank');
-			modal.close();
-		},
-	}, {
-		icon: 'fas fa-link',
-		text: i18n.ts.copyLink,
-		action: () => {
-			copyToClipboard(pageUrl);
-		},
-	}];
-});
 
 function navigate(path, record = true) {
 	if (record) history.push(router.getCurrentPath());
@@ -104,10 +77,6 @@ function expand() {
 function popout() {
 	_popout(path, rootEl);
 	modal.close();
-}
-
-function onContextmenu(ev: MouseEvent) {
-	os.contextMenu(contextmenu, ev);
 }
 </script>
 

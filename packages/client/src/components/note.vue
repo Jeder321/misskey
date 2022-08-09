@@ -31,7 +31,7 @@
 			<MkVisibility :note="note"/>
 		</div>
 	</div>
-	<article class="article" @contextmenu.stop="onContextmenu">
+	<article class="article">
 		<MkAvatar class="avatar" :user="appearNote.user"/>
 		<div class="main">
 			<XNoteHeader class="header" :note="appearNote" :mini="true"/>
@@ -224,24 +224,6 @@ function undoReact(): void {
 }
 
 const currentClipPage = inject<Ref<misskey.entities.Clip> | null>('currentClipPage', null);
-
-function onContextmenu(ev: MouseEvent): void {
-	const isLink = (el: HTMLElement) => {
-		if (el.tagName === 'A') return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-	};
-	if (isLink(ev.target)) return;
-	if (window.getSelection().toString() !== '') return;
-
-	if (defaultStore.state.useReactionPickerForContextMenu) {
-		ev.preventDefault();
-		react();
-	} else {
-		os.contextMenu(getNoteMenu({ note, translating, translation, menuButton, isDeleted, currentClipPage }), ev).then(focus);
-	}
-}
 
 function menu(viaKeyboard = false): void {
 	os.popupMenu(getNoteMenu({ note, translating, translation, menuButton, isDeleted, currentClipPage }), menuButton.value, {

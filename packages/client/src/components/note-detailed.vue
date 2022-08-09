@@ -29,7 +29,7 @@
 			<MkVisibility :note="note"/>
 		</div>
 	</div>
-	<article class="article" @contextmenu.stop="onContextmenu">
+	<article class="article">
 		<header class="header">
 			<MkAvatar class="avatar" :user="appearNote.user" :show-indicator="true"/>
 			<div class="body">
@@ -228,24 +228,6 @@ function undoReact(note): void {
 	os.api('notes/reactions/delete', {
 		noteId: note.id,
 	});
-}
-
-function onContextmenu(ev: MouseEvent): void {
-	const isLink = (el: HTMLElement) => {
-		if (el.tagName === 'A') return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-	};
-	if (isLink(ev.target)) return;
-	if (window.getSelection().toString() !== '') return;
-
-	if (defaultStore.state.useReactionPickerForContextMenu) {
-		ev.preventDefault();
-		react();
-	} else {
-		os.contextMenu(getNoteMenu({ note, translating, translation, menuButton, isDeleted }), ev).then(focus);
-	}
 }
 
 function menu(viaKeyboard = false): void {

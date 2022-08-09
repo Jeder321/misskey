@@ -14,7 +14,6 @@
 		@click="goTop"
 		@dragstart="onDragstart"
 		@dragend="onDragend"
-		@contextmenu.prevent.stop="onContextmenu"
 	>
 		<button v-if="isStacked && !isMainColumn" class="toggleActive _button" @click="toggleActive">
 			<template v-if="active"><i class="fas fa-angle-up"></i></template>
@@ -181,10 +180,6 @@ function getMenu() {
 		},
 	}];
 	return items;
-}
-
-function onContextmenu(ev: MouseEvent) {
-	os.contextMenu(getMenu(), ev);
 }
 
 function goTop() {

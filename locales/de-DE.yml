@@ -723,7 +723,6 @@ receiveAnnouncementFromInstance: "Benachrichtigungen von dieser Instanz empfange
 emailNotification: "Email-Benachrichtigungen"
 publish: "Veröffentlichen"
 inChannelSearch: "In Kanal suchen"
-useReactionPickerForContextMenu: "Reaktionsauswahl durch Rechtsklick öffnen"
 typingUsers: "{users} ist/sind am schreiben …"
 jumpToSpecifiedDate: "Zu bestimmtem Datum springen"
 showingPastTimeline: "Es wird eine alte Chronik angezeigt"

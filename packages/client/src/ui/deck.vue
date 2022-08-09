@@ -1,7 +1,6 @@
 <template>
 <div
 	class="mk-deck" :class="[{ isMobile }, `${deckStore.reactiveState.columnAlign.value}`]" :style="{ '--deckMargin': deckStore.reactiveState.columnMargin.value + 'px' }"
-	@contextmenu.self.prevent="onContextmenu"
 >
 	<XSidebar v-if="!isMobile"/>
 
@@ -120,13 +119,6 @@ const addColumn = async (ev) => {
 		name: i18n.t('_deck._columns.' + column),
 		width: 330,
 	});
-};
-
-const onContextmenu = (ev) => {
-	os.contextMenu([{
-		text: i18n.ts._deck.addColumn,
-		action: addColumn,
-	}], ev);
 };
 
 provide('shouldSpacerMin', true);

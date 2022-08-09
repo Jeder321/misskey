@@ -5,7 +5,6 @@
 	draggable="true"
 	:title="title"
 	@click="onClick"
-	@contextmenu.stop="onContextmenu"
 	@mouseover="onMouseover"
 	@mouseout="onMouseout"
 	@dragover.prevent.stop="onDragover"
@@ -218,26 +217,8 @@ function deleteFolder() {
 	});
 }
 
-function onContextmenu(ev: MouseEvent) {
-	os.contextMenu([{
-		text: i18n.ts.openInWindow,
-		icon: 'fas fa-window-restore',
-		action: () => {
-			os.popup(defineAsyncComponent(() => import('./drive-window.vue')), {
-				initialFolder: props.folder,
-			}, {
-			}, 'closed');
-		},
-	}, null, {
-		text: i18n.ts.rename,
-		icon: 'fas fa-i-cursor',
-		action: rename,
-	}, null, {
-		text: i18n.ts.delete,
-		icon: 'fas fa-trash-alt',
-		danger: true,
-		action: deleteFolder,
-	}], ev);
+function setAsUploadFolder() {
+	defaultStore.set('uploadFolder', props.folder.id);
 }
 </script>
 

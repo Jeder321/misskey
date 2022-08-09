@@ -2,7 +2,7 @@
 <transition :name="$store.state.animation ? 'window' : ''" appear @after-leave="$emit('closed')">
 	<div v-if="showing" class="ebkgocck">
 		<div class="body _shadow _narrow_" @mousedown="onBodyMousedown" @keydown="onKeydown">
-			<div class="header" :class="{ mini }" @contextmenu.prevent.stop="onContextmenu">
+			<div class="header" :class="{ mini }">
 				<span class="left">
 					<button v-for="button in buttonsLeft" v-tooltip="button.title" class="button _button" :class="{ highlighted: button.highlighted }" @click="button.onClick"><i :class="button.icon"></i></button>
 				</span>
@@ -92,10 +92,6 @@ export default defineComponent({
 			required: false,
 			default: false,
 		},
-		contextmenu: {
-			type: Array,
-			required: false,
-		},
 		buttonsLeft: {
 			type: Array,
 			required: false,
@@ -144,12 +140,6 @@ export default defineComponent({
 				evt.preventDefault();
 				evt.stopPropagation();
 				this.close();
-			}
-		},
-
-		onContextmenu(ev: MouseEvent) {
-			if (this.contextmenu) {
-				os.contextMenu(this.contextmenu, ev);
 			}
 		},
 

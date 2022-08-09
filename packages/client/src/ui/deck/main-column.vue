@@ -7,7 +7,7 @@
 		</template>
 	</template>
 
-	<RouterView @contextmenu.stop="onContextmenu"/>
+	<RouterView />
 </XColumn>
 </template>
 
@@ -41,28 +41,4 @@ function back() {
 	history.back();
 }
 */
-function onContextmenu(ev: MouseEvent) {
-	if (!ev.target) return;
-
-	const isLink = (el: HTMLElement) => {
-		if (el.tagName === 'A') return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-	};
-	if (isLink(ev.target as HTMLElement)) return;
-	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes((ev.target as HTMLElement).tagName) || (ev.target as HTMLElement).attributes['contenteditable']) return;
-	if (window.getSelection()?.toString() !== '') return;
-	const path = mainRouter.currentRoute.value.path;
-	os.contextMenu([{
-		type: 'label',
-		text: path,
-	}, {
-		icon: 'fas fa-window-maximize',
-		text: i18n.ts.openInWindow,
-		action: () => {
-			os.pageWindow(path);
-		},
-	}], ev);
-}
 </script>

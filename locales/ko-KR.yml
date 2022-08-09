@@ -722,7 +722,6 @@ receiveAnnouncementFromInstance: "이 인스턴스의 알림을 이메일로 수
 emailNotification: "메일 알림"
 publish: "게시"
 inChannelSearch: "채널에서 검색"
-useReactionPickerForContextMenu: "우클릭하여 리액션 선택기 열기"
 typingUsers: "{users} 님이 입력하고 있어요.."
 jumpToSpecifiedDate: "특정 날짜로 이동"
 showingPastTimeline: "과거의 타임라인을 표시하고 있어요"

@@ -7,7 +7,6 @@
 	:close-button="true"
 	:buttons-left="buttonsLeft"
 	:buttons-right="buttonsRight"
-	:contextmenu="contextmenu"
 	@closed="$emit('closed')"
 >
 	<template #header>
@@ -85,28 +84,6 @@ provideMetadataReceiver((info) => {
 provide('shouldOmitHeaderTitle', true);
 provide('shouldHeaderThin', true);
 
-const contextmenu = $computed(() => ([{
-	icon: 'fas fa-expand-alt',
-	text: i18n.ts.showInPage,
-	action: expand,
-}, {
-	icon: 'fas fa-external-link-alt',
-	text: i18n.ts.popout,
-	action: popout,
-}, {
-	icon: 'fas fa-external-link-alt',
-	text: i18n.ts.openInNewTab,
-	action: () => {
-		window.open(url + router.getCurrentPath(), '_blank');
-		windowEl.close();
-	},
-}, {
-	icon: 'fas fa-link',
-	text: i18n.ts.copyLink,
-	action: () => {
-		copyToClipboard(url + router.getCurrentPath());
-	},
-}]));
 
 function back() {
 	history.pop();

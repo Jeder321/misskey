@@ -2,7 +2,7 @@
 <div class="dkgtipfy" :class="{ wallpaper }">
 	<XSidebar v-if="!isMobile" class="sidebar"/>
 
-	<div class="contents" :style="{ background: pageMetadata?.value?.bg }" @contextmenu.stop="onContextmenu">
+	<div class="contents" :style="{ background: pageMetadata?.value?.bg }">
 		<main>
 			<div class="content">
 				<RouterView/>
@@ -130,29 +130,6 @@ onMounted(() => {
 		}, { passive: true });
 	}
 });
-
-const onContextmenu = (ev) => {
-	const isLink = (el: HTMLElement) => {
-		if (el.tagName === 'A') return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-	};
-	if (isLink(ev.target)) return;
-	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
-	if (window.getSelection()?.toString() !== '') return;
-	const path = mainRouter.getCurrentPath();
-	os.contextMenu([{
-		type: 'label',
-		text: path,
-	}, {
-		icon: 'fas fa-window-maximize',
-		text: i18n.ts.openInWindow,
-		action: () => {
-			os.pageWindow(path);
-		},
-	}], ev);
-};
 
 const attachSticky = (el) => {
 	const sticky = new StickySidebar(widgetsEl);
