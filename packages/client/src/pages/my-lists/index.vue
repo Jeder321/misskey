@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import MkPagination from '@/components/ui/pagination.vue';
 import MkButton from '@/components/ui/button.vue';
 import MkAvatars from '@/components/avatars.vue';
@@ -37,7 +36,7 @@ async function create() {
 		title: i18n.ts.enterListName,
 	});
 	if (canceled) return;
-	await os.apiWithDialog('users/lists/create', { name: name });
+	await os.apiWithDialog('users/lists/create', { name });
 	pagingComponent.reload();
 }
 

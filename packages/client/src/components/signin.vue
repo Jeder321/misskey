@@ -51,6 +51,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
 import { toUnicode } from 'punycode/';
+import { showSuspendedDialog } from '../scripts/show-suspended-dialog';
 import MkButton from '@/components/ui/button.vue';
 import MkInput from '@/components/form/input.vue';
 import MkInfo from '@/components/ui/info.vue';
@@ -58,7 +59,6 @@ import { apiUrl, host as configHost } from '@/config';
 import { byteify, hexify } from '@/scripts/2fa';
 import * as os from '@/os';
 import { login } from '@/account';
-import { showSuspendedDialog } from '../scripts/show-suspended-dialog';
 import { instance } from '@/instance';
 import { i18n } from '@/i18n';
 
@@ -69,7 +69,6 @@ let password = $ref('');
 let token = $ref('');
 let host = $ref(toUnicode(configHost));
 let totpLogin = $ref(false);
-let credential = $ref(null);
 let challengeData = $ref(null);
 let queryingKey = $ref(false);
 let hCaptchaResponse = $ref(null);
@@ -85,7 +84,7 @@ const props = defineProps({
 	withAvatar: {
 		type: Boolean,
 		required: false,
-		default: true
+		default: true,
 	},
 	autoSet: {
 		type: Boolean,
@@ -95,13 +94,13 @@ const props = defineProps({
 	message: {
 		type: String,
 		required: false,
-		default: ''
-	}
+		default: '',
+	},
 });
 
 function onUsernameChange() {
 	os.api('users/show', {
-		username: username
+		username,
 	}).then(userResponse => {
 		user = userResponse;
 	}, () => {
@@ -123,10 +122,10 @@ function queryKey() {
 			allowCredentials: challengeData.securityKeys.map(key => ({
 				id: byteify(key.id, 'hex'),
 				type: 'public-key',
-				transports: ['usb', 'nfc', 'ble', 'internal']
+				transports: ['usb', 'nfc', 'ble', 'internal'],
 			})),
-			timeout: 60 * 1000
-		}
+			timeout: 60 * 1000,
+		},
 	}).catch(() => {
 		queryingKey = false;
 		return Promise.reject(null);
@@ -141,7 +140,7 @@ function queryKey() {
 			clientDataJSON: hexify(credential.response.clientDataJSON),
 			credentialId: credential.id,
 			challengeId: challengeData.challengeId,
-      'hcaptcha-response': hCaptchaResponse,
+			'hcaptcha-response': hCaptchaResponse,
 			'g-recaptcha-response': reCaptchaResponse,
 		});
 	}).then(res => {
@@ -151,7 +150,7 @@ function queryKey() {
 		if (err === null) return;
 		os.alert({
 			type: 'error',
-			text: i18n.ts.signinFailed
+			text: i18n.ts.signinFailed,
 		});
 		signing = false;
 	});
@@ -165,8 +164,8 @@ function onSubmit() {
 			os.api('signin', {
 				username,
 				password,
-        'hcaptcha-response': hCaptchaResponse,
-        'g-recaptcha-response': reCaptchaResponse,
+				'hcaptcha-response': hCaptchaResponse,
+				'g-recaptcha-response': reCaptchaResponse,
 			}).then(res => {
 				totpLogin = true;
 				signing = false;
@@ -181,9 +180,9 @@ function onSubmit() {
 		os.api('signin', {
 			username,
 			password,
-      'hcaptcha-response': hCaptchaResponse,
+			'hcaptcha-response': hCaptchaResponse,
 			'g-recaptcha-response': reCaptchaResponse,
-			token: user && user.twoFactorEnabled ? token : undefined
+			token: user && user.twoFactorEnabled ? token : undefined,
 		}).then(res => {
 			emit('login', res);
 			onLogin(res);
@@ -197,7 +196,7 @@ function loginFailed(err) {
 			os.alert({
 				type: 'error',
 				title: i18n.ts.loginFailed,
-				text: i18n.ts.noSuchUser
+				text: i18n.ts.noSuchUser,
 			});
 			break;
 		}
@@ -226,7 +225,7 @@ function loginFailed(err) {
 			os.alert({
 				type: 'error',
 				title: i18n.ts.loginFailed,
-				text: JSON.stringify(err)
+				text: JSON.stringify(err),
 			});
 		}
 	}

@@ -29,7 +29,7 @@ import { url } from '@/config';
 import * as os from '@/os';
 import { mainRouter, routes } from '@/router';
 import { i18n } from '@/i18n';
-import { PageMetadata, provideMetadataReceiver, setPageMetadata } from '@/scripts/page-metadata';
+import { PageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata';
 import { Router } from '@/nirax';
 
 const props = defineProps<{
@@ -42,10 +42,6 @@ defineEmits<{
 }>();
 
 const router = new Router(routes, props.initialPath);
-
-router.addListener('push', ctx => {
-	
-});
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 let rootEl = $ref();
@@ -122,6 +118,7 @@ function onContextmenu(ev: MouseEvent) {
 	flex-direction: column;
 	contain: content;
 	border-radius: var(--radius);
+	background: var(--bg);
 
 	--root-margin: 24px;
 
@@ -140,9 +137,6 @@ function onContextmenu(ev: MouseEvent) {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		background: var(--windowHeader);
-		-webkit-backdrop-filter: var(--blur, blur(15px));
-		backdrop-filter: var(--blur, blur(15px));
 
 		> button {
 			height: $height;
@@ -175,7 +169,6 @@ function onContextmenu(ev: MouseEvent) {
 
 	> .body {
 		overflow: auto;
-		background: var(--bg);
 	}
 }
 </style>

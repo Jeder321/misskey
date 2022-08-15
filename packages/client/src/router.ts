@@ -3,10 +3,9 @@ import { Router } from '@/nirax';
 import { $i, iAmModerator } from '@/account';
 import MkLoading from '@/pages/_loading_.vue';
 import MkError from '@/pages/_error_.vue';
-import { ui } from '@/config';
 
 const page = (loader: AsyncComponentLoader<any>) => defineAsyncComponent({
-	loader: loader,
+	loader,
 	loadingComponent: MkLoading,
 	errorComponent: MkError,
 });
@@ -191,6 +190,14 @@ export const routes = [{
 }, {
 	path: '/my/messaging/group/:groupId',
 	component: page(() => import('./pages/messaging/messaging-room.vue')),
+	loginRequired: true,
+}, {
+	path: '/my/groups/',
+	component: page(() => import('./pages/my-groups/index.vue')),
+	loginRequired: true,
+}, {
+	path: '/my/groups/:groupId',
+	component: page(() => import('./pages/my-groups/group.vue')),
 	loginRequired: true,
 }, {
 	path: '/my/drive/folder/:folder',

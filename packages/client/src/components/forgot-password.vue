@@ -1,5 +1,6 @@
 <template>
-<XModalWindow ref="dialog"
+<XModalWindow
+	ref="dialog"
 	:width="370"
 	:height="400"
 	@close="dialog.close()"
@@ -32,7 +33,6 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import XModalWindow from '@/components/ui/modal-window.vue';
 import MkButton from '@/components/ui/button.vue';
 import MkInput from '@/components/form/input.vue';

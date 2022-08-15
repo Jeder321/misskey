@@ -8,20 +8,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import * as os from '@/os';
 
 export default defineComponent({
 	props: {
 		warn: {
 			type: Boolean,
 			required: false,
-			default: false
+			default: false,
 		},
 	},
 	data() {
 		return {
 		};
-	}
+	},
 });
 </script>
 

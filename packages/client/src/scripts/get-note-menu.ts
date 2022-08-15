@@ -1,6 +1,5 @@
-import { defineAsyncComponent, Ref, inject } from 'vue';
+import { defineAsyncComponent, Ref } from 'vue';
 import * as misskey from 'misskey-js';
-import { pleaseLogin } from './please-login';
 import { $i } from '@/account';
 import { i18n } from '@/i18n';
 import { instance } from '@/instance';
@@ -291,9 +290,9 @@ export function getNoteMenu(props: {
 						const u = appearNote.url || appearNote.uri || `${url}/notes/${appearNote.id}`;
 						os.popup(defineAsyncComponent(() => import('@/components/abuse-report-window.vue')), {
 							user: appearNote.user,
-							urls: [u]
+							urls: [u],
 						}, {}, 'closed');
-					}
+					},
 				}]
 			: []
 			),

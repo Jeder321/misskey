@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import * as misskey from 'misskey-js';
 import MkContainer from '@/components/ui/container.vue';
 import MkChart from '@/components/chart.vue';
@@ -36,8 +35,8 @@ function showMenu(ev: MouseEvent) {
 		active: true,
 		action: () => {
 			chartSrc = 'per-user-notes';
-		}
-	}/*, {
+		},
+	},/*, {
 		text: i18n.ts.following,
 		action: () => {
 			chartSrc = 'per-user-following';

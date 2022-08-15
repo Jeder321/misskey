@@ -332,14 +332,12 @@ export default defineComponent({
 
 		// 高さを適用
 		applyTransformHeight(height) {
-			if (height > window.innerHeight) height = window.innerHeight;
-			(this.$el as any).style.height = height + 'px';
+			(this.$el as any).style.height = Math.min(height, window.innerHeight) + 'px';
 		},
 
 		// 幅を適用
 		applyTransformWidth(width) {
-			if (width > window.innerWidth) width = window.innerWidth;
-			(this.$el as any).style.width = width + 'px';
+			(this.$el as any).style.width = Math.min(width, window.innerWidth) + 'px';
 		},
 
 		// Y座標を適用
@@ -382,6 +380,7 @@ export default defineComponent({
 	position: fixed;
 	top: 0;
 	left: 0;
+	background: var(--panel);
 
 	> .body {
 		overflow: hidden;
@@ -405,10 +404,6 @@ export default defineComponent({
 			flex-shrink: 0;
 			user-select: none;
 			height: var(--height);
-			background: var(--windowHeader);
-			-webkit-backdrop-filter: var(--blur, blur(15px));
-			backdrop-filter: var(--blur, blur(15px));
-			//border-bottom: solid 1px var(--divider);
 			font-size: 95%;
 			font-weight: bold;
 
@@ -449,7 +444,6 @@ export default defineComponent({
 		> .body {
 			flex: 1;
 			overflow: auto;
-			background: var(--panel);
 		}
 	}
 

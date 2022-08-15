@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import * as misskey from 'misskey-js';
 import MkInput from '@/components/form/input.vue';
 import FormSplit from '@/components/form/split.vue';
@@ -80,8 +80,8 @@ const search = () => {
 		return;
 	}
 	os.api('users/search-by-username-and-host', {
-		username: username,
-		host: host,
+		username,
+		host,
 		limit: 10,
 		detail: false,
 	}).then(_users => {

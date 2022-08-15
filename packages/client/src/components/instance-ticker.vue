@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import { instanceName } from '@/config';
 
 const props = defineProps<{
@@ -23,7 +22,7 @@ const props = defineProps<{
 const instance = props.instance ?? {
 	faviconUrl: '/favicon.ico',
 	name: instanceName,
-	themeColor: (document.querySelector('meta[name="theme-color-orig"]') as HTMLMetaElement)?.content,
+	themeColor: (document.querySelector('meta[name="theme-color-orig"]') as HTMLMetaElement).content,
 	softwareName: 'misskey',
 };
 

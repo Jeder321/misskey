@@ -18,21 +18,20 @@
 import { defineComponent } from 'vue';
 import { userName } from '@/filters/user';
 import ImgWithBlurhash from '@/components/img-with-blurhash.vue';
-import * as os from '@/os';
 
 export default defineComponent({
 	components: {
-		ImgWithBlurhash
+		ImgWithBlurhash,
 	},
 	props: {
 		post: {
 			type: Object,
-			required: true
+			required: true,
 		},
 	},
 	methods: {
-		userName
-	}
+		userName,
+	},
 });
 </script>
 

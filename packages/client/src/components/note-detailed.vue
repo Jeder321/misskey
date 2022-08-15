@@ -113,7 +113,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, onUnmounted, reactive, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import * as mfm from 'mfm-js';
 import * as misskey from 'misskey-js';
 import MkNoteSub from './MkNoteSub.vue';
@@ -186,7 +186,7 @@ const directReplies = ref<misskey.entities.Note[]>([]);
 
 const keymap = {
 	'r': () => reply(true),
-	'e|a|plus': () => react(true),
+	'e|a|plus': () => react(),
 	'q': () => renoteButton.value.renote(true),
 	'esc': blur,
 	'm|o': () => menu(true),
@@ -209,13 +209,13 @@ function reply(viaKeyboard = false): void {
 	});
 }
 
-function react(viaKeyboard = false): void {
+function react(): void {
 	pleaseLogin();
 	blur();
 	reactionPicker.show(reactButton.value, reaction => {
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
-			reaction: reaction,
+			reaction,
 		});
 	}, () => {
 		focus();
@@ -244,12 +244,12 @@ function onContextmenu(ev: MouseEvent): void {
 		ev.preventDefault();
 		react();
 	} else {
-		os.contextMenu(getNoteMenu({ note: note, translating, translation, menuButton, isDeleted }), ev).then(focus);
+		os.contextMenu(getNoteMenu({ note, translating, translation, menuButton, isDeleted }), ev).then(focus);
 	}
 }
 
 function menu(viaKeyboard = false): void {
-	os.popupMenu(getNoteMenu({ note: note, translating, translation, menuButton, isDeleted }), menuButton.value, {
+	os.popupMenu(getNoteMenu({ note, translating, translation, menuButton, isDeleted }), menuButton.value, {
 		viaKeyboard,
 	}).then(focus);
 }
@@ -267,7 +267,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 			isDeleted.value = true;
 		},
 	}], renoteTime.value, {
-		viaKeyboard: viaKeyboard,
+		viaKeyboard,
 	});
 }
 

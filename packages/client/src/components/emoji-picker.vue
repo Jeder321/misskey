@@ -4,7 +4,8 @@
 	<div ref="emojis" class="emojis">
 		<section class="result">
 			<div v-if="searchResultCustom.length > 0">
-				<button v-for="emoji in searchResultCustom"
+				<button
+					v-for="emoji in searchResultCustom"
 					:key="emoji.id"
 					class="_button"
 					:title="emoji.name"
@@ -16,7 +17,8 @@
 				</button>
 			</div>
 			<div v-if="searchResultUnicode.length > 0">
-				<button v-for="emoji in searchResultUnicode"
+				<button
+					v-for="emoji in searchResultUnicode"
 					:key="emoji.name"
 					class="_button"
 					:title="emoji.name"
@@ -31,7 +33,8 @@
 		<div v-if="tab === 'index'" class="index">
 			<section v-if="showPinned">
 				<div>
-					<button v-for="emoji in pinned"
+					<button
+						v-for="emoji in pinned"
 						:key="emoji"
 						class="_button"
 						tabindex="0"
@@ -43,9 +46,10 @@
 			</section>
 
 			<section>
-				<header class="_acrylic"><i class="far fa-clock fa-fw"></i> {{ i18n.ts.recentUsed }}</header>
+				<header class="_panel"><i class="far fa-clock fa-fw"></i> {{ i18n.ts.recentUsed }}</header>
 				<div>
-					<button v-for="emoji in recentlyUsedEmojis"
+					<button
+						v-for="emoji in recentlyUsedEmojis"
 						:key="emoji"
 						class="_button"
 						@click="chosen(emoji, $event)"
@@ -56,11 +60,11 @@
 			</section>
 		</div>
 		<div>
-			<header class="_acrylic">{{ i18n.ts.customEmojis }}</header>
+			<header class="_panel">{{ i18n.ts.customEmojis }}</header>
 			<XSection v-for="category in customEmojiCategories" :key="'custom:' + category" :initial-shown="false" :emojis="customEmojis.filter(e => e.category === category).map(e => ':' + e.name + ':')" @chosen="chosen">{{ category || i18n.ts.other }}</XSection>
 		</div>
 		<div>
-			<header class="_acrylic">{{ i18n.ts.emoji }}</header>
+			<header class="_panel">{{ i18n.ts.emoji }}</header>
 			<XSection v-for="category in categories" :key="category" :emojis="emojilist.filter(e => e.category === category).map(e => e.char)" @chosen="chosen">{{ category }}</XSection>
 		</div>
 	</div>
@@ -76,6 +80,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import * as Misskey from 'misskey-js';
+import XSection from './emoji-picker.section.vue';
 import { emojilist, UnicodeEmojiDef, unicodeEmojiCategories as categories } from '@/scripts/emojilist';
 import { getStaticImageUrl } from '@/scripts/get-static-image-url';
 import Ripple from '@/components/ripple.vue';
@@ -83,7 +88,6 @@ import * as os from '@/os';
 import { isTouchUsing } from '@/scripts/touch';
 import { deviceKind } from '@/scripts/device-kind';
 import { emojiCategories, instance } from '@/instance';
-import XSection from './emoji-picker.section.vue';
 import { i18n } from '@/i18n';
 import { defaultStore } from '@/store';
 
@@ -266,7 +270,7 @@ watch(q, () => {
 function focus() {
 	if (!['smartphone', 'tablet'].includes(deviceKind) && !isTouchUsing) {
 		search.value?.focus({
-			preventScroll: true
+			preventScroll: true,
 		});
 	}
 }
@@ -308,8 +312,7 @@ function paste(event: ClipboardEvent) {
 	}
 }
 
-function done(query?: any): boolean | void {
-	if (query == null) query = q.value;
+function done(query?: any = q.value): boolean | void {
 	if (query == null || typeof query !== 'string') return;
 
 	const q2 = query.replace(/:/g, '');

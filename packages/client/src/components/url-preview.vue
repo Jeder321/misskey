@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onUnmounted } from 'vue';
 import { url as local, lang } from '@/config';
 import { i18n } from '@/i18n';
 
@@ -58,7 +58,7 @@ let sitename = $ref<string | null>(null);
 let player = $ref({
 	url: null,
 	width: null,
-	height: null
+	height: null,
 });
 let playerEnabled = $ref(false);
 let tweetId = $ref<string | null>(null);

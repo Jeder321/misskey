@@ -256,9 +256,12 @@ export async function generateAlts(path: string, type: string, generateWeb: bool
 /**
  * Upload to ObjectStorage
  */
-async function upload(key: string, stream: fs.ReadStream | Buffer, type: string, filename?: string) {
-	if (type === 'image/apng') type = 'image/png';
-	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = 'application/octet-stream';
+async function upload(key: string, stream: fs.ReadStream | Buffer, _type: string, filename?: string) {
+	const type = (_type === 'image/apng')
+		? 'image/png'
+		: (FILE_TYPE_BROWSERSAFE.includes(_type))
+			? _type
+			: 'application/octet-stream';
 
 	const meta = await fetchMeta();
 
@@ -276,7 +279,7 @@ async function upload(key: string, stream: fs.ReadStream | Buffer, type: string,
 	const s3 = getS3(meta);
 
 	const upload = s3.upload(params, {
-		partSize: s3.endpoint?.hostname === 'storage.googleapis.com' ? 500 * 1024 * 1024 : 8 * 1024 * 1024,
+		partSize: s3.endpoint.hostname === 'storage.googleapis.com' ? 500 * 1024 * 1024 : 8 * 1024 * 1024,
 	});
 
 	const result = await upload.promise();
@@ -342,7 +345,7 @@ export async function addFile({
 	isLink = false,
 	url = null,
 	uri = null,
-	sensitive = null
+	sensitive = null,
 }: AddFileArgs): Promise<DriveFile> {
 	const info = await getFileInfo(path);
 	logger.info(`${JSON.stringify(info)}`);
@@ -428,10 +431,9 @@ export async function addFile({
 	file.blurhash = info.blurhash || null;
 	file.isLink = isLink;
 	file.isSensitive = user
-		? Users.isLocalUser(user) && profile!.alwaysMarkNsfw ? true :
-			(sensitive !== null && sensitive !== undefined)
-				? sensitive
-				: false
+		? Users.isLocalUser(user) && profile!.alwaysMarkNsfw
+			? true
+			: sensitive ?? false
 		: false;
 
 	if (url !== null) {

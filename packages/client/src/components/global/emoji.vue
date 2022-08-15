@@ -6,7 +6,7 @@ char2filePath<template>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { getStaticImageUrl } from '@/scripts/get-static-image-url';
 import { char2filePath } from '@/scripts/twemoji-base';
 import { defaultStore } from '@/store';
@@ -16,24 +16,24 @@ export default defineComponent({
 	props: {
 		emoji: {
 			type: String,
-			required: true
+			required: true,
 		},
 		normal: {
 			type: Boolean,
 			required: false,
-			default: false
+			default: false,
 		},
 		noStyle: {
 			type: Boolean,
 			required: false,
-			default: false
+			default: false,
 		},
 		customEmojis: {
-			required: false
+			required: false,
 		},
 		isReaction: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 	},
 
