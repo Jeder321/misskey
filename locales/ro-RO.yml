@@ -472,8 +472,6 @@ dayOverDayChanges: "Schimbări până ieri"
 appearance: "Aspect"
 clientSettings: "Setări client"
 accountSettings: "Setări cont"
-promotion: "Promovat"
-promote: "Promovează"
 numberOfDays: "Numărul zilelor"
 hideThisNote: "Ascunde această notă"
 showFeaturedNotesInTimeline: "Arată notele recomandate în cronologii"
@@ -549,7 +547,6 @@ poll: "Sondaj"
 useCw: "Ascunde conținutul"
 enablePlayer: "Deschide player-ul video"
 disablePlayer: "Închide player-ul video"
-expandTweet: "Expandează tweet"
 themeEditor: "Editor de teme"
 description: "Descriere"
 describeFile: "Adaugă titrări"
@@ -683,27 +680,6 @@ _charts:
   federation: "Federație"
 _timelines:
   home: "Acasă"
-_pages:
-  blocks:
-    image: "Imagini"
-  script:
-    categories:
-      list: "Liste"
-    blocks:
-      _join:
-        arg1: "Liste"
-      _randomPick:
-        arg1: "Liste"
-      _dailyRandomPick:
-        arg1: "Liste"
-      _seedRandomPick:
-        arg2: "Liste"
-      _pick:
-        arg1: "Liste"
-      _listLen:
-        arg1: "Liste"
-    types:
-      array: "Liste"
 _notification:
   youWereFollowed: "te-a urmărit"
   youWereInvitedToGroup: "Ai fost invitat într-un grup"

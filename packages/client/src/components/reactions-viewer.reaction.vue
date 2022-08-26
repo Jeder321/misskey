@@ -7,7 +7,7 @@
 	:class="{ reacted: note.myReaction == reaction, canToggle }"
 	@click="toggleReaction()"
 >
-	<XReactionIcon class="icon" :reaction="reaction" :custom-emojis="note.emojis"/>
+	<MkEmoji class="icon" :emoji="reaction" :custom-emojis="note.emojis" :is-reaction="true" :normal="true"/>
 	<span v-if="users === undefined" class="count">{{ count }}</span>
 	<span v-if="users !== undefined">
 		<MkAvatar v-for="u in users" class="user" :style="{ height: '2em', width: '2em' }" :key="u.id" :user="u" />
@@ -19,7 +19,6 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import * as misskey from 'misskey-js';
 import XDetails from '@/components/reactions-viewer.details.vue';
-import XReactionIcon from '@/components/reaction-icon.vue';
 import * as os from '@/os';
 import { useTooltip } from '@/scripts/use-tooltip';
 import { $i } from '@/account';
