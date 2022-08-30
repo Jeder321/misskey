@@ -78,9 +78,9 @@ const bg = {
 		line-height: $height;
 		font-size: 0.9em;
 		vertical-align: top;
+		font-weight: bold;
 
 		color: var(--fg);
-		text-shadow: none;
 
 		text-transform: capitalize;
 	}
