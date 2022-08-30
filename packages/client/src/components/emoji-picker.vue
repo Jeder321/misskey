@@ -59,11 +59,11 @@
 				</div>
 			</section>
 		</div>
-		<div>
+		<div v-once>
 			<header class="_panel">{{ i18n.ts.customEmojis }}</header>
 			<XSection v-for="category in customEmojiCategories" :key="'custom:' + category" :initial-shown="false" :emojis="customEmojis.filter(e => e.category === category).map(e => ':' + e.name + ':')" @chosen="chosen">{{ category || i18n.ts.other }}</XSection>
 		</div>
-		<div>
+		<div v-once>
 			<header class="_panel">{{ i18n.ts.emoji }}</header>
 			<XSection v-for="category in categories" :key="category" :emojis="emojilist.filter(e => e.category === category).map(e => e.char)" @chosen="chosen">{{ category }}</XSection>
 		</div>
@@ -79,7 +79,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, onMounted } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'foundkey-js';
 import XSection from './emoji-picker.section.vue';
 import { emojilist, UnicodeEmojiDef, unicodeEmojiCategories as categories } from '@/scripts/emojilist';
 import { getStaticImageUrl } from '@/scripts/get-static-image-url';

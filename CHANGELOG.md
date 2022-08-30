@@ -31,10 +31,13 @@ For older Misskey versions, see [CHANGELOG-OLD.md](./CHANGELOG-OLD.md).
   Foundkey will now work as if it was set to `true`.
 
 ### Fixed
+- Client: Notifications for ended polls can now be turned off
+- Client: Emoji picker should load faster now
 - Server: Blocking remote accounts
 
 ### Security
 - Server: Update `multer` dependency to resolve [CVE-2022-24434](https://nvd.nist.gov/vuln/detail/CVE-2022-24434)
+- Server: Update `file-type`, `got`, and `sharp` dependencies to fix various security issues
 
 ## 13.0.0-preview1 - 2022-08-05
 ### Added
