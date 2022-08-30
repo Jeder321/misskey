@@ -1,7 +1,7 @@
 <template>
 <span v-if="note.visibility !== 'public'" :class="$style.visibility">
 	<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
-	<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
+	<i v-else-if="note.visibility === 'followers'" class="fas fa-lock"></i>
 	<i v-else-if="note.visibility === 'specified'" ref="specified" class="fas fa-envelope"></i>
 </span>
 <span v-if="note.localOnly" :class="$style.localOnly"><i class="fas fa-biohazard"></i></span>
