@@ -36,7 +36,6 @@
 import { onMounted, onUnmounted, provide } from 'vue';
 import contains from '@/scripts/contains';
 import * as os from '@/os';
-import { MenuItem } from '@/types/menu';
 
 const minHeight = 50;
 const minWidth = 250;
@@ -58,48 +57,10 @@ function addTouchListener(fn: (this: Window, ev: TouchEvent) => void): void {
 	window.addEventListener('touchend', removeTouchListener.bind(null, fn));
 }
 
-	props: {
-		initialWidth: {
-			type: Number,
-			required: false,
-			default: 400,
-		},
-		initialHeight: {
-			type: Number,
-			required: false,
-			default: null,
-		},
-		canResize: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		closeButton: {
-			type: Boolean,
-			required: false,
-			default: true,
-		},
-		mini: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		front: {
-			type: Boolean,
-			required: false,
-			default: false,
-		},
-		buttonsLeft: {
-			type: Array,
-			required: false,
-			default: () => [],
-		},
-		buttonsRight: {
-			type: Array,
-			required: false,
-			default: () => [],
-		},
-	},
+function removeTouchListener(fn: (this: Window, ev: TouchEvent) => void): void {
+	window.removeEventListener('touchmove', fn);
+	window.removeEventListener('touchend', removeTouchListener.bind(null, fn));
+}
 
 const props = withDefaults(defineProps<{
 	initialWidth?: number;
@@ -108,7 +69,6 @@ const props = withDefaults(defineProps<{
 	closeButton?: boolean;
 	mini?: boolean;
 	front?: boolean;
-	contextmenu?: MenuItem[];
 	buttonsLeft?: any[];
 	buttonsRight?: any[];
 }>(), {
@@ -117,7 +77,6 @@ const props = withDefaults(defineProps<{
 	closeButton: true,
 	mini: false,
 	front: false,
-	contextmenu: () => [] as MenuItem[],
 	buttonsLeft: () => [],
 	buttonsRight: () => [],
 });
@@ -159,10 +118,9 @@ function onKeydown(evt: KeyboardEvent): void {
 	}
 }
 
-		// 最前面へ移動
-		top() {
-			(this.$el as any).style.zIndex = os.claimZIndex(this.front ? 'middle' : 'low');
-		},
+function moveToTop(): void {
+	main.style.zIndex = os.claimZIndex(props.front ? 'middle' : 'low').toString();
+}
 
 function getClickPos(evt: MouseEvent | TouchEvent): [number, number] {
 	if (evt instanceof MouseEvent) {
