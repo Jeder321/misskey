@@ -1,5 +1,5 @@
 import { Entity, Column, Index, OneToOne, JoinColumn, PrimaryColumn } from 'typeorm';
-import { ffVisibility, notificationTypes } from '@/types.js';
+import { ffVisibility, notificationTypes } from 'foundkey-js';
 import { id } from '../id.js';
 import { User } from './user.js';
 import { Page } from './page.js';
@@ -123,13 +123,6 @@ export class UserProfile {
 		comment: 'The client-specific data of the User.',
 	})
 	public clientData: Record<string, any>;
-
-	// TODO: そのうち消す
-	@Column('jsonb', {
-		default: {},
-		comment: 'The room data of the User.',
-	})
-	public room: Record<string, any>;
 
 	@Column('boolean', {
 		default: false,

@@ -1,11 +1,11 @@
 import { In, IsNull } from 'typeorm';
 import config from '@/config/index.js';
-import { Note, IMentionedRemoteUsers } from '@/models/entities/note.js';
+import { Note } from '@/models/entities/note.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { DriveFiles, Notes, Users, Emojis, Polls } from '@/models/index.js';
 import { Emoji } from '@/models/entities/emoji.js';
 import { Poll } from '@/models/entities/poll.js';
-import toHtml from '../misc/get-note-html.js';
+import { toHtml } from '@/mfm/to-html.js';
 import renderEmoji from './emoji.js';
 import renderMention from './mention.js';
 import renderHashtag from './hashtag.js';
@@ -55,27 +55,30 @@ export default async function renderNote(note: Note, dive = true, isTalk = false
 
 	const attributedTo = `${config.url}/users/${note.userId}`;
 
-	const mentions = (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri);
+	const mentionedUsers = note.mentions.length > 0 ? await Users.findBy({
+		id: In(note.mentions),
+	}) : [];
+
+	const mentionUris = mentionedUsers
+		// only remote users
+		.filter(user => Users.isRemoteUser(user))
+		.map(user => user.uri);
 
 	let to: string[] = [];
 	let cc: string[] = [];
 
 	if (note.visibility === 'public') {
 		to = ['https://www.w3.org/ns/activitystreams#Public'];
-		cc = [`${attributedTo}/followers`].concat(mentions);
+		cc = [`${attributedTo}/followers`].concat(mentionUris);
 	} else if (note.visibility === 'home') {
 		to = [`${attributedTo}/followers`];
-		cc = ['https://www.w3.org/ns/activitystreams#Public'].concat(mentions);
+		cc = ['https://www.w3.org/ns/activitystreams#Public'].concat(mentionUris);
 	} else if (note.visibility === 'followers') {
 		to = [`${attributedTo}/followers`];
-		cc = mentions;
+		cc = mentionUris;
 	} else {
-		to = mentions;
+		to = mentionUris;
 	}
-
-	const mentionedUsers = note.mentions.length > 0 ? await Users.findBy({
-		id: In(note.mentions),
-	}) : [];
 
 	const hashtagTags = (note.tags || []).map(tag => renderHashtag(tag));
 	const mentionTags = mentionedUsers.map(u => renderMention(u));
@@ -97,9 +100,7 @@ export default async function renderNote(note: Note, dive = true, isTalk = false
 
 	const summary = note.cw === '' ? String.fromCharCode(0x200B) : note.cw;
 
-	const content = toHtml(Object.assign({}, note, {
-		text: apText,
-	}));
+	const content = await toHtml(apText, note.mentions);
 
 	const emojis = await getEmojis(note.emojis);
 	const apemojis = emojis.map(emoji => renderEmoji(emoji));
@@ -112,7 +113,7 @@ export default async function renderNote(note: Note, dive = true, isTalk = false
 
 	const asPoll = poll ? {
 		type: 'Question',
-		content: toHtml(Object.assign({}, note, { text })),
+		content: await toHtml(text, note.mentions),
 		[poll.expiresAt && poll.expiresAt < new Date() ? 'closed' : 'endTime']: poll.expiresAt,
 		[poll.multiple ? 'anyOf' : 'oneOf']: poll.choices.map((text, i) => ({
 			type: 'Note',

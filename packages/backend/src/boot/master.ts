@@ -32,7 +32,7 @@ function greet(): void {
 		console.log(themeColor(' |     |_|___ ___| |_ ___ _ _ '));
 		console.log(themeColor(' | | | | |_ -|_ -| \'_| -_| | |'));
 		console.log(themeColor(' |_|_|_|_|___|___|_,_|___|_  |'));
-		console.log(' ' + chalk.gray(v) + themeColor('                        |___|\n'.substr(v.length)));
+		console.log(' ' + chalk.gray(v) + themeColor('                        |___|\n'.slice(v.length)));
 		//#endregion
 
 		console.log(' Misskey is an open-source decentralized microblogging platform.');
@@ -49,7 +49,7 @@ function greet(): void {
 /**
  * Init master process
  */
-export async function masterMain(): void {
+export async function masterMain(): Promise<void> {
 	let config!: Config;
 
 	// initialize app
@@ -61,7 +61,7 @@ export async function masterMain(): void {
 		config = loadConfigBoot();
 		await connectDb();
 	} catch (e) {
-		bootLogger.error('Fatal error occurred during initialization', null, true);
+		bootLogger.error('Fatal error occurred during initialization', {}, true);
 		process.exit(1);
 	}
 
@@ -74,9 +74,9 @@ export async function masterMain(): void {
 	bootLogger.succ(`Now listening on port ${config.port} on ${config.url}`, null, true);
 
 	if (!envOption.noDaemons) {
-		import('../daemons/server-stats.js').then(x => x.default());
-		import('../daemons/queue-stats.js').then(x => x.default());
-		import('../daemons/janitor.js').then(x => x.default());
+		import('../daemons/server-stats.js').then(x => x.serverStats());
+		import('../daemons/queue-stats.js').then(x => x.queueStats());
+		import('../daemons/janitor.js').then(x => x.janitor());
 	}
 }
 
@@ -87,7 +87,7 @@ function showEnvironment(): void {
 
 	if (env !== 'production') {
 		logger.warn('The environment is not in production mode.');
-		logger.warn('DO NOT USE FOR PRODUCTION PURPOSE!', null, true);
+		logger.warn('DO NOT USE FOR PRODUCTION PURPOSE!', {}, true);
 	}
 }
 
@@ -110,8 +110,9 @@ function loadConfigBoot(): Config {
 	try {
 		config = loadConfig();
 	} catch (exception) {
-		if (exception.code === 'ENOENT') {
-			configLogger.error('Configuration file not found', null, true);
+		const e = exception as Partial<NodeJS.ErrnoException> | Error;
+		if ('code' in e && e.code === 'ENOENT') {
+			configLogger.error('Configuration file not found', {}, true);
 			process.exit(1);
 		} else if (e instanceof Error) {
 			configLogger.error(e.message);
@@ -135,13 +136,13 @@ async function connectDb(): Promise<void> {
 		const v = await db.query('SHOW server_version').then(x => x[0].server_version);
 		dbLogger.succ(`Connected: v${v}`);
 	} catch (e) {
-		dbLogger.error('Cannot connect', null, true);
-		dbLogger.error(e);
+		dbLogger.error('Cannot connect', {}, true);
+		dbLogger.error(e as Error | string);
 		process.exit(1);
 	}
 }
 
-async function spawnWorkers(limit = 1): void {
+async function spawnWorkers(limit = 1): Promise<void> {
 	const workers = Math.min(limit, os.cpus().length);
 	bootLogger.info(`Starting ${workers} worker${workers === 1 ? '' : 's'}...`);
 	await Promise.all([...Array(workers)].map(spawnWorker));

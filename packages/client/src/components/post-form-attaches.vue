@@ -82,9 +82,9 @@ async function describe(file: DriveFile): Promise<void> {
 		title: i18n.ts.describeFile,
 		input: {
 			placeholder: i18n.ts.inputNewDescription,
-			default: file.comment !== null ? file.comment : '',
+			default: file.comment ?? '',
 		},
-		image: file,
+		file,
 	}, {
 		done: result => {
 			if (!result || result.canceled) return;
@@ -117,7 +117,7 @@ function showFileMenu(file: DriveFile, ev: MouseEvent): void {
 		text: i18n.ts.attachCancel,
 		icon: 'fas fa-times-circle',
 		action: () => { detachMedia(file.id); },
-	}], ev.currentTarget ?? ev.target).then(() => menu = null);
+	}], ev.currentTarget as HTMLElement | null ?? ev.target as HTMLElement).then(() => menu = null);
 }
 </script>
 

@@ -4,7 +4,7 @@ import { initDb } from '@/db/postgre.js';
 /**
  * Init worker process
  */
-export async function workerMain() {
+export async function workerMain(): Promise<void> {
 	await initDb();
 
 	// start server
@@ -15,6 +15,6 @@ export async function workerMain() {
 
 	if (cluster.isWorker) {
 		// Send a 'ready' message to parent process
-		process.send!('ready');
+		process.send?.('ready');
 	}
 }

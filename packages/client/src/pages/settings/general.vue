@@ -26,6 +26,7 @@
 		<template #label>{{ i18n.ts.behavior }}</template>
 		<FormSwitch v-model="imageNewTab" class="_formBlock">{{ i18n.ts.openImageInNewTab }}</FormSwitch>
 		<FormSwitch v-model="enableInfiniteScroll" class="_formBlock">{{ i18n.ts.enableInfiniteScroll }}</FormSwitch>
+
 		<FormSwitch v-model="disablePagesScript" class="_formBlock">{{ i18n.ts.disablePagesScript }}</FormSwitch>
 
 		<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
@@ -34,6 +35,15 @@
 			<option value="dialog">{{ i18n.ts._serverDisconnectedBehavior.dialog }}</option>
 			<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 		</FormSelect>
+
+		<FormRange v-model="maxCustomEmojiPicker" :min="0" :max="24" :step="1" class="_formBlock">
+			<template #label>{{ i18n.ts.maxCustomEmojiPicker }}</template>
+			<template #caption>{{ i18n.ts.maxCustomEmojiPickerDescription }}</template>
+		</FormRange>
+		<FormRange v-model="maxUnicodeEmojiPicker" :min="0" :max="24" :step="1" class="_formBlock">
+			<template #label>{{ i18n.ts.maxUnicodeEmojiPicker }}</template>
+			<template #caption>{{ i18n.ts.maxUnicodeEmojiPickerDescription }}</template>
+		</FormRange>
 	</FormSection>
 
 	<FormSection>
@@ -111,7 +121,7 @@ const lang = ref(localStorage.getItem('lang'));
 const fontSize = ref(localStorage.getItem('fontSize'));
 const useSystemFont = ref(localStorage.getItem('useSystemFont') != null);
 
-async function reloadAsk() {
+async function reloadAsk(): Promise<void> {
 	const { canceled } = await os.confirm({
 		type: 'info',
 		text: i18n.ts.reloadToApplySetting,
@@ -123,6 +133,8 @@ async function reloadAsk() {
 
 const overridedDeviceKind = computed(defaultStore.makeGetterSetter('overridedDeviceKind'));
 const serverDisconnectedBehavior = computed(defaultStore.makeGetterSetter('serverDisconnectedBehavior'));
+const maxCustomEmojiPicker = computed(defaultStore.makeGetterSetter('maxCustomEmojiPicker'));
+const maxUnicodeEmojiPicker = computed(defaultStore.makeGetterSetter('maxUnicodeEmojiPicker'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
 const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
@@ -134,7 +146,6 @@ const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('dis
 const loadRawImages = computed(defaultStore.makeGetterSetter('loadRawImages'));
 const imageNewTab = computed(defaultStore.makeGetterSetter('imageNewTab'));
 const nsfw = computed(defaultStore.makeGetterSetter('nsfw'));
-const disablePagesScript = computed(defaultStore.makeGetterSetter('disablePagesScript'));
 const showFixedPostForm = computed(defaultStore.makeGetterSetter('showFixedPostForm'));
 const numberOfPageCache = computed(defaultStore.makeGetterSetter('numberOfPageCache'));
 const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'));
@@ -176,10 +187,6 @@ watch([
 ], async () => {
 	await reloadAsk();
 });
-
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.general,

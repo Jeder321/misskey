@@ -14,23 +14,25 @@
 		"api-prod": "npx api-extractor run --verbose",
 		"lint": "eslint . --ext .js,.jsx,.ts,.tsx",
 		"jest": "jest --coverage --detectOpenHandles",
-		"test": "yarn jest && yarn tsd"
+		"test": "yarn jest && yarn tsd",
+		"clean": "rm -rf built/",
+		"clean-all": "yarn clean && rm -rf node_modules/"
 	},
 	"devDependencies": {
 		"@microsoft/api-extractor": "^7.19.3",
 		"@types/jest": "^27.4.0",
-		"@types/node": "17.0.5",
-		"@typescript-eslint/eslint-plugin": "5.8.1",
-		"@typescript-eslint/parser": "5.8.1",
-		"eslint": "8.6.0",
+		"@types/node": "18.7.16",
+		"@typescript-eslint/eslint-plugin": "5.36.2",
+		"@typescript-eslint/parser": "^5.36.2",
+		"eslint": "^8.23.0",
 		"jest": "^27.4.5",
 		"jest-fetch-mock": "^3.0.3",
 		"jest-websocket-mock": "^2.2.1",
 		"mock-socket": "^9.0.8",
-		"ts-jest": "^27.1.2",
-		"ts-node": "10.4.0",
-		"tsd": "^0.19.1",
-		"typescript": "4.5.4"
+		"ts-jest": "^27.1.5",
+		"ts-node": "10.9.1",
+		"tsd": "^0.23.0",
+		"typescript": "4.8.3"
 	},
 	"files": [
 		"built"

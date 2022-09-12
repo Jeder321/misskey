@@ -108,6 +108,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'quiet' as 'quiet' | 'reload' | 'dialog',
 	},
+	maxCustomEmojiPicker: {
+		where: 'device',
+		default: 10,
+	},
+	maxUnicodeEmojiPicker: {
+		where: 'device',
+		default: 10,
+	},
 	nsfw: {
 		where: 'device',
 		default: 'respect' as 'respect' | 'force' | 'ignore',
@@ -129,10 +137,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: false,
 	},
 	disableShowingAnimatedImages: {
-		where: 'device',
-		default: false,
-	},
-	disablePagesScript: {
 		where: 'device',
 		default: false,
 	},
@@ -199,10 +203,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	menuDisplay: {
 		where: 'device',
 		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
-	},
-	reportError: {
-		where: 'device',
-		default: false,
 	},
 	squareAvatars: {
 		where: 'device',
