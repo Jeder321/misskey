@@ -167,18 +167,6 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
-			enableTwitterIntegration: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
-			enableGithubIntegration: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
-			enableDiscordIntegration: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
 			enableServiceWorker: {
 				type: 'boolean',
 				optional: false, nullable: false,
@@ -220,18 +208,6 @@ export const meta = {
 						optional: false, nullable: false,
 					},
 					objectStorage: {
-						type: 'boolean',
-						optional: false, nullable: false,
-					},
-					twitter: {
-						type: 'boolean',
-						optional: false, nullable: false,
-					},
-					github: {
-						type: 'boolean',
-						optional: false, nullable: false,
-					},
-					discord: {
 						type: 'boolean',
 						optional: false, nullable: false,
 					},
@@ -321,10 +297,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		defaultDarkTheme: instance.defaultDarkTheme,
 		enableEmail: instance.enableEmail,
 
-		enableTwitterIntegration: instance.enableTwitterIntegration,
-		enableGithubIntegration: instance.enableGithubIntegration,
-		enableDiscordIntegration: instance.enableDiscordIntegration,
-
 		enableServiceWorker: instance.enableServiceWorker,
 
 		translatorAvailable: instance.deeplAuthKey != null,
@@ -354,9 +326,6 @@ export default define(meta, paramDef, async (ps, me) => {
 			hcaptcha: instance.enableHcaptcha,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,
-			twitter: instance.enableTwitterIntegration,
-			github: instance.enableGithubIntegration,
-			discord: instance.enableDiscordIntegration,
 			serviceWorker: instance.enableServiceWorker,
 			miauth: true,
 		};
