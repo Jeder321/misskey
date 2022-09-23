@@ -135,7 +135,6 @@ function openAccountMenuWrapper(ev: MouseEvent): void {
 					left: 0;
 					color: var(--navIndicator);
 					font-size: 8px;
-					animation: blink 1s infinite;
 				}
 
 				&:hover {

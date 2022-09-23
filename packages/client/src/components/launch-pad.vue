@@ -154,7 +154,6 @@ function help(ev: MouseEvent) {
 				left: 32px;
 				color: var(--indicator);
 				font-size: 8px;
-				animation: blink 1s infinite;
 
 				@media (max-width: 500px) {
 					top: 16px;

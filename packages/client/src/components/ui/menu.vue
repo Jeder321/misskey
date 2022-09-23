@@ -242,7 +242,6 @@ function focusDown() {
 			left: 13px;
 			color: var(--indicator);
 			font-size: 12px;
-			animation: blink 1s infinite;
 		}
 	}
 
