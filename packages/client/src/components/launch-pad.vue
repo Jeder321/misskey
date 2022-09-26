@@ -24,7 +24,7 @@
 				<i class="fas fa-info-circle icon"></i>
 				<div class="text">{{ i18n.ts.instanceInfo }}</div>
 			</MkA>
-			<MkA v-click-anime to="/about-misskey" @click.passive="close()">
+			<MkA v-click-anime to="/about-foundkey" @click.passive="close()">
 				<img src="/static-assets/favicon.png" class="icon"/>
 				<div class="text">{{ i18n.ts.aboutMisskey }}</div>
 			</MkA>
@@ -86,7 +86,7 @@ function help(ev: MouseEvent) {
 		text: i18n.ts.scratchpad,
 		icon: 'fas fa-terminal',
 	}, null, {
-		text: i18n.ts.document,
+		text: i18n.ts.documentation,
 		icon: 'fas fa-question-circle',
 		action: () => {
 			window.open('https://misskey-hub.net/help.html', '_blank');

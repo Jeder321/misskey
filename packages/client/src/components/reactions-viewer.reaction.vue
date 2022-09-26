@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import * as misskey from 'foundkey-js';
+import * as foundkey from 'foundkey-js';
 import XDetails from '@/components/reactions-viewer.details.vue';
 import * as os from '@/os';
 import { useTooltip } from '@/scripts/use-tooltip';
@@ -27,8 +27,8 @@ const props = defineProps<{
 	reaction: string;
 	count: number;
 	isInitial: boolean;
-	note: misskey.entities.Note;
-	users: misskey.entities.UserLite[] | undefined;
+	note: foundkey.entities.Note;
+	users: foundkey.entities.UserLite[] | undefined;
 }>();
 
 const buttonRef = ref<HTMLElement>();

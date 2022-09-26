@@ -22,7 +22,7 @@
 					<template #key>Misskey</template>
 					<template #value>{{ version }}</template>
 				</MkKeyValue>
-				<FormLink to="/about-misskey">{{ i18n.ts.aboutMisskey }}</FormLink>
+				<FormLink to="/about-foundkey">{{ i18n.ts.aboutMisskey }}</FormLink>
 			</FormSection>
 
 			<FormSection>
@@ -45,11 +45,11 @@
 					<FormSplit>
 						<MkKeyValue class="_formBlock">
 							<template #key>{{ i18n.ts.users }}</template>
-							<template #value>{{ number(stats.originalUsersCount) }}</template>
+							<template #value>{{ number(stats?.originalUsersCount) }}</template>
 						</MkKeyValue>
 						<MkKeyValue class="_formBlock">
 							<template #key>{{ i18n.ts.notes }}</template>
-							<template #value>{{ number(stats.originalNotesCount) }}</template>
+							<template #value>{{ number(stats?.originalNotesCount) }}</template>
 						</MkKeyValue>
 					</FormSplit>
 				</FormSection>
@@ -81,8 +81,9 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import * as foundkey from 'foundkey-js';
 import XEmojis from './about.emojis.vue';
-import XFederation from './about.federation.vue';
+import XFederation from '@/components/federation.vue';
 import { version, host } from '@/config';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
@@ -118,13 +119,12 @@ const props = withDefaults(defineProps<{
 	initialTab: 'overview',
 });
 
-let stats = $ref(null);
+let stats: foundkey.entities.Stats | null = $ref(null);
 let tab = $ref(headerTabs.some(({ key }) => key === props.initialTab) ? props.initialTab : 'overview');
 
-const initStats = () => os.api('stats', {
-}).then((res) => {
-	stats = res;
-});
+const initStats = async (): Promise<void> => {
+	stats = await os.api('stats', {});
+};
 
 const headerActions = $computed(() => []);
 

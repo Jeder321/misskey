@@ -6,14 +6,14 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import * as misskey from 'foundkey-js';
+import * as foundkey from 'foundkey-js';
 import { $i } from '@/account';
 import * as os from '@/os';
 import XReaction from './reactions-viewer.reaction.vue';
 import { useIntersectionObserver } from '@vueuse/core';
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: foundkey.entities.Note;
 }>();
 
 const initialReactions = new Set(Object.keys(props.note.reactions));

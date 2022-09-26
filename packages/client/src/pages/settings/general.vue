@@ -36,13 +36,11 @@
 			<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 		</FormSelect>
 
-		<FormRange v-model="maxCustomEmojiPicker" :min="0" :max="24" :step="1" class="_formBlock">
+		<FormRange v-model="maxCustomEmojiPicker" :min="1" :max="25" :step="1" :text-converter="emojiCountConverter" class="_formBlock">
 			<template #label>{{ i18n.ts.maxCustomEmojiPicker }}</template>
-			<template #caption>{{ i18n.ts.maxCustomEmojiPickerDescription }}</template>
 		</FormRange>
-		<FormRange v-model="maxUnicodeEmojiPicker" :min="0" :max="24" :step="1" class="_formBlock">
+		<FormRange v-model="maxUnicodeEmojiPicker" :min="1" :max="25" :step="1" :text-converter="emojiCountConverter" class="_formBlock">
 			<template #label>{{ i18n.ts.maxUnicodeEmojiPicker }}</template>
-			<template #caption>{{ i18n.ts.maxUnicodeEmojiPickerDescription }}</template>
 		</FormRange>
 	</FormSection>
 
@@ -70,10 +68,6 @@
 			<option value="large"><span style="font-size: 18px;">Aa</span></option>
 			<option value="veryLarge"><span style="font-size: 20px;">Aa</span></option>
 		</FormRadios>
-	</FormSection>
-
-	<FormSection>
-		<FormSwitch v-model="aiChanMode">{{ i18n.ts.aiChanMode }}</FormSwitch>
 	</FormSection>
 
 	<FormSelect v-model="instanceTicker" class="_formBlock">
@@ -133,8 +127,6 @@ async function reloadAsk(): Promise<void> {
 
 const overridedDeviceKind = computed(defaultStore.makeGetterSetter('overridedDeviceKind'));
 const serverDisconnectedBehavior = computed(defaultStore.makeGetterSetter('serverDisconnectedBehavior'));
-const maxCustomEmojiPicker = computed(defaultStore.makeGetterSetter('maxCustomEmojiPicker'));
-const maxUnicodeEmojiPicker = computed(defaultStore.makeGetterSetter('maxUnicodeEmojiPicker'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
 const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
@@ -151,7 +143,27 @@ const numberOfPageCache = computed(defaultStore.makeGetterSetter('numberOfPageCa
 const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'));
 const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfiniteScroll'));
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
-const aiChanMode = computed(defaultStore.makeGetterSetter('aiChanMode'));
+
+/*
+For these two, the sliders go to 25, but 25 should be mapped to "unlimited".
+"Unlimited" is stored internally as 0 so the modulo is necessary.
+*/
+let maxCustomEmojiPicker = $ref(defaultStore.state.maxCustomEmojiPicker || 25);
+watch($$(maxCustomEmojiPicker), () => {
+	defaultStore.set('maxCustomEmojiPicker', maxCustomEmojiPicker % 25);
+});
+let maxUnicodeEmojiPicker = $ref(defaultStore.state.maxUnicodeEmojiPicker || 25);
+watch($$(maxUnicodeEmojiPicker), () => {
+	defaultStore.set('maxUnicodeEmojiPicker', maxUnicodeEmojiPicker % 25);
+});
+
+function emojiCountConverter(n: number): string {
+	if (n === 25) {
+		return i18n.ts.unlimited;
+	} else {
+		return n.toString();
+	}
+}
 
 watch(lang, () => {
 	localStorage.setItem('lang', lang.value as string);
@@ -180,7 +192,6 @@ watch([
 	useSystemFont,
 	enableInfiniteScroll,
 	squareAvatars,
-	aiChanMode,
 	showGapBetweenNotesInTimeline,
 	instanceTicker,
 	overridedDeviceKind,

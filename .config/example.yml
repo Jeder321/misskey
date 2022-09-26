@@ -1,5 +1,5 @@
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Misskey configuration
+# FoundKey configuration
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 #   ┌─────┐
@@ -15,19 +15,19 @@ url: https://example.tld/
 #───┘ Port and TLS settings └───────────────────────────────────
 
 #
-# Misskey requires a reverse proxy to support HTTPS connections.
+# FoundKey requires a reverse proxy to support HTTPS connections.
 #
-#                 +----- https://example.tld/ ------------+
-#   +------+      |+-------------+      +----------------+|
-#   | User | ---> || Proxy (443) | ---> | Misskey (3000) ||
-#   +------+      |+-------------+      +----------------+|
-#                 +---------------------------------------+
+#                 +-------- https://example.tld/ ----------+
+#   +------+      |+-------------+      +-----------------+|
+#   | User | ---> || Proxy (443) | ---> | FoundKey (3000) ||
+#   +------+      |+-------------+      +-----------------+|
+#                 +----------------------------------------+
 #
 #   You need to set up a reverse proxy. (e.g. nginx)
 #   An encrypted connection with HTTPS is highly recommended
 #   because tokens may be transferred in GET requests.
 
-# The port that your Misskey server should listen on.
+# The port that your FoundKey server should listen on.
 port: 3000
 
 #   ┌──────────────────────────┐
@@ -38,16 +38,16 @@ db:
   port: 5432
 
   # Database name
-  db: misskey
+  db: foundkey
 
   # Auth
-  user: example-misskey-user
-  pass: example-misskey-pass
+  user: example-foundkey-user
+  pass: example-foundkey-pass
 
-  # Whether disable Caching queries
+  # Whether to disable query caching
   #disableCache: true
 
-  # Extra Connection options
+  # Extra connection options
   #extra:
   #  ssl: true
 
@@ -93,7 +93,7 @@ redis:
 # deliverJobMaxAttempts: 12
 # inboxJobMaxAttempts: 8
 
-# IP address family used for outgoing request (ipv4, ipv6 or dual)
+# IP address family used for outgoing requests (ipv4, ipv6 or dual)
 #outgoingAddressFamily: ipv4
 
 # Syslog option
@@ -120,9 +120,13 @@ redis:
 # Proxy remote files (default: false)
 #proxyRemoteFiles: true
 
-#allowedPrivateNetworks: [
-#  '127.0.0.1/32'
-#]
+# Storage path for files if stored locally (absolute path)
+# default is to store it in ./files in the directory foundkey is located in
+#internalStoragePath: '/etc/foundkey/files'
 
 # Upload or download file size limits (bytes)
 #maxFileSize: 262144000
+
+#allowedPrivateNetworks: [
+#  '127.0.0.1/32'
+#]

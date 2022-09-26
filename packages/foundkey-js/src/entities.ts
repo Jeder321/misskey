@@ -1,3 +1,5 @@
+import { NoteVisibility } from './visibility.js';
+
 export type ID = string;
 export type DateString = string;
 
@@ -138,7 +140,7 @@ export type Note = {
 	renoteId: Note['id'];
 	files: DriveFile[];
 	fileIds: DriveFile['id'][];
-	visibility: 'public' | 'home' | 'followers' | 'specified';
+	visibility: NoteVisibility;
 	visibleUserIds?: User['id'][];
 	localOnly?: boolean;
 	myReaction?: string;
@@ -278,13 +280,9 @@ export type LiteInstanceMetadata = {
 	enableDiscordIntegration: boolean;
 	enableServiceWorker: boolean;
 	emojis: CustomEmoji[];
-	ads: {
-		id: ID;
-		ratio: number;
-		place: string;
-		url: string;
-		imageUrl: string;
-	}[];
+	iconUrl: string;
+	faviconUrl: string;
+	bannerUrl: string;
 };
 
 export type DetailedInstanceMetadata = LiteInstanceMetadata & {

@@ -7,7 +7,7 @@
 		<MkA v-if="note.renoteId" class="rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 	</div>
 	<details v-if="note.files.length > 0">
-		<summary>({{ $t('withNFiles', { n: note.files.length }) }})</summary>
+		<summary>({{ i18n.t('withNFiles', { n: note.files.length }) }})</summary>
 		<XMediaList :media-list="note.files"/>
 	</details>
 	<details v-if="note.poll">
@@ -24,13 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'foundkey-js';
+import * as foundkey from 'foundkey-js';
 import XPoll from './poll.vue';
 import XMediaList from './media-list.vue';
 import { i18n } from '@/i18n';
 
 const props = defineProps<{
-	note: misskey.entities.Note;
+	note: foundkey.entities.Note;
 }>();
 
 const isLong = (
