@@ -1,4 +1,3 @@
----
 _lang_: "Taqbaylit"
 monthAndDay: "{day}/{month}"
 search: "Nadi"
@@ -99,3 +98,4 @@ _deck:
   _columns:
     notifications: "Ilɣuyen"
     list: "Tibdarin"
+_services: {}

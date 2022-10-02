@@ -1,7 +1,7 @@
----
 _lang_: "日本語 (関西弁)"
 headlineMisskey: "ノートでつながるネットワーク"
-introMisskey: "ようお越し！FoundKeyは、オープンソースの分散型マイクロブログサービスやねん。\n「ノート」を作って、いま起こっとることを共有したり、あんたについて皆に発信しよう📡\n「リアクション」機能で、皆のノートに素早く反応を追加したりもできるで✌\nほな新しい世界を探検しよか🚀"
+introMisskey: "ようお越し！FoundKeyは、オープンソースの分散型マイクロブログサービスやねん。\n「ノート」を作って、いま起こっとることを共有したり、あんたについて皆に発信しよう\U0001F4E1\
+  \n「リアクション」機能で、皆のノートに素早く反応を追加したりもできるで✌\nほな新しい世界を探検しよか\U0001F680"
 monthAndDay: "{month}月 {day}日"
 search: "探す"
 notifications: "通知"
@@ -81,8 +81,10 @@ somethingHappened: "なんかアカンことが起こったで"
 retry: "もっぺんやる？"
 pageLoadError: "ページの読み込みに失敗してしもうたで…"
 pageLoadErrorDescription: "これは普通、ネットワークかブラウザキャッシュが原因やからね。キャッシュをクリアするか、もうちっとだけ待ってくれへんか？"
-serverIsDead: "The server is not responding. Please wait for a while before trying again."
-youShouldUpgradeClient: "To display this page, please reload and use a new version client. "
+serverIsDead: "The server is not responding. Please wait for a while before trying\
+  \ again."
+youShouldUpgradeClient: "To display this page, please reload and use a new version\
+  \ client. "
 enterListName: "リスト名を入れてや"
 privacy: "プライバシー"
 makeFollowManuallyApprove: "自分が認めた人だけがこのアカウントをフォローできるようにする"
@@ -141,7 +143,8 @@ flagAsBotDescription: "もしこのアカウントがプログラムによって
 flagAsCat: "Catやで"
 flagAsCatDescription: "ワレ、猫ちゃんならこのフラグをつけてみ？"
 flagShowTimelineReplies: "It will display the reply to the note in the timeline. "
-flagShowTimelineRepliesDescription: "It will display the reply to notes other than the user notes in the timeline when you turn it on. "
+flagShowTimelineRepliesDescription: "It will display the reply to notes other than\
+  \ the user notes in the timeline when you turn it on. "
 autoAcceptFollowed: "フォローしとるユーザーからのフォローリクエストを勝手に許可しとく"
 addAccount: "アカウントを追加"
 loginFailed: "ログインに失敗してしもうた…"
@@ -237,7 +240,8 @@ saved: "保存したで！"
 messaging: "チャット"
 upload: "アップロード"
 keepOriginalUploading: "Retain the original image. "
-keepOriginalUploadingDescription: "When uploading the clip, the original version will be retained. Turning it of then uploading will produce images for public use. "
+keepOriginalUploadingDescription: "When uploading the clip, the original version will\
+  \ be retained. Turning it of then uploading will produce images for public use. "
 fromDrive: "ドライブから"
 fromUrl: "URLから"
 uploadFromUrl: "URLアップロード"
@@ -468,7 +472,8 @@ showFeaturedNotesInTimeline: "タイムラインにおすすめのノートを�
 objectStorage: "オブジェクトストレージ"
 useObjectStorage: "オブジェクトストレージを使う"
 objectStorageBaseUrl: "Base URL"
-objectStorageBaseUrlDesc: "参照に使うにURLやで。CDNやProxyを使用してるんならそのURL、S3: 'https://<bucket>.s3.amazonaws.com'、GCSとかなら: 'https://storage.googleapis.com/<bucket>'。"
+objectStorageBaseUrlDesc: "参照に使うにURLやで。CDNやProxyを使用してるんならそのURL、S3: 'https://<bucket>.s3.amazonaws.com'、GCSとかなら:\
+  \ 'https://storage.googleapis.com/<bucket>'。"
 objectStorageBucket: "Bucket"
 objectStoragePrefix: "Prefix"
 objectStorageEndpoint: "Endpoint"
@@ -967,3 +972,4 @@ _deck:
     list: "リスト"
     mentions: "あんた宛て"
     direct: "ダイレクト"
+_services: {}

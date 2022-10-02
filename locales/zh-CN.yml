@@ -1,7 +1,7 @@
----
 _lang_: "中文(简体)"
 headlineMisskey: "通过帖子连接在一起的网络"
-introMisskey: "欢迎！FoundKey是一个开源的、去中心化的“微博客”服务。\n通过编写「帖文」来和大家分享你的以及你周围的事情吧！📡\n通过「回应」功能，可以让你快速地对大家的帖文表达反馈👍\n来探索新的世界吧！🚀"
+introMisskey: "欢迎！FoundKey是一个开源的、去中心化的“微博客”服务。\n通过编写「帖文」来和大家分享你的以及你周围的事情吧！\U0001F4E1\
+  \n通过「回应」功能，可以让你快速地对大家的帖文表达反馈\U0001F44D\n来探索新的世界吧！\U0001F680"
 monthAndDay: "{month}月 {day}日"
 search: "搜索"
 notifications: "通知"
@@ -478,7 +478,8 @@ showFeaturedNotesInTimeline: "在时间线上显示热门推荐"
 objectStorage: "对象存储"
 useObjectStorage: "使用对象存储"
 objectStorageBaseUrl: "Base URL"
-objectStorageBaseUrlDesc: "URL前缀，用于构造URL到对象（媒体）的引用，如果您使用的是CDN或反向代理，请指定其URL，否则请根据您使用的服务指定可公开访问的地址。例如“https://<bucket>.s3.amazonaws.com”用于AWS S3，“https://storage.googleapis.com/<bucket>”用于GCS"
+objectStorageBaseUrlDesc: "URL前缀，用于构造URL到对象（媒体）的引用，如果您使用的是CDN或反向代理，请指定其URL，否则请根据您使用的服务指定可公开访问的地址。例如“https://<bucket>.s3.amazonaws.com”用于AWS\
+  \ S3，“https://storage.googleapis.com/<bucket>”用于GCS"
 objectStorageBucket: "存储桶"
 objectStorageBucketDesc: "请指定使用的对象存储服务的存储桶名称。"
 objectStoragePrefix: "前缀"
@@ -1108,7 +1109,7 @@ _tutorial:
   step6_3: "在他人的贴子上按下「+」图标，即可选择想要的表情来进行「回应」。"
   step7_1: "对FoundKey基本操作的简单介绍，就到此结束了。 辛苦了！"
   step7_2: "如果你想了解更多有关FoundKey的信息，请参见{help}。"
-  step7_3: "接下来，享受FoundKey带来的乐趣吧🚀"
+  step7_3: "接下来，享受FoundKey带来的乐趣吧\U0001F680"
 _2fa:
   alreadyRegistered: "此设备已被注册"
   registerDevice: "注册设备"
@@ -1382,3 +1383,4 @@ _deck:
     list: "列表"
     mentions: "提及"
     direct: "指定用户"
+_services: {}

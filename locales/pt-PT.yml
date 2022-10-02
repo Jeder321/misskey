@@ -1,7 +1,9 @@
----
 _lang_: "Português"
 headlineMisskey: "Rede conectada por notas"
-introMisskey: "Bem-vindo! FoundKey é um serviço de microblogue descentralizado de código aberto.\nCria \"notas\" e partilha o que te ocorre com todos à tua volta. 📡\nCom \"reações\" podes também expressar logo o que sentes às notas de todos. 👍\nExploremos um novo mundo! 🚀"
+introMisskey: "Bem-vindo! FoundKey é um serviço de microblogue descentralizado de\
+  \ código aberto.\nCria \"notas\" e partilha o que te ocorre com todos à tua volta.\
+  \ \U0001F4E1\nCom \"reações\" podes também expressar logo o que sentes às notas\
+  \ de todos. \U0001F44D\nExploremos um novo mundo! \U0001F680"
 monthAndDay: "{day}/{month}"
 search: "Pesquisar"
 notifications: "Notificações"
@@ -44,7 +46,8 @@ copyContent: "Copiar conteúdos"
 copyLink: "Copiar hiperligação"
 delete: "Eliminar"
 deleteAndEdit: "Eliminar e editar"
-deleteAndEditConfirm: "Tens a certeza que pretendes eliminar esta nota e editá-la? Irás perder todas as suas reações, renotas e respostas."
+deleteAndEditConfirm: "Tens a certeza que pretendes eliminar esta nota e editá-la?\
+  \ Irás perder todas as suas reações, renotas e respostas."
 addToList: "Adicionar a lista"
 sendMessage: "Enviar uma mensagem"
 copyUsername: "Copiar nome de utilizador"
@@ -63,9 +66,11 @@ import: "Importar"
 export: "Exportar"
 files: "Ficheiros"
 download: "Descarregar"
-driveFileDeleteConfirm: "Tens a certeza que pretendes apagar o ficheiro \"{name}\"? As notas que tenham este ficheiro anexado serão também apagadas."
+driveFileDeleteConfirm: "Tens a certeza que pretendes apagar o ficheiro \"{name}\"\
+  ? As notas que tenham este ficheiro anexado serão também apagadas."
 unfollowConfirm: "Tens a certeza que queres deixar de seguir {name}?"
-exportRequested: "Pediste uma exportação. Este processo pode demorar algum tempo. Será adicionado à tua Drive após a conclusão do processo."
+exportRequested: "Pediste uma exportação. Este processo pode demorar algum tempo.\
+  \ Será adicionado à tua Drive após a conclusão do processo."
 importRequested: "Pediste uma importação. Este processo pode demorar algum tempo."
 lists: "Listas"
 noLists: "Não tens nenhuma lista"
@@ -80,9 +85,12 @@ error: "Erro"
 somethingHappened: "Ocorreu um erro"
 retry: "Tentar novamente"
 pageLoadError: "Ocorreu um erro ao carregar a página."
-pageLoadErrorDescription: "Isto é normalmente causado por erros de rede ou pela cache do browser. Experimenta limpar a cache e tenta novamente após algum tempo."
-serverIsDead: "O servidor não está respondendo. Por favor espere um pouco e tente novamente."
-youShouldUpgradeClient: "Para visualizar essa página, por favor recarregue-a para atualizar seu cliente."
+pageLoadErrorDescription: "Isto é normalmente causado por erros de rede ou pela cache\
+  \ do browser. Experimenta limpar a cache e tenta novamente após algum tempo."
+serverIsDead: "O servidor não está respondendo. Por favor espere um pouco e tente\
+  \ novamente."
+youShouldUpgradeClient: "Para visualizar essa página, por favor recarregue-a para\
+  \ atualizar seu cliente."
 enterListName: "Insira um nome para a lista"
 privacy: "Privacidade"
 makeFollowManuallyApprove: "Pedidos de seguimento precisam ser aprovados"
@@ -246,3 +254,5 @@ _deck:
     list: "Listas"
     mentions: "Menções"
     direct: "Notas diretas"
+_postForm: {}
+_services: {}

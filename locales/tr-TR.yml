@@ -1,6 +1,10 @@
----
 _lang_: "Türkçe"
-introMisskey: "Açık kaynaklı bir dağıtılmış mikroblog hizmeti olan FoundKey'e hoş geldiniz.\nFoundKey, neler olup bittiğini paylaşmak ve herkese sizden bahsetmek için \"notlar\" oluşturmanıza olanak tanıyan, açık kaynaklı, dağıtılmış bir mikroblog hizmetidir.\nHerkesin notlarına kendi tepkilerinizi hızlıca eklemek için \"Tepkiler\" özelliğini de kullanabilirsiniz👍.\nYeni bir dünyayı keşfedin🚀."
+introMisskey: "Açık kaynaklı bir dağıtılmış mikroblog hizmeti olan FoundKey'e hoş\
+  \ geldiniz.\nFoundKey, neler olup bittiğini paylaşmak ve herkese sizden bahsetmek\
+  \ için \"notlar\" oluşturmanıza olanak tanıyan, açık kaynaklı, dağıtılmış bir mikroblog\
+  \ hizmetidir.\nHerkesin notlarına kendi tepkilerinizi hızlıca eklemek için \"Tepkiler\"\
+  \ özelliğini de kullanabilirsiniz\U0001F44D.\nYeni bir dünyayı keşfedin\U0001F680\
+  ."
 monthAndDay: "{month}Ay {day}Gün"
 search: "Arama"
 notifications: "Bildirim"
@@ -37,7 +41,8 @@ copyContent: "İçeriği kopyala"
 copyLink: "Bağlantıyı Kopyala"
 delete: "Sil"
 deleteAndEdit: "Sil ve yeniden düzenle"
-deleteAndEditConfirm: "Bu notu silip yeniden düzenlemek istiyor musunuz? Bu nota ilişkin tüm Tepkiler, Yeniden Notlar ve Yanıtlar da silinecektir."
+deleteAndEditConfirm: "Bu notu silip yeniden düzenlemek istiyor musunuz? Bu nota ilişkin\
+  \ tüm Tepkiler, Yeniden Notlar ve Yanıtlar da silinecektir."
 addToList: "Listeye ekle"
 sendMessage: "Mesaj Gönder"
 copyUsername: "Kullanıcı Adını Kopyala"
@@ -60,3 +65,6 @@ _deck:
   _columns:
     notifications: "Bildirim"
     tl: "Zaman çizelgesi"
+_notification: {}
+_services: {}
+_email: {}
