@@ -3678,11 +3678,7 @@ __metadata:
     "@types/node": 18.7.16
     "@types/node-fetch": 3.0.3
     "@types/nodemailer": 6.4.5
-<<<<<<< HEAD
-    "@types/oauth": ^0.9.1
-=======
     "@types/opentype.js": ^1.3.4
->>>>>>> ff6eca5c3... Trash integrations lmao
     "@types/pg": ^8.6.5
     "@types/pug": 2.0.6
     "@types/punycode": 2.1.0
