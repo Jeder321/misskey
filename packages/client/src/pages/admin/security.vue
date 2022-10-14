@@ -1,6 +1,6 @@
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :content-max="700" :margin-min="16" :margin-max="32">
 		<FormSuspense :p="init">
 			<div class="_formRoot">
@@ -54,12 +54,8 @@
 
 <script lang="ts" setup>
 import XBotProtection from './bot-protection.vue';
-import XHeader from './_header_.vue';
 import FormFolder from '@/components/form/folder.vue';
-import FormSwitch from '@/components/form/switch.vue';
-import FormInfo from '@/components/ui/info.vue';
 import FormSuspense from '@/components/form/suspense.vue';
-import FormSection from '@/components/form/section.vue';
 import FormInput from '@/components/form/input.vue';
 import FormButton from '@/components/ui/button.vue';
 import FormTextarea from '@/components/form/textarea.vue';
@@ -76,7 +72,7 @@ let secureMode: boolean = $ref(false);
 let privateMode: boolean = $ref(false);
 let allowedHosts: string = $ref('');
 
-async function init() {
+async function init(): Promise<void> {
 	const meta = await os.api('admin/meta');
 	summalyProxy = meta.summalyProxy;
 	enableHcaptcha = meta.enableHcaptcha;
@@ -86,7 +82,7 @@ async function init() {
 	allowedHosts = meta.allowedHosts.join('\n');
 }
 
-function save() {
+function save(): void {
 	os.apiWithDialog('admin/update-meta', {
 		summalyProxy,
 	}).then(() => {
@@ -94,7 +90,7 @@ function save() {
 	});
 }
 
-function saveInstance() {
+function saveInstance(): void {
 	os.apiWithDialog('admin/update-meta', {
 		secureMode,
 		privateMode,

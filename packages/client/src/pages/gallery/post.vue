@@ -1,6 +1,6 @@
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :content-max="1000" :margin-min="16" :margin-max="32">
 		<div class="_root">
 			<transition :name="defaultStore.state.animation ? 'fade' : ''" mode="out-in">
@@ -22,9 +22,9 @@
 								<MkButton v-else v-tooltip="i18n.ts._gallery.like" class="button" @click="like()"><i class="far fa-heart"></i><span v-if="post.likedCount > 0" class="count">{{ post.likedCount }}</span></MkButton>
 							</div>
 							<div class="other">
-								<button v-if="$i && $i.id === post.user.id" v-tooltip="i18n.ts.edit" v-click-anime class="_button" @click="edit"><i class="fas fa-pencil-alt fa-fw"></i></button>
-								<button v-tooltip="i18n.ts.shareWithNote" v-click-anime class="_button" @click="shareWithNote"><i class="fas fa-retweet fa-fw"></i></button>
-								<button v-tooltip="i18n.ts.share" v-click-anime class="_button" @click="share"><i class="fas fa-share-alt fa-fw"></i></button>
+								<button v-if="$i && $i.id === post.user.id" v-tooltip="i18n.ts.edit" class="_button" @click="edit"><i class="fas fa-pencil-alt fa-fw"></i></button>
+								<button v-tooltip="i18n.ts.shareWithNote" class="_button" @click="shareWithNote"><i class="fas fa-retweet fa-fw"></i></button>
+								<button v-tooltip="i18n.ts.share" class="_button" @click="share"><i class="fas fa-share-alt fa-fw"></i></button>
 							</div>
 						</div>
 						<div class="user">
@@ -144,8 +144,6 @@ const headerActions = $computed(() => [{
 	text: i18n.ts.edit,
 	handler: edit,
 }]);
-
-const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => post ? {
 	title: post.title,

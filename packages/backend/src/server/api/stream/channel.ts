@@ -2,7 +2,7 @@ import { Note } from '@/models/entities/note.js';
 import { Notes } from '@/models/index.js';
 import { Packed } from '@/misc/schema.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
-import Connection from '.';
+import Connection from './index.js';
 
 /**
  * Stream channel
@@ -28,6 +28,10 @@ export default abstract class Channel {
 
 	protected get muting() {
 		return this.connection.muting;
+	}
+
+	protected get renoteMuting() {
+		return this.connection.renoteMuting;
 	}
 
 	protected get blocking() {

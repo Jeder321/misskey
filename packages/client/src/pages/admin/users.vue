@@ -1,7 +1,7 @@
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+		<template #header><MkPageHeader :actions="headerActions"/></template>
 		<MkSpacer :content-max="900">
 			<div class="lknzcolw">
 				<div class="users">
@@ -30,11 +30,11 @@
 						</MkSelect>
 					</div>
 					<div class="inputs">
-						<MkInput v-model="searchUsername" style="flex: 1;" type="text" :spellcheck="false" @update:modelValue="$refs.users.reload()">
+						<MkInput v-model="searchUsername" style="flex: 1;" type="text" :spellcheck="false" @update:model-value="$refs.users.reload()">
 							<template #prefix>@</template>
 							<template #label>{{ i18n.ts.username }}</template>
 						</MkInput>
-						<MkInput v-model="searchHost" style="flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params.origin === 'local'" @update:modelValue="$refs.users.reload()">
+						<MkInput v-model="searchHost" style="flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params.origin === 'local'" @update:model-value="$refs.users.reload()">
 							<template #prefix>@</template>
 							<template #label>{{ i18n.ts.host }}</template>
 						</MkInput>
@@ -54,7 +54,6 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import XHeader from './_header_.vue';
 import MkInput from '@/components/form/input.vue';
 import MkSelect from '@/components/form/select.vue';
 import MkPagination from '@/components/ui/pagination.vue';
@@ -84,13 +83,13 @@ const pagination = {
 	offsetMode: true,
 };
 
-function searchUser() {
+function searchUser(): void {
 	os.selectUser().then(user => {
 		show(user);
 	});
 }
 
-async function addUser() {
+async function addUser(): Promise<void> {
 	const { canceled: canceled1, result: username } = await os.inputText({
 		title: i18n.ts.username,
 	});
@@ -105,12 +104,12 @@ async function addUser() {
 	os.apiWithDialog('admin/accounts/create', {
 		username,
 		password,
-	}).then(res => {
+	}).then(() => {
 		paginationComponent.reload();
 	});
 }
 
-function show(user) {
+function show(user): void {
 	os.pageWindow(`/user-info/${user.id}`);
 }
 
@@ -129,8 +128,6 @@ const headerActions = $computed(() => [{
 	text: i18n.ts.lookup,
 	handler: lookupUser,
 }]);
-
-const headerTabs = $computed(() => []);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.users,

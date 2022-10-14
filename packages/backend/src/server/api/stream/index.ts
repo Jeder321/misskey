@@ -3,7 +3,7 @@ import * as websocket from 'websocket';
 import readNote from '@/services/note/read.js';
 import { User } from '@/models/entities/user.js';
 import { Channel as ChannelModel } from '@/models/entities/channel.js';
-import { Followings, Mutings, UserProfiles, ChannelFollowings, Blockings } from '@/models/index.js';
+import { Followings, Mutings, RenoteMutings, UserProfiles, ChannelFollowings, Blockings } from '@/models/index.js';
 import { AccessToken } from '@/models/entities/access-token.js';
 import { UserProfile } from '@/models/entities/user-profile.js';
 import { publishChannelStream, publishGroupMessagingStream, publishMessagingStream } from '@/services/stream.js';
@@ -22,6 +22,7 @@ export default class Connection {
 	public userProfile?: UserProfile | null;
 	public following: Set<User['id']> = new Set();
 	public muting: Set<User['id']> = new Set();
+	public renoteMuting: Set<User['id']> = new Set();
 	public blocking: Set<User['id']> = new Set(); // "被"blocking
 	public followingChannels: Set<ChannelModel['id']> = new Set();
 	public token?: AccessToken;
@@ -56,6 +57,7 @@ export default class Connection {
 		if (this.user) {
 			this.updateFollowing();
 			this.updateMuting();
+			this.updateRenoteMuting();
 			this.updateBlocking();
 			this.updateFollowingChannels();
 			this.updateUserProfile();
@@ -82,7 +84,21 @@ export default class Connection {
 				this.muting.delete(data.body.id);
 				break;
 
-				// TODO: block events
+			case 'block':
+				this.blocking.add(data.body.id);
+				break;
+
+			case 'unblock':
+				this.blocking.delete(data.body.id);
+				break;
+
+			case 'muteRenote':
+				this.renoteMuting.add(data.body.id);
+				break;
+
+			case 'unmuteRenote':
+				this.renoteMuting.delete(data.body.id);
+				break;
 
 			case 'followChannel':
 				this.followingChannels.add(data.body.id);
@@ -331,6 +347,17 @@ export default class Connection {
 		});
 
 		this.muting = new Set<string>(mutings.map(x => x.muteeId));
+	}
+
+	private async updateRenoteMuting() {
+		const renoteMutings = await RenoteMutings.find({
+			where: {
+				muterId: this.user!.id,
+			},
+			select: ['muteeId'],
+		});
+
+		this.renoteMuting = new Set<string>(renoteMutings.map(x => x.muteeId));
 	}
 
 	private async updateBlocking() { // ここでいうBlockingは被Blockingの意

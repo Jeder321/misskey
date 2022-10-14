@@ -131,9 +131,10 @@ export function createDeleteDriveFilesJob(user: ThinUser) {
 	});
 }
 
-export function createExportCustomEmojisJob(user: ThinUser) {
+export function createExportCustomEmojisJob(user: ThinUser, ids: string[] | undefined) {
 	return dbQueue.add('exportCustomEmojis', {
 		user,
+		ids,
 	}, {
 		removeOnComplete: true,
 		removeOnFail: true,
@@ -314,7 +315,7 @@ export default function() {
 		removeOnComplete: true,
 	});
 
-	systemQueue.add('checkExpiredMutings', {
+	systemQueue.add('checkExpired', {
 	}, {
 		repeat: { cron: '*/5 * * * *' },
 		removeOnComplete: true,

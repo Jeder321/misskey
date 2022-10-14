@@ -1,6 +1,6 @@
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<div>
 		<transition name="fade" mode="out-in">
 			<div v-if="user">
@@ -66,13 +66,11 @@ function menu(ev) {
 	os.popupMenu(getUserMenu(user), ev.currentTarget ?? ev.target);
 }
 
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => user ? [{
+const headerTabs = $computed(() => [{
 	key: 'home',
 	title: i18n.ts.overview,
 	icon: 'fas fa-home',
-}, ...($i && ($i.id === user.id)) || user.publicReactions ? [{
+}, ...($i && ($i.id === user?.id)) || user?.publicReactions ? [{
 	key: 'reactions',
 	title: i18n.ts.reaction,
 	icon: 'fas fa-laugh',
@@ -88,7 +86,7 @@ const headerTabs = $computed(() => user ? [{
 	key: 'gallery',
 	title: i18n.ts.gallery,
 	icon: 'fas fa-icons',
-}] : null);
+}]);
 
 definePageMetadata(computed(() => user ? {
 	icon: 'fas fa-user',

@@ -1,6 +1,6 @@
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :content-max="900">
 		<div class="lcixvhis">
 			<div class="_section reports">
@@ -39,11 +39,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import XHeader from './_header_.vue';
 import MkSelect from '@/components/form/select.vue';
 import MkPagination from '@/components/ui/pagination.vue';
 import XAbuseReport from '@/components/abuse-report.vue';
-import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 
@@ -66,10 +64,6 @@ const pagination = {
 function resolved(reportId) {
 	reports.removeItem(item => item.id === reportId);
 }
-
-const headerActions = $computed(() => []);
-
-const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.abuseReports,

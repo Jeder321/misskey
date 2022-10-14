@@ -1,6 +1,6 @@
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<div class="lznhrdub">
 		<div v-if="tab === 'featured'">
 			<XFeatured/>
@@ -37,11 +37,8 @@ import XUsers from './explore.users.vue';
 import MkFolder from '@/components/ui/folder.vue';
 import MkInput from '@/components/form/input.vue';
 import MkRadios from '@/components/form/radios.vue';
-import number from '@/filters/number';
-import * as os from '@/os';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { i18n } from '@/i18n';
-import { instance } from '@/instance';
 import XUserList from '@/components/user-list.vue';
 
 const props = defineProps<{
@@ -60,13 +57,11 @@ watch(() => props.tag, () => {
 const searchPagination = {
 	endpoint: 'users/search' as const,
 	limit: 10,
-	params: computed(() => (searchQuery && searchQuery !== '') ? {
+	params: computed(() => searchQuery ? {
 		query: searchQuery,
 		origin: searchOrigin,
 	} : null),
 };
-
-const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => [{
 	key: 'featured',

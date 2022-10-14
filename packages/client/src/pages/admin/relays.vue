@@ -1,6 +1,6 @@
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :content-max="800">
 		<div v-for="relay in relays" :key="relay.inbox" class="relaycxt _panel _block" style="padding: 16px;">
 			<div>{{ relay.inbox }}</div>
@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts" setup>
-import XHeader from './_header_.vue';
 import MkButton from '@/components/ui/button.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
@@ -34,7 +33,7 @@ async function addRelay() {
 	if (canceled) return;
 	os.api('admin/relays/add', {
 		inbox,
-	}).then((relay: any) => {
+	}).then(() => {
 		refresh();
 	}).catch((err: any) => {
 		os.alert({
@@ -71,8 +70,6 @@ const headerActions = $computed(() => [{
 	text: i18n.ts.addRelay,
 	handler: addRelay,
 }]);
-
-const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.relays,
