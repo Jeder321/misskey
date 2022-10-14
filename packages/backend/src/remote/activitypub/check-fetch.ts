@@ -7,7 +7,6 @@ import { toPuny } from '@/misc/convert-host.js';
 import DbResolver from '@/remote/activitypub/db-resolver.js';
 import { getApId } from '@/remote/activitypub/type.js';
 
-
 export default async function checkFetch(req: IncomingMessage): Promise<number> {
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
@@ -38,31 +37,28 @@ export default async function checkFetch(req: IncomingMessage): Promise<number> 
 
 		const dbResolver = new DbResolver();
 
-		// HTTP-Signature keyIdを元にDBから取得
+		// Get user from database based on HTTP-Signature keyId
 		let authUser = await dbResolver.getAuthUserFromKeyId(signature.keyId);
 
-		// keyIdでわからなければ、resolveしてみる
+		// If keyid is unknown, try resolving it
 		if (authUser == null) {
 			try {
 				keyId.hash = '';
 				authUser = await dbResolver.getAuthUserFromApId(getApId(keyId.toString()));
 			} catch (e) {
-				// できなければ駄目
 				return 403;
 			}
 		}
 
-		// publicKey がなくても終了
 		if (authUser?.key == null) {
 			return 403;
 		}
 
-		// もう一回チェック
 		if (authUser.user.host !== host) {
 			return 403;
 		}
 
-		// HTTP-Signatureの検証
+		// HTTP-Signature validation
 		const httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
 
 		if (!httpSignatureValidated) {

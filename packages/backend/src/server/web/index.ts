@@ -24,6 +24,7 @@ import { getNoteSummary } from '@/misc/get-note-summary.js';
 import { queues } from '@/queue/queues.js';
 import { MINUTE, DAY } from '@/const.js';
 import { genOpenapiSpec } from '../api/openapi/gen-spec.js';
+import meta from '../api/endpoints/meta.js';
 import { urlPreviewHandler } from './url-preview.js';
 import { manifestHandler } from './manifest.js';
 import packFeed from './feed.js';
@@ -271,6 +272,12 @@ router.get('/@:user.json', async ctx => {
 //#region SSR (for crawlers)
 // User
 router.get(['/@:user', '/@:user/:sub'], async (ctx, next) => {
+	const meta = await fetchMeta();
+	if (meta.privateMode) {
+		await next();
+		return;
+	}
+
 	const { username, host } = Acct.parse(ctx.params.user);
 	const user = await Users.findOneBy({
 		usernameLower: username.toLowerCase(),
@@ -360,6 +367,12 @@ router.get('/notes/:note', async (ctx, next) => {
 
 // Page
 router.get('/@:user/pages/:page', async (ctx, next) => {
+	const meta = await fetchMeta();
+	if (meta.privateMode) {
+		await next();
+		return;
+	}
+
 	const { username, host } = Acct.parse(ctx.params.user);
 	const user = await Users.findOneBy({
 		usernameLower: username.toLowerCase(),
@@ -402,6 +415,12 @@ router.get('/@:user/pages/:page', async (ctx, next) => {
 // Clip
 // TODO: 非publicなclipのハンドリング
 router.get('/clips/:clip', async (ctx, next) => {
+	const meta = await fetchMeta();
+	if (meta.privateMode) {
+		await next();
+		return;
+	}
+
 	const clip = await Clips.findOneBy({
 		id: ctx.params.clip,
 	});
@@ -430,6 +449,12 @@ router.get('/clips/:clip', async (ctx, next) => {
 
 // Gallery post
 router.get('/gallery/:post', async (ctx, next) => {
+	const meta = await fetchMeta();
+	if (meta.privateMode) {
+		await next();
+		return;
+	}
+
 	const post = await GalleryPosts.findOneBy({ id: ctx.params.post });
 
 	if (post) {
@@ -456,6 +481,12 @@ router.get('/gallery/:post', async (ctx, next) => {
 
 // Channel
 router.get('/channels/:channel', async (ctx, next) => {
+	const meta = await fetchMeta();
+	if (meta.privateMode) {
+		await next();
+		return;
+	}
+
 	const channel = await Channels.findOneBy({
 		id: ctx.params.channel,
 	});
@@ -526,6 +557,10 @@ router.get('/streaming', async ctx => {
 // Render base html for all requests
 router.get('(.*)', async ctx => {
 	const meta = await fetchMeta();
+	if (meta.privateMode) {
+		return;
+	}
+
 	await ctx.render('base', {
 		img: meta.bannerUrl,
 		title: meta.name || 'FoundKey',

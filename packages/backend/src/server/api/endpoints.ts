@@ -693,8 +693,8 @@ export interface IEndpointMeta {
 	readonly secure?: boolean;
 
 	/**
-	 * プライベートモードでなら、このエンドポイントにリクエストするときにユーザー情報が必要か否か
-	 * 省略した場合は false として解釈されます
+	 * If in private mode, whether credentials are required when making a request to this endpoint.
+	 * If omitted, this is interpreted as false.
 	 */
 	readonly requireCredentialPrivateMode?: boolean;
 

@@ -70,7 +70,7 @@ router.get('/notes/:note', async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -87,7 +87,7 @@ router.get('/notes/:note', async (ctx, next) => {
 	}
 
 	// リモートだったらリダイレクト
-	if (note.userHost != null) {
+	if (note.userHost !== null) {
 		if (note.uri == null || isSelfHost(note.userHost)) {
 			ctx.status = 500;
 			return;
@@ -100,7 +100,7 @@ router.get('/notes/:note', async (ctx, next) => {
 
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
-		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+		ctx.set('Cache-Control', 'no-store');
 	} else {
 		ctx.set('Cache-Control', 'public, max-age=180');
 	}
@@ -110,7 +110,7 @@ router.get('/notes/:note', async (ctx, next) => {
 // note activity
 router.get('/notes/:note/activity', async ctx => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -130,7 +130,7 @@ router.get('/notes/:note/activity', async ctx => {
 	ctx.body = renderActivity(await packActivity(note));
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
-		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+		ctx.set('Cache-Control', 'no-store');
 	} else {
 		ctx.set('Cache-Control', 'public, max-age=180');
 	}
@@ -160,7 +160,7 @@ router.get('/users/:user/publickey', async ctx => {
 	}
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -183,7 +183,7 @@ router.get('/users/:user/publickey', async ctx => {
 		ctx.body = renderActivity(renderKey(user, keypair));
 		const meta = await fetchMeta();
 		if (meta.secureMode || meta.privateMode) {
-			ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+			ctx.set('Cache-Control', 'no-store');
 		} else {
 			ctx.set('Cache-Control', 'public, max-age=180');
 		}
@@ -203,7 +203,7 @@ async function userInfo(ctx: Router.RouterContext, user: User | null) {
 	ctx.body = renderActivity(await renderPerson(user as ILocalUser));
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
-		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+		ctx.set('Cache-Control', 'no-store');
 	} else {
 		ctx.set('Cache-Control', 'public, max-age=180');
 	}
@@ -220,7 +220,7 @@ router.get('/users/:user', async (ctx, next) => {
 	}
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -246,7 +246,7 @@ router.get('/@:user', async (ctx, next) => {
 	}
 
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -287,7 +287,7 @@ router.get('/emojis/:emoji', async ctx => {
 	ctx.body = renderActivity(await renderEmoji(emoji));
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
-		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+		ctx.set('Cache-Control', 'no-store');
 	} else {
 		ctx.set('Cache-Control', 'public, max-age=180');
 	}
@@ -297,7 +297,7 @@ router.get('/emojis/:emoji', async ctx => {
 // like
 router.get('/likes/:like', async ctx => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -322,7 +322,7 @@ router.get('/likes/:like', async ctx => {
 	ctx.body = renderActivity(await renderLike(reaction, note));
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
-		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+		ctx.set('Cache-Control', 'no-store');
 	} else {
 		ctx.set('Cache-Control', 'public, max-age=180');
 	}
@@ -332,7 +332,7 @@ router.get('/likes/:like', async ctx => {
 // follow
 router.get('/follows/:follower/:followee', async ctx => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -358,7 +358,7 @@ router.get('/follows/:follower/:followee', async ctx => {
 	ctx.body = renderActivity(renderFollow(follower, followee));
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
-		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+		ctx.set('Cache-Control', 'no-store');
 	} else {
 		ctx.set('Cache-Control', 'public, max-age=180');
 	}

@@ -139,10 +139,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		set.secureMode = ps.secureMode;
 	}
 
-	if (ps.mascotImageUrl !== undefined) {
-		set.mascotImageUrl = ps.mascotImageUrl;
-	}
-
 	if (ps.bannerUrl !== undefined) {
 		set.bannerUrl = ps.bannerUrl;
 	}

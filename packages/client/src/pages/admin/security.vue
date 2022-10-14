@@ -43,7 +43,7 @@
 							<template #label>{{ i18n.ts.allowedInstances }}</template>
 							<template #caption>{{ i18n.ts.allowedInstancesDescription }}</template>
 						</FormTextarea>
-						<FormButton primary class="_formBlock" @click="saveInstance"><i class="fas fa-save"></i> {{ i18n.ts.save }}</FormButton>
+						<FormButton primary class="_formBlock" @click="save"><i class="fas fa-save"></i> {{ i18n.ts.save }}</FormButton>
 					</div>
 				</FormFolder>
 			</div>
@@ -77,6 +77,7 @@ async function init(): Promise<void> {
 	summalyProxy = meta.summalyProxy;
 	enableHcaptcha = meta.enableHcaptcha;
 	enableRecaptcha = meta.enableRecaptcha;
+
 	secureMode = meta.secureMode;
 	privateMode = meta.privateMode;
 	allowedHosts = meta.allowedHosts.join('\n');
@@ -85,6 +86,9 @@ async function init(): Promise<void> {
 function save(): void {
 	os.apiWithDialog('admin/update-meta', {
 		summalyProxy,
+		secureMode,
+		privateMode,
+		allowedHosts: allowedHosts.split('\n'),
 	}).then(() => {
 		fetchInstance();
 	});

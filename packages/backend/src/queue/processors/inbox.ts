@@ -39,7 +39,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 		return `Blocked request: ${host}`;
 	}
 
-	// 非公開モードなら許可なインスタンスのみ
+	// Only permitted instances if in private mode.
 	if (meta.privateMode && !meta.allowedHosts.includes(host)) {
 		return `Blocked request: ${host}`;
 	}

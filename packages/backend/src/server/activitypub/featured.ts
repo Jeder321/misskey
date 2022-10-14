@@ -8,10 +8,13 @@ import { Users, Notes, UserNotePinings } from '@/models/index.js';
 import checkFetch from '@/remote/activitypub/check-fetch.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import { setResponseType } from '../activitypub.js';
+import { IsNull } from 'typeorm';
+import checkFetch from '@/remote/activitypub/check-fetch.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {
 	const verify = await checkFetch(ctx.req);
-	if (verify != 200) {
+	if (verify !== 200) {
 		ctx.status = verify;
 		return;
 	}
@@ -47,7 +50,7 @@ export default async (ctx: Router.RouterContext) => {
 
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
-		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');
+		ctx.set('Cache-Control', 'no-store');
 	} else {
 		ctx.set('Cache-Control', 'public, max-age=180');
 	}
