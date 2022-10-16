@@ -10,7 +10,7 @@ import { User, ILocalUser, IRemoteUser } from '@/models/entities/user.js';
 import { Note } from '@/models/entities/note.js';
 import { Notes, Users, Instances } from '@/models/index.js';
 import { notesChart, perUserNotesChart, instanceChart } from '@/services/chart/index.js';
-import { deliverToFollowers, deliverToUser } from '@/remote/activitypub/deliver-manager.js';
+import DeliverManager from '@/remote/activitypub/deliver-manager.js';
 import { countSameRenotes } from '@/misc/count-same-renotes.js';
 import { isPureRenote } from '@/misc/renote.js';
 import { registerOrFetchInstanceDoc } from '../register-or-fetch-instance-doc.js';
@@ -109,7 +109,7 @@ async function getMentionedRemoteUsers(note: Note): Promise<IRemoteUser[]> {
 	const where = [] as any[];
 
 	// mention / reply / dm
-	if (note.mentions > 0) {
+	if (note.mentions.length > 0) {
 		where.push({
 			id: In(note.mentions),
 			// only remote users, local users are on the server and do not need to be notified
@@ -132,10 +132,22 @@ async function getMentionedRemoteUsers(note: Note): Promise<IRemoteUser[]> {
 }
 
 async function deliverToConcerned(user: { id: ILocalUser['id']; host: null; }, note: Note, content: any) {
-	deliverToFollowers(user, content);
-	deliverToRelays(user, content);
+	const manager = new DeliverManager(user, content);
+
 	const remoteUsers = await getMentionedRemoteUsers(note);
 	for (const remoteUser of remoteUsers) {
-		deliverToUser(user, content, remoteUser);
+		manager.addDirectRecipe(remoteUser);
 	}
+
+	if (['public', 'home', 'followers'].includes(note.visibility)) {
+		manager.addFollowersRecipe();
+	}
+
+	if (['public', 'home'].includes(note.visibility)) {
+		manager.addEveryone();
+	}
+
+	await manager.execute();
+
+	deliverToRelays(user, content);
 }

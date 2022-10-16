@@ -12,19 +12,22 @@ import { Cache } from '@/misc/cache.js';
 import { Instance } from '@/models/entities/instance.js';
 import { StatusError } from '@/misc/fetch.js';
 import { DeliverJobData } from '@/queue/types.js';
+import { LessThan } from 'typeorm';
+import { DAY } from '@/const.js';
 
 const logger = new Logger('deliver');
 
 let latest: string | null = null;
 
-const suspendedHostsCache = new Cache<Instance[]>(1000 * 60 * 60);
+const deadThreshold = 30 * DAY;
 
 export default async (job: Bull.Job<DeliverJobData>) => {
 	const { host } = new URL(job.data.to);
+	const puny = toPuny(host);
 
 	// ブロックしてたら中断
 	const meta = await fetchMeta();
-	if (meta.blockedHosts.includes(toPuny(host))) {
+	if (meta.blockedHosts.includes(puny)) {
 		return 'skip (blocked)';
 	}
 
@@ -32,18 +35,13 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 		return 'skip (not allowed)';
 	}
 
-	// isSuspendedなら中断
-	let suspendedHosts = suspendedHostsCache.get(null);
-	if (suspendedHosts == null) {
-		suspendedHosts = await Instances.find({
-			where: {
-				isSuspended: true,
-			},
-		});
-		suspendedHostsCache.set(null, suspendedHosts);
-	}
-	if (suspendedHosts.map(x => x.host).includes(toPuny(host))) {
-		return 'skip (suspended)';
+	const deadTime = new Date(Date.now() - deadThreshold);
+	const isSuspendedOrDead = await Instances.countBy([
+		{ host: puny, isSuspended: true },
+		{ host: puny, lastCommunicatedAt: LessThan(deadTime) },
+	]);
+	if (isSuspendedOrDead) {
+		return 'skip (suspended or dead)';
 	}
 
 	try {
