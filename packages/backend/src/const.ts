@@ -1,5 +1,3 @@
-export const MAX_NOTE_TEXT_LENGTH = 8192;
-
 // Time constants
 export const SECOND = 1000;
 export const MINUTE = 60 * SECOND;
