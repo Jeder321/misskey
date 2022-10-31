@@ -16,13 +16,7 @@ export const meta = {
 		ref: 'Page',
 	},
 
-	errors: {
-		noSuchPage: {
-			message: 'No such page.',
-			code: 'NO_SUCH_PAGE',
-			id: '222120c0-3ead-4528-811b-b96f233388d7',
-		},
-	},
+	errors: ['NO_SUCH_PAGE'],
 } as const;
 
 export const paramDef = {
@@ -63,9 +57,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 	}
 
-	if (page == null) {
-		throw new ApiError(meta.errors.noSuchPage);
-	}
+	if (page == null) throw new ApiError('NO_SUCH_PAGE');
 
 	return await Pages.pack(page, user);
 });

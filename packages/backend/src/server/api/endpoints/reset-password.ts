@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { UserProfiles, PasswordResetRequests } from '@/models/index.js';
-import { MINUTE } from '@/const.js';
+import { DAY, MINUTE } from '@/const.js';
 import define from '../define.js';
 
 export const meta = {
@@ -11,17 +11,11 @@ export const meta = {
 	description: 'Complete the password reset that was previously requested.',
 
 	limit: {
-		duration: HOUR,
-		max: 3,
+		duration: DAY,
+		max: 1,
 	},
 
-	errors: {
-		noSuchResetRequest: {
-			message: 'No such reset request.',
-			code: 'NO_SUCH_RESET_REQUEST',
-			id: '6382759d-294c-43de-89b3-4e825006ca43',
-		},
-	},
+	errors: ['NO_SUCH_RESET_REQUEST'],
 } as const;
 
 export const paramDef = {
@@ -38,7 +32,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const req = await PasswordResetRequests.findOneBy({
 		token: ps.token,
 	});
-	if (req == null) throw new ApiError(meta.errors.noSuchResetRequest);
+	if (req == null) throw new ApiError('NO_SUCH_RESET_REQUEST');
 
 	// expires after 30 minutes
 	// This is a secondary check just in case the expiry task is broken,
@@ -46,7 +40,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	// else strange is going on.
 	if (Date.now() - req.createdAt.getTime() > 30 * MINUTE) {
 		await PasswordResetRequests.delete(req.id);
-		throw new ApiError(meta.errors.noSuchResetRequest);
+		throw new ApiError('NO_SUCH_RESET_REQUEST');
 	}
 
 	// Generate hash of password

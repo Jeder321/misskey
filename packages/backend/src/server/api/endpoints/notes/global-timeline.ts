@@ -24,13 +24,7 @@ export const meta = {
 		},
 	},
 
-	errors: {
-		gtlDisabled: {
-			message: 'Global timeline has been disabled.',
-			code: 'GTL_DISABLED',
-			id: '0332fc13-6ab2-4427-ae80-a9fadffd1a6b',
-		},
-	},
+	errors: ['TIMELINE_DISABLED'],
 } as const;
 
 export const paramDef = {
@@ -55,7 +49,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	const m = await fetchMeta();
 	if (m.disableGlobalTimeline) {
 		if (user == null || (!user.isAdmin && !user.isModerator)) {
-			throw new ApiError(meta.errors.gtlDisabled);
+			throw new ApiError('TIMELINE_DISABLED');
 		}
 	}
 
