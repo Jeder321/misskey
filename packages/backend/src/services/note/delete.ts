@@ -17,14 +17,14 @@ import { registerOrFetchInstanceDoc } from '../register-or-fetch-instance-doc.js
 import { deliverToRelays } from '../relay.js';
 
 /**
- * 投稿を削除します。
- * @param user 投稿者
- * @param note 投稿
+ * Delete your note.
+ * @param user author
+ * @param note note to be deleted
  */
 export default async function(user: { id: User['id']; uri: User['uri']; host: User['host']; }, note: Note, quiet = false): Promise<void> {
 	const deletedAt = new Date();
 
-	// この投稿を除く指定したユーザーによる指定したノートのリノートが存在しないとき
+	// If this is the only renote of this note by this user
 	if (note.renoteId && (await countSameRenotes(user.id, note.renoteId, note.id)) === 0) {
 		Notes.decrement({ id: note.renoteId }, 'renoteCount', 1);
 		Notes.decrement({ id: note.renoteId }, 'score', 1);
@@ -37,7 +37,7 @@ export default async function(user: { id: User['id']; uri: User['uri']; host: Us
 	if (!quiet) {
 		publishNoteStream(note.id, 'deleted', { deletedAt });
 
-		//#region ローカルの投稿なら削除アクティビティを配送
+		// deliver delete activity of note itself for local posts
 		if (Users.isLocalUser(user) && !note.localOnly) {
 			let renote: Note | null = null;
 
@@ -54,16 +54,15 @@ export default async function(user: { id: User['id']; uri: User['uri']; host: Us
 		}
 
 		// also deliever delete activity to cascaded notes
-		const cascadingNotes = (await findCascadingNotes(note)).filter(note => !note.localOnly); // filter out local-only notes
+		const cascadingNotes = await findCascadingNotes(note);
 		for (const cascadingNote of cascadingNotes) {
 			if (!cascadingNote.user) continue;
 			if (!Users.isLocalUser(cascadingNote.user)) continue;
 			const content = renderActivity(renderDelete(renderTombstone(`${config.url}/notes/${cascadingNote.id}`), cascadingNote.user));
 			deliverToConcerned(cascadingNote.user, cascadingNote, content);
 		}
-		//#endregion
 
-		// 統計を更新
+		// update statistics
 		notesChart.update(note, false);
 		perUserNotesChart.update(user, note, false);
 
@@ -81,26 +80,40 @@ export default async function(user: { id: User['id']; uri: User['uri']; host: Us
 	});
 }
 
+/**
+ * Search for notes that will be affected by ON CASCADE DELETE.
+ * However, only notes for which it is relevant to deliver delete activities are searched.
+ * This means only local notes that are not local-only are searched.
+ */
 async function findCascadingNotes(note: Note): Promise<Note[]> {
 	const cascadingNotes: Note[] = [];
 
 	const recursive = async (noteId: string): Promise<void> => {
-		const query = Notes.createQueryBuilder('note')
-			.where('note.replyId = :noteId', { noteId })
-			.orWhere(new Brackets(q => {
-				q.where('note.renoteId = :noteId', { noteId })
-				.andWhere('note.text IS NOT NULL');
-			}))
-			.leftJoinAndSelect('note.user', 'user');
-		const replies = await query.getMany();
-		for (const reply of replies) {
+		// FIXME: use note_replies SQL function? Unclear what to do with 2nd and 3rd parameter, maybe rewrite the function.
+		const replies = await Notes.find({
+			where: [{
+				replyId: noteId,
+				localOnly: false,
+				userHost: IsNull(),
+			}, {
+				renoteId: noteId,
+				text: Not(IsNull()),
+				localOnly: false,
+				userHost: IsNull(),
+			}],
+			relations: {
+				user: true,
+			},
+		});
+
+		await Promise.all(replies.map(reply => {
 			cascadingNotes.push(reply);
-			await recursive(reply.id);
-		}
+			return recursive(reply.id);
+		}));
 	};
 	await recursive(note.id);
 
-	return cascadingNotes.filter(note => note.userHost === null); // filter out non-local users
+	return cascadingNotes;
 }
 
 async function getMentionedRemoteUsers(note: Note): Promise<IRemoteUser[]> {
