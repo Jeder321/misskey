@@ -26,8 +26,6 @@ import Featured from './activitypub/featured.js';
 // Init router
 const router = new Router();
 
-//#region Routing
-
 function inbox(ctx: Router.RouterContext) {
 	let signature;
 
@@ -48,6 +46,8 @@ const LD_JSON = 'application/ld+json; profile="https://www.w3.org/ns/activitystr
 
 function isActivityPubReq(ctx: Router.RouterContext) {
 	ctx.response.vary('Accept');
+	// if no accept header is supplied, koa returns the 1st, so html is used as a dummy
+	// i.e. activitypub requests must be explicit
 	const accepted = ctx.accepts('html', ACTIVITY_JSON, LD_JSON);
 	return typeof accepted === 'string' && !accepted.match(/html/);
 }
@@ -86,7 +86,7 @@ router.get('/notes/:note', async (ctx, next) => {
 		return;
 	}
 
-	// リモートだったらリダイレクト
+	// redirect if remote
 	if (note.userHost !== null) {
 		if (note.uri == null || isSelfHost(note.userHost)) {
 			ctx.status = 500;
@@ -109,9 +109,18 @@ router.get('/notes/:note', async (ctx, next) => {
 
 // note activity
 router.get('/notes/:note/activity', async ctx => {
+<<<<<<< HEAD
 	const verify = await checkFetch(ctx.req);
 	if (verify !== 200) {
 		ctx.status = verify;
+=======
+	if (!isActivityPubReq(ctx)) {
+		/*
+		Redirect to the human readable page. in this case using next is not possible,
+		since there is no human readable page explicitly for the activity.
+		*/
+		ctx.redirect(`/notes/${ctx.params.note}`);
+>>>>>>> upstream/main
 		return;
 	}
 
@@ -259,12 +268,15 @@ router.get('/@:user', async (ctx, next) => {
 
 	await userInfo(ctx, user);
 });
+<<<<<<< HEAD
 
 router.get('/actor', async (ctx, next) => {
 	const instanceActor = await getInstanceActor();
 	await userInfo(ctx, instanceActor);
 });
 //#endregion
+=======
+>>>>>>> upstream/main
 
 // emoji
 router.get('/emojis/:emoji', async ctx => {

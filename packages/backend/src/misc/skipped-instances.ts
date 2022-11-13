@@ -6,7 +6,7 @@ import { DAY } from '@/const.js';
 
 // Threshold from last contact after which an instance will be considered
 // "dead" and should no longer get activities delivered to it.
-const deadThreshold = 30 * DAY;
+const deadThreshold = 7 * DAY;
 
 /**
  * Returns the subset of hosts which should be skipped.
@@ -33,7 +33,8 @@ export async function skippedInstances(hosts: Array<Instace['host']>): Array<Ins
 			})
 			.andWhere(new Brackets(qb => { qb
 				.where('instance.isSuspended')
-				.orWhere('instance.lastCommunicatedAt < :deadTime', { deadTime });
+				.orWhere('instance.lastCommunicatedAt < :deadTime', { deadTime })
+				.orWhere('instance.latestStatus = 410');
 			}))
 			.select('host')
 			.getRawMany()

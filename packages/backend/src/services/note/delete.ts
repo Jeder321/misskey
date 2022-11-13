@@ -53,11 +53,9 @@ export default async function(user: { id: User['id']; uri: User['uri']; host: Us
 			deliverToConcerned(user, note, content);
 		}
 
-		// also deliever delete activity to cascaded notes
+		// also deliver delete activity to cascaded notes
 		const cascadingNotes = await findCascadingNotes(note);
 		for (const cascadingNote of cascadingNotes) {
-			if (!cascadingNote.user) continue;
-			if (!Users.isLocalUser(cascadingNote.user)) continue;
 			const content = renderActivity(renderDelete(renderTombstone(`${config.url}/notes/${cascadingNote.id}`), cascadingNote.user));
 			deliverToConcerned(cascadingNote.user, cascadingNote, content);
 		}
@@ -107,6 +105,9 @@ async function findCascadingNotes(note: Note): Promise<Note[]> {
 		});
 
 		await Promise.all(replies.map(reply => {
+			// only add unique notes
+			if (cascadingNotes.find((x) => x.id == reply.id) != null) return;
+
 			cascadingNotes.push(reply);
 			return recursive(reply.id);
 		}));

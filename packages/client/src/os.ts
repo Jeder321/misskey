@@ -32,7 +32,10 @@ export const api = ((endpoint: string, data: Record<string, any> = {}, token?: s
 			body: JSON.stringify(data),
 			credentials: 'omit',
 			cache: 'no-cache',
-			headers: authorization ? { authorization } : {},
+			headers: {
+				'content-type': 'application/json',
+				...(authorization ? { authorization } : {}),
+			},
 		}).then(async (res) => {
 			const body = res.status === 204 ? null : await res.json();
 
@@ -69,7 +72,10 @@ export const apiGet = ((endpoint: string, data: Record<string, any> = {}, token?
 			method: 'GET',
 			credentials: 'omit',
 			cache: 'default',
-			headers: authorization ? { authorization } : {},
+			headers: {
+				'content-type': 'application/json',
+				...(authorization ? { authorization } : {}),
+			},
 		}).then(async (res) => {
 			const body = res.status === 204 ? null : await res.json();
 
@@ -97,7 +103,7 @@ export const apiWithDialog = ((
 	promiseDialog(promise, null, (err) => {
 		alert({
 			type: 'error',
-			text: err.message + '\n' + (err as any).id,
+			text: (err.message + '\n' + (err?.endpoint ?? '') + (err?.code ?? '')).trim(),
 		});
 	});
 
@@ -135,7 +141,7 @@ export function promiseDialog<T extends Promise<any>>(
 		}
 	});
 
-	// NOTE: dynamic importすると挙動がおかしくなる(showingの変更が伝播しない)
+	// NOTE: dynamic import results in strange behaviour (showing is not reactive)
 	popup(MkWaitingDialog, {
 		success,
 		showing,

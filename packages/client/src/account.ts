@@ -32,12 +32,8 @@ export async function signout() {
 			const registration = await navigator.serviceWorker.ready;
 			const push = await registration.pushManager.getSubscription();
 			if (push) {
-				await fetch(`${apiUrl}/sw/unregister`, {
-					method: 'POST',
-					body: JSON.stringify({
-						i: $i.token,
-						endpoint: push.endpoint,
-					}),
+				await api('sw/unregister', {
+					endpoint: push.endpoint,
 				});
 			}
 		}
@@ -79,13 +75,7 @@ export async function removeAccount(id: Account['id']) {
 function fetchAccount(token: string): Promise<Account> {
 	return new Promise((done, fail) => {
 		// Fetch user
-		fetch(`${apiUrl}/i`, {
-			method: 'POST',
-			body: JSON.stringify({
-				i: token,
-			}),
-		})
-		.then(res => res.json())
+		api('i', {}, token)
 		.then(res => {
 			if (res.error) {
 				if (res.error.id === 'a8c724b3-6e9c-4b46-b1a8-bc3ed6258370') {
