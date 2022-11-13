@@ -109,20 +109,20 @@ router.get('/notes/:note', async (ctx, next) => {
 
 // note activity
 router.get('/notes/:note/activity', async ctx => {
-<<<<<<< HEAD
-	const verify = await checkFetch(ctx.req);
-	if (verify !== 200) {
-		ctx.status = verify;
-=======
 	if (!isActivityPubReq(ctx)) {
 		/*
 		Redirect to the human readable page. in this case using next is not possible,
 		since there is no human readable page explicitly for the activity.
 		*/
 		ctx.redirect(`/notes/${ctx.params.note}`);
->>>>>>> upstream/main
 		return;
 	}
+
+	const verify = await checkFetch(ctx.req);
+        if (verify !== 200) {
+                ctx.status = verify;
+                return;
+        }
 
 	const note = await Notes.findOneBy({
 		id: ctx.params.note,
@@ -268,15 +268,11 @@ router.get('/@:user', async (ctx, next) => {
 
 	await userInfo(ctx, user);
 });
-<<<<<<< HEAD
 
 router.get('/actor', async (ctx, next) => {
 	const instanceActor = await getInstanceActor();
 	await userInfo(ctx, instanceActor);
 });
-//#endregion
-=======
->>>>>>> upstream/main
 
 // emoji
 router.get('/emojis/:emoji', async ctx => {
