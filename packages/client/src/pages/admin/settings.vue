@@ -109,27 +109,6 @@
 					</FormSection>
 
 					<FormSection>
-						<template #label>ServiceWorker</template>
-
-						<FormSwitch v-model="enableServiceWorker" class="_formBlock">
-							<template #label>{{ i18n.ts.enableServiceworker }}</template>
-							<template #caption>{{ i18n.ts.serviceworkerInfo }}</template>
-						</FormSwitch>
-
-						<template v-if="enableServiceWorker">
-							<FormInput v-model="swPublicKey" class="_formBlock">
-								<template #prefix><i class="fas fa-key"></i></template>
-								<template #label>Public key</template>
-							</FormInput>
-
-							<FormInput v-model="swPrivateKey" class="_formBlock">
-								<template #prefix><i class="fas fa-key"></i></template>
-								<template #label>Private key</template>
-							</FormInput>
-						</template>
-					</FormSection>
-
-					<FormSection>
 						<template #label>DeepL Translation</template>
 
 						<FormInput v-model="deeplAuthKey" class="_formBlock">
@@ -179,9 +158,6 @@ let localDriveCapacityMb: any = $ref(0);
 let remoteDriveCapacityMb: any = $ref(0);
 let enableRegistration: boolean = $ref(false);
 let emailRequiredForSignup: boolean = $ref(false);
-let enableServiceWorker: boolean = $ref(false);
-let swPublicKey: any = $ref(null);
-let swPrivateKey: any = $ref(null);
 let deeplAuthKey: string = $ref('');
 let deeplIsPro: boolean = $ref(false);
 
@@ -206,9 +182,6 @@ async function init(): Promise<void> {
 	remoteDriveCapacityMb = meta.driveCapacityPerRemoteUserMb;
 	enableRegistration = !meta.disableRegistration;
 	emailRequiredForSignup = meta.emailRequiredForSignup;
-	enableServiceWorker = meta.enableServiceWorker;
-	swPublicKey = meta.swPublickey;
-	swPrivateKey = meta.swPrivateKey;
 	deeplAuthKey = meta.deeplAuthKey;
 	deeplIsPro = meta.deeplIsPro;
 }
@@ -234,9 +207,6 @@ function save() {
 		remoteDriveCapacityMb: parseInt(remoteDriveCapacityMb, 10),
 		disableRegistration: !enableRegistration,
 		emailRequiredForSignup,
-		enableServiceWorker,
-		swPublicKey,
-		swPrivateKey,
 		deeplAuthKey,
 		deeplIsPro,
 	}).then(() => {
