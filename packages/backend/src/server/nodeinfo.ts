@@ -104,7 +104,6 @@ const nodeinfo2 = async (): Promise<NodeInfo2Base> => {
 			enableRecaptcha: meta.enableRecaptcha,
 			maxNoteTextLength: config.maxNoteTextLength,
 			enableEmail: meta.enableEmail,
-			enableServiceWorker: meta.enableServiceWorker,
 			proxyAccountName: proxyAccount?.username ?? null,
 			themeColor: meta.themeColor || '#86b300',
 		},

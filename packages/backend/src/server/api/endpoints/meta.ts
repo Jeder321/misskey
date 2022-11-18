@@ -169,10 +169,6 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
-			enableServiceWorker: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
 			translatorAvailable: {
 				type: 'boolean',
 				optional: false, nullable: false,
@@ -215,7 +211,8 @@ export const meta = {
 					},
 					serviceWorker: {
 						type: 'boolean',
-						optional: false, nullable: false,
+						optional: true, nullable: false,
+						default: true,
 					},
 					miauth: {
 						type: 'boolean',
@@ -306,7 +303,6 @@ export default define(meta, paramDef, async (ps, me): Promise<Record<string, any
 		defaultDarkTheme: instance.defaultDarkTheme,
 		enableEmail: instance.enableEmail,
 
-		enableServiceWorker: instance.enableServiceWorker,
 
 		translatorAvailable: instance.deeplAuthKey != null,
 
@@ -334,7 +330,7 @@ export default define(meta, paramDef, async (ps, me): Promise<Record<string, any
 			hcaptcha: instance.enableHcaptcha,
 			recaptcha: instance.enableRecaptcha,
 			objectStorage: instance.useObjectStorage,
-			serviceWorker: instance.enableServiceWorker,
+			serviceWorker: true,
 			miauth: true,
 		};
 	}
