@@ -61,12 +61,7 @@ const onNotification = (notification: foundkey.entities.Notification): void => {
 				title = `${userName} quoted your post`;
 				break;
 			case 'reaction':
-				if (notification.reaction.includes("@")) {
-					title = `${userName} ${notification.reaction.split("@")[0]}:ed your post`;
-				}
-				else {
-					title = `${userName} ${notification.reaction}ed your post`;
-				}
+				title = `${userName} ${notification.reaction}ed your post`;
 				break;
 			case 'receiveFollowRequest':
 				title = `${userName} sent you a follow request`;
@@ -85,7 +80,8 @@ const onNotification = (notification: foundkey.entities.Notification): void => {
 		console.log(user, userName, title, body);
 		new Notification(title, {
 			body,
-			icon: user.avatarUrl,
+			image: user.avatarUrl,
+			icon: instance.iconUrl,
 			// TODO: timestamp?
 		});
 	};
