@@ -36,55 +36,61 @@ const dev: Ref<boolean> = ref(_DEV_);
 const onNotification = (notification: foundkey.entities.Notification): void => {
 	if ($i?.mutingNotificationTypes.includes(notification.type)) return;
 
-	if (notification.type !== 'app') {
-		const user = notification.user;
-		const userName = acct(user);
-		let title: string;
-		let body = 'note' in notification ? getNoteSummary(notification.note) : undefined;
-		switch (notification.type) {
-			case 'pollEnded':
-				title = `${userName}'s poll has ended`;
-				break;
-			case 'follow':
-				title = `${userName} followed you`;
-				break;
-			case 'followRequestAccepted':
-				title = `${userName} accepted your follow request`;
-				break;
-			case 'mention':
-				title = `${userName} mentioned you`;
-				break;
-			case 'pollVote':
-				title = `${userName} voted in your poll`;
-				break;
-			case 'quote':
-				title = `${userName} quoted your post`;
-				break;
-			case 'reaction':
-				title = `${userName} ${notification.reaction}ed your post`;
-				break;
-			case 'receiveFollowRequest':
-				title = `${userName} sent you a follow request`;
-				break;
-			case 'renote':
-				title = `${userName} renoted your post`;
-				break;
-			case 'reply':
-				title = `${userName} replied to your post`;
-				break;
-			case 'groupInvited':
-				title = `${userName} invited you to a group`;
-				break;
-		}
-
-		console.log(user, userName, title, body);
-		new Notification(title, {
-			body,
-			image: user.avatarUrl,
-			icon: instance.iconUrl,
-			// TODO: timestamp?
+	if (document.visibilityState === 'visible') {
+		stream.send('readNotification', {
+			id: notification.id,
 		});
-	};
+
+		if (notification.type !== 'app') {
+			const user = notification.user;
+			const userName = acct(user);
+			let title: string;
+			let body = 'note' in notification ? getNoteSummary(notification.note) : undefined;
+			switch (notification.type) {
+				case 'pollEnded':
+					title = `${userName}'s poll has ended`;
+					break;
+				case 'follow':
+					title = `${userName} followed you`;
+					break;
+				case 'followRequestAccepted':
+					title = `${userName} accepted your follow request`;
+					break;
+				case 'mention':
+					title = `${userName} mentioned you`;
+					break;
+				case 'pollVote':
+					title = `${userName} voted in your poll`;
+					break;
+				case 'quote':
+					title = `${userName} quoted your post`;
+					break;
+				case 'reaction':
+					title = `${userName} ${notification.reaction}ed your post`;
+					break;
+				case 'receiveFollowRequest':
+					title = `${userName} sent you a follow request`;
+					break;
+				case 'renote':
+					title = `${userName} renoted your post`;
+					break;
+				case 'reply':
+					title = `${userName} replied to your post`;
+					break;
+				case 'groupInvited':
+					title = `${userName} invited you to a group`;
+					break;
+			}
+
+			console.log(user, userName, title, body);
+			new Notification(title, {
+				body,
+				image: user.avatarUrl,
+				icon: instance.iconUrl,
+				// TODO: timestamp?
+			});
+		}
+	}
 
 	sound.play('notification');
 };
