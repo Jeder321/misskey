@@ -108,16 +108,6 @@
 						</FormSplit>
 					</FormSection>
 
-					<FormSection>
-						<template #label>DeepL Translation</template>
-
-						<FormInput v-model="deeplAuthKey" class="_formBlock">
-							<template #prefix><i class="fas fa-key"></i></template>
-							<template #label>DeepL Auth Key</template>
-						</FormInput>
-						<FormSwitch v-model="deeplIsPro" class="_formBlock">
-							<template #label>Pro account</template>
-						</FormSwitch>
 					</FormSection>
 				</div>
 			</FormSuspense>
@@ -158,8 +148,6 @@ let localDriveCapacityMb: any = $ref(0);
 let remoteDriveCapacityMb: any = $ref(0);
 let enableRegistration: boolean = $ref(false);
 let emailRequiredForSignup: boolean = $ref(false);
-let deeplAuthKey: string = $ref('');
-let deeplIsPro: boolean = $ref(false);
 
 async function init(): Promise<void> {
 	const meta = await os.api('admin/meta');
@@ -182,11 +170,9 @@ async function init(): Promise<void> {
 	remoteDriveCapacityMb = meta.driveCapacityPerRemoteUserMb;
 	enableRegistration = !meta.disableRegistration;
 	emailRequiredForSignup = meta.emailRequiredForSignup;
-	deeplAuthKey = meta.deeplAuthKey;
-	deeplIsPro = meta.deeplIsPro;
 }
 
-function save() {
+function save(): void {
 	os.apiWithDialog('admin/update-meta', {
 		name,
 		description,
@@ -207,8 +193,6 @@ function save() {
 		remoteDriveCapacityMb: parseInt(remoteDriveCapacityMb, 10),
 		disableRegistration: !enableRegistration,
 		emailRequiredForSignup,
-		deeplAuthKey,
-		deeplIsPro,
 	}).then(() => {
 		fetchInstance();
 	});

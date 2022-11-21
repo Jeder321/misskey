@@ -167,6 +167,11 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.proxyAccount,
 		to: '/admin/proxy-account',
 		active: props.initialPage === 'proxy-account',
+	}, {
+		icon: 'fas fa-language',
+		text: i18n.ts.translationSettings,
+		to: '/admin/translation-settings',
+		active: props.initialPage === 'translation-settings',
 	}],
 }, {
 	title: i18n.ts.info,
@@ -196,6 +201,7 @@ const component = $computed(() => {
 		case 'relays': return defineAsyncComponent(() => import('./relays.vue'));
 		case 'instance-block': return defineAsyncComponent(() => import('./instance-block.vue'));
 		case 'proxy-account': return defineAsyncComponent(() => import('./proxy-account.vue'));
+		case 'translation-settings': return defineAsyncComponent(() => import('./translation-settings.vue'));
 		default: return null;
 	}
 });

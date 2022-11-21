@@ -1,5 +1,6 @@
 import { insertModerationLog } from '@/services/insert-moderation-log.js';
 import { fetchMeta, setMeta } from '@/misc/fetch-meta.js';
+import { TranslationService } from '@/models/entities/meta.js';
 import define from '../../define.js';
 
 export const meta = {
@@ -60,8 +61,11 @@ export const paramDef = {
 			type: 'string',
 		} },
 		summalyProxy: { type: 'string', nullable: true },
+		translationService: { type: 'string', nullable: true, enum: [null, ...Object.values(TranslationService)] },
 		deeplAuthKey: { type: 'string', nullable: true },
 		deeplIsPro: { type: 'boolean' },
+		libreTranslateAuthKey: { type: 'string', nullable: true },
+		libreTranslateEndpoint: { type: 'string', nullable: true },
 		enableEmail: { type: 'boolean' },
 		email: { type: 'string', nullable: true },
 		smtpSecure: { type: 'boolean' },
@@ -319,6 +323,10 @@ export default define(meta, paramDef, async (ps, me) => {
 		set.objectStorageS3ForcePathStyle = ps.objectStorageS3ForcePathStyle;
 	}
 
+	if (ps.translationService !== undefined) {
+		set.translationService = ps.translationService;
+	}
+
 	if (ps.deeplAuthKey !== undefined) {
 		if (ps.deeplAuthKey === '') {
 			set.deeplAuthKey = null;
@@ -329,6 +337,22 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.deeplIsPro !== undefined) {
 		set.deeplIsPro = ps.deeplIsPro;
+	}
+
+	if (ps.libreTranslateEndpoint !== undefined) {
+		if (ps.libreTranslateEndpoint === '') {
+			set.libreTranslateEndpoint = null;
+		} else {
+			set.libreTranslateEndpoint = ps.libreTranslateEndpoint;
+		}
+	}
+
+	if (ps.libreTranslateAuthKey !== undefined) {
+		if (ps.libreTranslateAuthKey === '') {
+			set.libreTranslateAuthKey = null;
+		} else {
+			set.libreTranslateAuthKey = ps.libreTranslateAuthKey;
+		}
 	}
 
 	const meta = await fetchMeta();
