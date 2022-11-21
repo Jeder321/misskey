@@ -4,14 +4,9 @@ export class forceEnablePush1668374092227 {
 	name = 'forceEnablePush1668374092227';
 
 	async up(queryRunner) {
-		// generate VAPID keys if not yet set
-		const keysSet = await queryRunner.query(`SELECT "swPublicKey" IS NOT NULL AND "swPrivateKey" IS NOT NULL as set FROM "meta"`);
-		// if there is no meta entry yet, the keys will be generated on initial setup
-		if (keysSet.length > 0 && !keysSet.set) {
-			// VAPID keys are not set yet, so set them
-			const { publicKey, privateKey } = push.generateVAPIDKeys();
-			await queryRunner.query(`UPDATE "meta" SET "swPublicKey" = $1, "swPrivateKey" = $2`, [publicKey, privateKey]);
-		}
+		// set VAPID keys if not yet set
+		const { publicKey, privateKey } = push.generateVAPIDKeys();
+		await queryRunner.query(`UPDATE "meta" SET "swPublicKey" = $1, "swPrivateKey" = $2 WHERE "swPublicKey" IS NULL OR "swPrivateKey" IS NULL`, [publicKey, privateKey]);
 
 		await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "enableServiceWorker"`);
 		await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "swPublicKey" SET NOT NULL`);

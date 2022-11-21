@@ -311,7 +311,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		enableTwitterIntegration: instance.enableTwitterIntegration,
 		enableGithubIntegration: instance.enableGithubIntegration,
 		enableDiscordIntegration: instance.enableDiscordIntegration,
-		enableServiceWorker: instance.enableServiceWorker,
 		pinnedPages: instance.pinnedPages,
 		pinnedClipId: instance.pinnedClipId,
 		cacheRemoteFiles: instance.cacheRemoteFiles,
