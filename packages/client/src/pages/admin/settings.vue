@@ -107,8 +107,6 @@
 							</FormInput>
 						</FormSplit>
 					</FormSection>
-
-					</FormSection>
 				</div>
 			</FormSuspense>
 		</MkSpacer>
