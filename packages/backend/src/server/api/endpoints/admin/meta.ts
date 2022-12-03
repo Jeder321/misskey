@@ -252,10 +252,6 @@ export const meta = {
 				type: 'string',
 				optional: true, nullable: true,
 			},
-			deeplIsPro: {
-				type: 'boolean',
-				optional: true, nullable: false,
-			},
 			libreTranslateEndpoint: {
 				type: 'string',
 				optional: true, nullable: true,
@@ -349,7 +345,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		translatorAvailable: translatorAvailable(instance),
 		translationService: instance.translationService,
 		deeplAuthKey: instance.deeplAuthKey,
-		deeplIsPro: instance.deeplIsPro,
 		libreTranslateEndpoint: instance.libreTranslateEndpoint,
 		libreTranslateAuthKey: instance.libreTranslateAuthKey,
 	};
