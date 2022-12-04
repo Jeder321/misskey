@@ -33,7 +33,7 @@ const instance = props.instance ?? {
 const themeColor = instance.themeColor ?? '#777777';
 
 const bg = {
-	background: `linear-gradient(90deg, ${themeColor}, ${themeColor}00)`,
+	background: `${themeColor}7F`,
 };
 
 const tooltip = instance.softwareName == null || instance.softwareVersion == null
@@ -84,9 +84,7 @@ const tooltip = instance.softwareName == null || instance.softwareVersion == nul
 		line-height: $height;
 		font-size: 0.9em;
 		vertical-align: top;
-
-		color: var(--fg);
-		text-shadow: none;
+		font-weight: bold;
 
 		text-transform: capitalize;
 	}
