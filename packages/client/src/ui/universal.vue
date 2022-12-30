@@ -350,7 +350,6 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 				left: 0;
 				color: var(--indicator);
 				font-size: 16px;
-				animation: blink 1s infinite;
 			}
 
 			&:first-child {
